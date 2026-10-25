@@ -1,26 +1,166 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─────────────────────────────────────────────
+   CTT HUST – Academic Portal Design Tokens
+   Phong cách: Strict Legacy Academic Portal UI
+   Màu chủ đạo: Đỏ Bách khoa #C8102E
+───────────────────────────────────────────── */
+
+@theme {
+  /* ── Brand / Primary ── */
+  --color-primary:       #C8102E;
+  --color-primary-dark:  #9e001f;
+  --color-primary-hover: #a50d25;
+
+  /* ── Canvas & Surface ── */
+  --color-canvas:        #f9fafb;
+  --color-surface:       #ffffff;
+
+  /* ── Table Structure ── */
+  --color-table-header:  #f3f4f6;
+  --color-group-primary: #e5e7eb;
+  --color-group-second:  #f3f4f6;
+  --color-border-grid:   #d1d5db;
+  --color-row-hover:     #f9fafb;
+
+  /* ── Status Colors ── */
+  --color-status-success: #15803d;
+  --color-status-warning: #d97706;
+  --color-status-danger:  #dc2626;
+
+  /* ── Semantic Badges ── */
+  --color-badge-both-bg:     #f3f4f6;
+  --color-badge-both-text:   #374151;
+  --color-badge-both-border: #d1d5db;
+  --color-badge-k1-bg:       #eff6ff;
+  --color-badge-k1-text:     #1d4ed8;
+  --color-badge-k1-border:   #bfdbfe;
+  --color-badge-k2-bg:       #fffbeb;
+  --color-badge-k2-text:     #92400e;
+  --color-badge-k2-border:   #fde68a;
+  --color-mandatory-bg:      #fef3c7;
+  --color-mandatory-text:    #92400e;
+  --color-mandatory-border:  #fcd34d;
+  --color-grade-fail:        #dc2626;
+
+  /* ── Action States ── */
+  --color-add-btn:       #15803d;
+  --color-add-btn-hover: #166534;
+  --color-added-text:    #15803d;
+  --color-locked-bg:     #e5e7eb;
+  --color-locked-text:   #9ca3af;
+  --color-locked-border: #d1d5db;
+
+  /* ── Typography ── */
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, "JetBrains Mono", monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ─────────────────────────────────────────────
+   Base Resets
+───────────────────────────────────────────── */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  background-color: var(--color-canvas);
+  color: #111827;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar tối giản */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* ─────────────────────────────────────────────
+   Academic Table UI Utility Classes
+───────────────────────────────────────────── */
+
+.badge-both-semester {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 500;
+  background-color: var(--color-badge-both-bg);
+  color: var(--color-badge-both-text);
+  border: 1px solid var(--color-badge-both-border);
+  border-radius: 3px;
+}
+
+.badge-semester-1 {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 500;
+  background-color: var(--color-badge-k1-bg);
+  color: var(--color-badge-k1-text);
+  border: 1px solid var(--color-badge-k1-border);
+  border-radius: 3px;
+}
+
+.badge-semester-2 {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 500;
+  background-color: var(--color-badge-k2-bg);
+  color: var(--color-badge-k2-text);
+  border: 1px solid var(--color-badge-k2-border);
+  border-radius: 3px;
+}
+
+.mandatory-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: var(--color-mandatory-bg);
+  color: var(--color-mandatory-text);
+  border: 1px solid var(--color-mandatory-border);
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.btn-add-course {
+  background-color: var(--color-add-btn);
+  color: #ffffff;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.btn-add-course:hover {
+  background-color: var(--color-add-btn-hover);
+}
+
+.badge-locked {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: var(--color-locked-bg);
+  color: var(--color-locked-text);
+  border: 1px solid var(--color-locked-border);
+  border-radius: 3px;
+  cursor: not-allowed;
 }
