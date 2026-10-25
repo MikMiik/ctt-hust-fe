@@ -64,9 +64,9 @@ export default function CurriculumFilters({
             value={searchValue}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Tìm mã hoặc tên môn học..."
-            className="w-64 h-7 pl-7 pr-2 text-xs border border-gray-300 rounded-none bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-primary"
+            className="w-64 h-7 pl-6 pr-2 text-xs border border-gray-300 rounded-none bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-primary"
           />
-          <span className="material-symbols-outlined absolute left-1.5 top-1.5 text-[15px] text-gray-400">
+          <span className="material-symbols-outlined absolute left-1 top-1/2 -translate-y-1/2 text-[14px] text-gray-400 pointer-events-none">
             search
           </span>
         </div>
