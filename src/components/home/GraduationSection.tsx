@@ -51,7 +51,6 @@ export default function GraduationSection({
                 className="bg-white border border-gray-300 rounded-sm p-3 flex flex-col justify-between transition-colors hover:border-gray-400"
               >
                 <div>
-                  {/* Card Title & Short Badge */}
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <h3 className="text-xs font-bold text-gray-800 leading-tight">
                       {req.name}
@@ -61,7 +60,6 @@ export default function GraduationSection({
                     </span>
                   </div>
 
-                  {/* Progress 1: Đã đạt */}
                   <div className="mb-2">
                     <div className="flex items-baseline justify-between text-xs mb-1">
                       <span className="text-gray-600">
@@ -89,7 +87,6 @@ export default function GraduationSection({
                     </div>
                   </div>
 
-                  {/* Progress 2: Sau thêm */}
                   <div className="mb-2.5">
                     <div className="flex items-baseline justify-between text-xs mb-1">
                       <span className="text-gray-600">
@@ -122,7 +119,6 @@ export default function GraduationSection({
                     </div>
                   </div>
 
-                  {/* Remaining / Status Info */}
                   <div className="text-[11px] pt-1.5 border-t border-gray-200 flex items-center justify-between">
                     <span className="text-gray-500">Trạng thái:</span>
                     {isProjectedCompleted ? (

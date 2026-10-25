@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useSession } from "next-auth/react";
 import CurriculumSection from "@/components/home/CurriculumSection";
 import GraduationSection from "@/components/home/GraduationSection";
 import RegistrationSection from "@/components/home/RegistrationSection";
@@ -10,6 +11,7 @@ import type { SelectedCourse } from "@/app/types";
 const MAX_CREDITS = 24;
 
 export default function HomePage() {
+  const { data: session } = useSession();
   const [cart, setCart] = useState<SelectedCourse[]>(mockSelectedCourses);
 
   const courseLookupMap = useMemo(() => {
@@ -63,8 +65,10 @@ export default function HomePage() {
 
   function handleSubmit() {
     const totalCredits = cart.reduce((sum, c) => sum + c.credits, 0);
+    const studentName = session?.user?.fullName || mockStudent.fullName;
+    const studentId = session?.user?.studentId || mockStudent.studentId;
     alert(
-      `Đăng ký thành công cho sinh viên ${mockStudent.fullName} (MSSV: ${mockStudent.studentId}).\nTổng số tín chỉ: ${totalCredits} TC.`
+      `Đăng ký thành công cho sinh viên ${studentName} (MSSV: ${studentId}).\nTổng số tín chỉ: ${totalCredits} TC.`
     );
   }
 
