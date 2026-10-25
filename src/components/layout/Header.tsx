@@ -1,20 +1,29 @@
+import Image from "next/image";
 import { mockStudent } from "@/app/data";
 
 export default function Header() {
   return (
-    <header className="w-full bg-white border-b-2 border-primary">
+    <header
+      className="w-full shadow-[0_1px_5px_rgba(0,0,0,0.1)] bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: "url('/header-bg.png')" }}
+    >
       <div className="max-w-350 mx-auto px-4 py-2.5 flex items-center justify-between">
         {/* ── Section: Brand & Portal Logo ── */}
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 border border-gray-300 bg-gray-50 flex items-center justify-center text-primary shrink-0">
-            <span className="material-symbols-outlined text-[24px]">school</span>
-          </div>
+          <Image
+            src="/logo.webp"
+            alt="Logo Cổng thông tin đào tạo Đại học Bách khoa Hà Nội"
+            width={60}
+            height={60}
+            className="h-13 w-auto object-contain shrink-0"
+            priority
+          />
           <div>
-            <span className="block text-[11px] text-gray-500 uppercase tracking-wider font-semibold">
-              CỔNG THÔNG TIN ĐÀO TẠO ĐẠI HỌC
+            <span className="block text-[15px] text-black uppercase font-bold tracking-tight drop-shadow">
+              ĐẠI HỌC BÁCH KHOA HÀ NỘI;
             </span>
-            <span className="block text-[15px] text-primary uppercase font-bold tracking-tight">
-              ĐẠI HỌC BÁCH KHOA&nbsp;
+            <span className="block text-[11px] text-black/90 uppercase tracking-wider font-semibold drop-shadow">
+              HANOI UNIVERSITY OF SCIENCE AND TECHNOLOGY
             </span>
           </div>
         </div>
@@ -22,18 +31,26 @@ export default function Header() {
         {/* ── Section: Student Info & Actions ── */}
         <div className="flex items-center gap-3">
           <div className="text-right">
-            <div className="text-xs text-gray-900 font-bold uppercase">{mockStudent.fullName}</div>
-            <div className="text-[11px] text-gray-600 font-mono">MSSV: {mockStudent.studentId}</div>
+            <div className="text-xs text-black font-bold uppercase drop-shadow">
+              {mockStudent.fullName}
+            </div>
+            <div className="text-[11px] text-black/80 font-mono drop-shadow">
+              MSSV: {mockStudent.studentId}
+            </div>
           </div>
-          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white shrink-0">
-            <span className="material-symbols-outlined text-[18px]">person</span>
+          <div className="w-8 h-8 rounded-full bg-black/20 border border-black/40 flex items-center justify-center text-black shrink-0">
+            <span className="material-symbols-outlined text-[18px]">
+              person
+            </span>
           </div>
           <a
             href="#"
             title="Đăng xuất"
-            className="text-gray-500 hover:text-primary transition-colors ml-1"
+            className="text-black/80 hover:text-black transition-colors ml-1"
           >
-            <span className="material-symbols-outlined text-[20px]">logout</span>
+            <span className="material-symbols-outlined text-[20px]">
+              logout
+            </span>
           </a>
         </div>
       </div>

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import CurriculumSection from "@/components/home/CurriculumSection";
+import GraduationSection from "@/components/home/GraduationSection";
 import RegistrationSection from "@/components/home/RegistrationSection";
 import { mockSelectedCourses, mockCurriculumGroups, mockStudent } from "@/app/data";
 import type { SelectedCourse } from "@/app/types";
@@ -67,6 +68,29 @@ export default function HomePage() {
     );
   }
 
+  const courseCategoryMap = useMemo(() => {
+    const map = new Map<string, string>();
+    mockCurriculumGroups.forEach((group) => {
+      group.subGroups.forEach((subGroup) => {
+        subGroup.courses.forEach((course) => {
+          map.set(course.courseCode, group.categoryCode);
+        });
+      });
+    });
+    return map;
+  }, []);
+
+  const addedCreditsByCategory = useMemo(() => {
+    const counts: Record<string, number> = {};
+    cart.forEach((item) => {
+      const categoryCode = courseCategoryMap.get(item.courseCode);
+      if (categoryCode) {
+        counts[categoryCode] = (counts[categoryCode] || 0) + item.credits;
+      }
+    });
+    return counts;
+  }, [cart, courseCategoryMap]);
+
   return (
     <div className="max-w-350 mx-auto px-4 py-4 space-y-6">
       {/* ── Section: Curriculum (Part 1) ── */}
@@ -74,6 +98,9 @@ export default function HomePage() {
         onAddCourse={handleAddCourse}
         selectedCodes={selectedCodes}
       />
+
+      {/* ── Section: Graduation Progress (Middle Section) ── */}
+      <GraduationSection addedCreditsByCategory={addedCreditsByCategory} />
 
       {/* ── Section: Registration Cart (Part 2) ── */}
       <RegistrationSection

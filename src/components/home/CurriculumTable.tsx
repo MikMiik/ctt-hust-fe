@@ -1,16 +1,22 @@
 "use client";
 
 import { Fragment } from "react";
-import type { CurriculumGroup, SemesterTerm, CourseAddStatus } from "@/app/types";
+import type { CurriculumGroup, CourseAddStatus } from "@/app/types";
 
-function SemesterBadge({ type }: { type: SemesterTerm }) {
-  if (type === "both") {
-    return <span className="badge-both-semester">[Mở 2 Kỳ]</span>;
+function SemesterBadge({ term }: { term: string }) {
+  if (!term) return <span className="text-gray-400 font-mono">--</span>;
+  return <span className="badge-both-semester">[{term}]</span>;
+}
+
+function RecommendedSemesterCell({ semester }: { semester?: number }) {
+  if (semester === undefined || semester === null) {
+    return <span className="text-gray-400 font-mono">--</span>;
   }
-  if (type === "k1_only") {
-    return <span className="badge-semester-1">[Chỉ mở Kỳ 1]</span>;
-  }
-  return <span className="badge-semester-2">[Chỉ mở Kỳ 2]</span>;
+  return (
+    <span className="font-mono font-bold text-gray-800 text-xs">
+      {semester}
+    </span>
+  );
 }
 
 function MandatoryIcon() {
@@ -72,6 +78,7 @@ export default function CurriculumTable({ groups, onAddCourse }: CurriculumTable
             <th className="p-2 border-r border-gray-300 w-24">MÃ HP</th>
             <th className="p-2 border-r border-gray-300">TÊN HP</th>
             <th className="p-2 border-r border-gray-300 text-center w-28">KỲ MỞ MÔN</th>
+            <th className="p-2 border-r border-gray-300 text-center w-24">KỲ ĐỀ XUẤT</th>
             <th className="p-2 border-r border-gray-300 text-center w-24">BẮT BUỘC</th>
             <th className="p-2 border-r border-gray-300 text-center w-16">TC ĐT</th>
             <th className="p-2 border-r border-gray-300 text-center w-16">TC HỌC</th>
@@ -85,7 +92,7 @@ export default function CurriculumTable({ groups, onAddCourse }: CurriculumTable
           {groups.map((group) => (
             <Fragment key={`g-${group.categoryCode}`}>
               <tr className="bg-group-primary border-b border-gray-300 font-bold text-gray-800 text-[11px]">
-                <td className="p-1.5 px-3 uppercase tracking-wide" colSpan={9}>
+                <td className="p-1.5 px-3 uppercase tracking-wide" colSpan={10}>
                   <span className="font-mono mr-1">[-]</span>
                   {` MÃ LOẠI HP: ${group.categoryCode} (COUNT=${group.courseCount}, TỔNG TC: ${group.totalCredits}, TỔNG ĐẠT: ${group.passedCredits})`}
                 </td>
@@ -94,7 +101,7 @@ export default function CurriculumTable({ groups, onAddCourse }: CurriculumTable
               {group.subGroups.map((sub) => (
                 <Fragment key={`sg-${sub.groupLabel}`}>
                   <tr className="bg-group-second border-b border-gray-300 font-semibold text-gray-700 text-[11px]">
-                    <td className="p-1.5 px-6 uppercase tracking-wide" colSpan={9}>
+                    <td className="p-1.5 px-6 uppercase tracking-wide" colSpan={10}>
                       <span className="font-mono mr-1">[-]</span>
                       {` LOẠI HP: ${sub.groupLabel} (COUNT=${sub.courseCount}, TỔNG TC: ${sub.totalCredits}, TỔNG ĐẠT: ${sub.passedCredits})`}
                     </td>
@@ -109,9 +116,7 @@ export default function CurriculumTable({ groups, onAddCourse }: CurriculumTable
                         {course.indexNumber}
                       </td>
                       <td
-                        className={`p-2 border-r border-gray-300 font-mono font-bold ${
-                          course.isHighlighted ? "text-primary" : "text-gray-800"
-                        }`}
+                        className="p-2 border-r border-gray-300 font-mono font-bold text-gray-800"
                       >
                         {course.courseCode}
                       </td>
@@ -124,7 +129,10 @@ export default function CurriculumTable({ groups, onAddCourse }: CurriculumTable
                         )}
                       </td>
                       <td className="p-2 border-r border-gray-300 text-center">
-                        <SemesterBadge type={course.semesterTerm} />
+                        <SemesterBadge term={course.semesterTerm} />
+                      </td>
+                      <td className="p-2 border-r border-gray-300 text-center">
+                        <RecommendedSemesterCell semester={course.recommendedSemester} />
                       </td>
                       <td className="p-2 border-r border-gray-300 text-center">
                         {course.isRequired && <MandatoryIcon />}

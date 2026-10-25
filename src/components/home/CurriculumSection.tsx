@@ -60,7 +60,7 @@ export default function CurriculumSection({
                 return bImp - aImp;
               });
             } else if (displayMode === "semester") {
-              courses = [...courses].sort((a, b) => a.semesterTerm.localeCompare(b.semesterTerm));
+              courses = [...courses].sort((a, b) => (a.recommendedSemester ?? 99) - (b.recommendedSemester ?? 99));
             }
 
             return {

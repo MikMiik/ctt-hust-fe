@@ -47,7 +47,7 @@ export default function CurriculumFilters({
               className="h-7.5 pl-3 pr-8 text-xs font-medium border border-gray-300 bg-white text-gray-800 focus:outline-none focus:border-primary appearance-none cursor-pointer"
             >
               <option value="default">Mặc định (Theo Mã loại HP)</option>
-              <option value="semester">Theo kỳ học (HK1, HK2, HK3...)</option>
+              <option value="semester">Theo kỳ đề xuất (HK1, HK2, HK3...)</option>
               <option value="debt">Ưu tiên: Môn đang nợ / Tiến độ</option>
               <option value="improve">Ưu tiên: Môn cải thiện (Điểm ≤ D+)</option>
             </select>
