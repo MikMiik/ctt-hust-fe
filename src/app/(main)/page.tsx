@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 import CurriculumSection from "@/components/home/CurriculumSection";
 import GraduationSection from "@/components/home/GraduationSection";
 import RegistrationSection from "@/components/home/RegistrationSection";
@@ -33,7 +34,7 @@ export default function HomePage() {
 
   function handleAddCourse(courseCode: string) {
     if (selectedCodes.has(courseCode)) {
-      alert(`Học phần ${courseCode} đã có trong danh sách đăng ký!`);
+      toast.warning(`Học phần ${courseCode} đã có trong danh sách đăng ký!`);
       return;
     }
 
@@ -42,7 +43,7 @@ export default function HomePage() {
 
     const totalCredits = cart.reduce((sum, c) => sum + c.credits, 0);
     if (totalCredits + info.credits > MAX_CREDITS) {
-      alert(`Vượt quá giới hạn tối đa ${MAX_CREDITS} tín chỉ/học kỳ!`);
+      toast.error(`Vượt quá giới hạn tối đa ${MAX_CREDITS} tín chỉ/học kỳ!`);
       return;
     }
 
@@ -57,19 +58,27 @@ export default function HomePage() {
         credits: info.credits,
       },
     ]);
+    toast.success(`Đã thêm học phần ${courseCode} (${info.credits} TC)`);
   }
 
   function handleRemoveCourse(courseCode: string) {
     setCart((prev) => prev.filter((c) => c.courseCode !== courseCode));
+    toast.info(`Đã hủy học phần ${courseCode}`);
   }
 
   function handleSubmit() {
+    if (cart.length === 0) {
+      toast.warning("Chưa có học phần nào trong danh sách đăng ký!");
+      return;
+    }
+
     const totalCredits = cart.reduce((sum, c) => sum + c.credits, 0);
     const studentName = session?.user?.fullName || mockStudent.fullName;
     const studentId = session?.user?.studentId || mockStudent.studentId;
-    alert(
-      `Đăng ký thành công cho sinh viên ${studentName} (MSSV: ${studentId}).\nTổng số tín chỉ: ${totalCredits} TC.`
-    );
+
+    toast.success("Gửi đăng ký học phần thành công!", {
+      description: `Sinh viên: ${studentName} (MSSV: ${studentId}) • Đã lưu ${cart.length} học phần (${totalCredits} TC).`,
+    });
   }
 
   const courseCategoryMap = useMemo(() => {
