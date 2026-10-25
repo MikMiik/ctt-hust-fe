@@ -1,74 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import CurriculumSection from "@/components/home/CurriculumSection";
 import RegistrationSection from "@/components/home/RegistrationSection";
-import type { SelectedCourse } from "@/components/home/types";
-
-// Dữ liệu giỏ hàng mẫu ban đầu (mirror index.html)
-const INITIAL_CART: SelectedCourse[] = [
-  {
-    maHP: "MI3050",
-    tenLop: "Các phương pháp tối ưu",
-    ngayDangKy: "10/1/2026",
-    ttDangKy: "Thành công",
-    soTC: 4,
-  },
-  {
-    maHP: "MAT1092",
-    tenLop: "Giải tích II",
-    ngayDangKy: "10/1/2026",
-    ttDangKy: "Thành công",
-    soTC: 4,
-  },
-  {
-    maHP: "INT2204",
-    tenLop: "Lập trình Hướng đối tượng",
-    ngayDangKy: "10/1/2026",
-    ttDangKy: "Thành công",
-    soTC: 3,
-  },
-  {
-    maHP: "ENG1002",
-    tenLop: "Tiếng Anh học thuật B2",
-    ngayDangKy: "10/1/2026",
-    ttDangKy: "Thành công",
-    soTC: 3,
-  },
-];
-
-// Map từ maHP → thông tin môn (dùng khi thêm từ bảng CTĐT)
-const COURSE_INFO_MAP: Record<string, { tenLop: string; soTC: number }> = {
-  SSH1110: { tenLop: "Triết học Mác - Lênin", soTC: 3 },
-  SSH1121: { tenLop: "Kinh tế chính trị Mác - Lênin", soTC: 2 },
-  SSH1131: { tenLop: "Chủ nghĩa xã hội khoa học", soTC: 2 },
-  SSH1170: { tenLop: "Lịch sử Đảng Cộng sản Việt Nam", soTC: 2 },
-  SSH1180: { tenLop: "Tư tưởng Hồ Chí Minh", soTC: 2 },
-  LAW1001: { tenLop: "Pháp luật đại cương", soTC: 2 },
-  MAT1091: { tenLop: "Giải tích I", soTC: 4 },
-  MAT1092: { tenLop: "Giải tích II", soTC: 4 },
-  PHY1100: { tenLop: "Vật lý đại cương I", soTC: 3 },
-  PHY1102: { tenLop: "Vật lý đại cương II", soTC: 3 },
-  INT3110: { tenLop: "Trí tuệ nhân tạo", soTC: 3 },
-};
+import { mockSelectedCourses, mockCurriculumGroups, mockStudent } from "@/app/data";
+import type { SelectedCourse } from "@/app/types";
 
 const MAX_CREDITS = 24;
 
 export default function HomePage() {
-  const [cart, setCart] = useState<SelectedCourse[]>(INITIAL_CART);
+  const [cart, setCart] = useState<SelectedCourse[]>(mockSelectedCourses);
 
-  const selectedCodes = new Set(cart.map((c) => c.maHP));
+  const courseLookupMap = useMemo(() => {
+    const map = new Map<string, { className: string; credits: number }>();
+    mockCurriculumGroups.forEach((group) => {
+      group.subGroups.forEach((subGroup) => {
+        subGroup.courses.forEach((course) => {
+          map.set(course.courseCode, {
+            className: course.courseName,
+            credits: course.trainingCredits,
+          });
+        });
+      });
+    });
+    return map;
+  }, []);
 
-  function handleAddCourse(maHP: string) {
-    if (selectedCodes.has(maHP)) {
-      alert(`Học phần ${maHP} đã có trong danh sách đăng ký!`);
+  const selectedCodes = useMemo(() => new Set(cart.map((c) => c.courseCode)), [cart]);
+
+  function handleAddCourse(courseCode: string) {
+    if (selectedCodes.has(courseCode)) {
+      alert(`Học phần ${courseCode} đã có trong danh sách đăng ký!`);
       return;
     }
-    const info = COURSE_INFO_MAP[maHP];
+
+    const info = courseLookupMap.get(courseCode);
     if (!info) return;
 
-    const totalCredits = cart.reduce((s, c) => s + c.soTC, 0);
-    if (totalCredits + info.soTC > MAX_CREDITS) {
+    const totalCredits = cart.reduce((sum, c) => sum + c.credits, 0);
+    if (totalCredits + info.credits > MAX_CREDITS) {
       alert(`Vượt quá giới hạn tối đa ${MAX_CREDITS} tín chỉ/học kỳ!`);
       return;
     }
@@ -77,35 +47,35 @@ export default function HomePage() {
     setCart((prev) => [
       ...prev,
       {
-        maHP,
-        tenLop: info.tenLop,
-        ngayDangKy: today,
-        ttDangKy: "Thành công",
-        soTC: info.soTC,
+        courseCode,
+        className: info.className,
+        registeredDate: today,
+        registrationStatus: "Thành công",
+        credits: info.credits,
       },
     ]);
   }
 
-  function handleRemoveCourse(maHP: string) {
-    setCart((prev) => prev.filter((c) => c.maHP !== maHP));
+  function handleRemoveCourse(courseCode: string) {
+    setCart((prev) => prev.filter((c) => c.courseCode !== courseCode));
   }
 
   function handleSubmit() {
-    const totalCredits = cart.reduce((s, c) => s + c.soTC, 0);
+    const totalCredits = cart.reduce((sum, c) => sum + c.credits, 0);
     alert(
-      `Đăng ký thành công cho sinh viên PHẠM VĂN MINH (MSSV: 20210842).\nTổng số tín chỉ: ${totalCredits} TC.`
+      `Đăng ký thành công cho sinh viên ${mockStudent.fullName} (MSSV: ${mockStudent.studentId}).\nTổng số tín chỉ: ${totalCredits} TC.`
     );
   }
 
   return (
     <div className="max-w-350 mx-auto px-4 py-4 space-y-6">
-      {/* ── Phần 1: Chương trình đào tạo & Tra cứu ── */}
+      {/* ── Section: Curriculum (Part 1) ── */}
       <CurriculumSection
         onAddCourse={handleAddCourse}
         selectedCodes={selectedCodes}
       />
 
-      {/* ── Phần 2: Học phần đã chọn (Giỏ hàng) ── */}
+      {/* ── Section: Registration Cart (Part 2) ── */}
       <RegistrationSection
         courses={cart}
         onRemove={handleRemoveCourse}

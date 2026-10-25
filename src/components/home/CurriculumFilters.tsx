@@ -21,7 +21,7 @@ export default function CurriculumFilters({
 }: CurriculumFiltersProps) {
   return (
     <div className="bg-gray-100 border-b border-gray-300 px-3 py-2 flex flex-wrap items-center justify-between gap-2">
-      {/* ── Tiêu đề section ── */}
+      {/* ── Section: Curriculum Filters ── */}
       <div className="flex items-center gap-1.5">
         <span className="material-symbols-outlined text-primary text-[18px]">
           format_list_bulleted
@@ -31,9 +31,7 @@ export default function CurriculumFilters({
         </h2>
       </div>
 
-      {/* ── Controls ── */}
       <div className="flex items-center gap-2 flex-wrap">
-        {/* Dropdown Chế độ hiển thị */}
         <div className="flex items-center gap-1.5">
           <label
             htmlFor="displayModeSelect"
@@ -59,7 +57,6 @@ export default function CurriculumFilters({
           </div>
         </div>
 
-        {/* Ô tìm kiếm */}
         <div className="relative">
           <input
             id="searchInput"

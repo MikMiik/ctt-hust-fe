@@ -1,11 +1,9 @@
 "use client";
 
 import { Fragment } from "react";
-import type { CurriculumGroup, SemesterOpen, AddStatus } from "./types";
+import type { CurriculumGroup, SemesterTerm, CourseAddStatus } from "@/app/types";
 
-// ─── Sub-components (inline nhỏ) ─────────────────────────────────────────
-
-function SemesterBadge({ type }: { type: SemesterOpen }) {
+function SemesterBadge({ type }: { type: SemesterTerm }) {
   if (type === "both") {
     return <span className="badge-both-semester">[Mở 2 Kỳ]</span>;
   }
@@ -39,7 +37,7 @@ function AddCell({
   status,
   onAdd,
 }: {
-  status: AddStatus;
+  status: CourseAddStatus;
   onAdd?: () => void;
 }) {
   if (status === "added") {
@@ -55,14 +53,10 @@ function AddCell({
   );
 }
 
-// ─── Props ───────────────────────────────────────────────────────────────
-
 interface CurriculumTableProps {
   groups: CurriculumGroup[];
-  onAddCourse: (maHP: string) => void;
+  onAddCourse: (courseCode: string) => void;
 }
-
-// ─── Main Component ───────────────────────────────────────────────────────
 
 export default function CurriculumTable({ groups, onAddCourse }: CurriculumTableProps) {
   return (
@@ -71,7 +65,7 @@ export default function CurriculumTable({ groups, onAddCourse }: CurriculumTable
         id="curriculumTable"
         className="w-full text-left text-xs border-collapse"
       >
-        {/* ── Sticky Header ── */}
+        {/* ── Section: Curriculum Table Header ── */}
         <thead className="sticky top-0 z-10 bg-table-header shadow-sm">
           <tr className="bg-table-header text-gray-700 font-bold uppercase border-b border-gray-300">
             <th className="p-2 border-r border-gray-300 text-center w-12">STT</th>
@@ -86,84 +80,68 @@ export default function CurriculumTable({ groups, onAddCourse }: CurriculumTable
           </tr>
         </thead>
 
-        {/* ── Body ── */}
+        {/* ── Section: Curriculum Table Body ── */}
         <tbody className="divide-y divide-gray-300">
           {groups.map((group) => (
-            <Fragment key={`g-${group.maLoaiHP}`}>
-              {/* ── Cấp 1: MÃ LOẠI HP ── */}
-              <tr
-                className="bg-group-primary border-b border-gray-300 font-bold text-gray-800 text-[11px]"
-              >
+            <Fragment key={`g-${group.categoryCode}`}>
+              <tr className="bg-group-primary border-b border-gray-300 font-bold text-gray-800 text-[11px]">
                 <td className="p-1.5 px-3 uppercase tracking-wide" colSpan={9}>
                   <span className="font-mono mr-1">[-]</span>
-                  {` MÃ LOẠI HP: ${group.maLoaiHP} (COUNT=${group.count}, TỔNG TC: ${group.tongTC}, TỔNG ĐẠT: ${group.tongDat})`}
+                  {` MÃ LOẠI HP: ${group.categoryCode} (COUNT=${group.courseCount}, TỔNG TC: ${group.totalCredits}, TỔNG ĐẠT: ${group.passedCredits})`}
                 </td>
               </tr>
 
               {group.subGroups.map((sub) => (
-                <Fragment key={`sg-${sub.loaiHPLabel}`}>
-                  {/* ── Cấp 2: LOẠI HP ── */}
-                  <tr
-                    className="bg-group-second border-b border-gray-300 font-semibold text-gray-700 text-[11px]"
-                  >
+                <Fragment key={`sg-${sub.groupLabel}`}>
+                  <tr className="bg-group-second border-b border-gray-300 font-semibold text-gray-700 text-[11px]">
                     <td className="p-1.5 px-6 uppercase tracking-wide" colSpan={9}>
                       <span className="font-mono mr-1">[-]</span>
-                      {` LOẠI HP: ${sub.loaiHPLabel} (COUNT=${sub.count}, TỔNG TC: ${sub.tongTC}, TỔNG ĐẠT: ${sub.tongDat})`}
+                      {` LOẠI HP: ${sub.groupLabel} (COUNT=${sub.courseCount}, TỔNG TC: ${sub.totalCredits}, TỔNG ĐẠT: ${sub.passedCredits})`}
                     </td>
                   </tr>
 
-                  {/* ── Các hàng môn học ── */}
                   {sub.courses.map((course) => (
                     <tr
-                      key={course.maHP}
+                      key={course.courseCode}
                       className="hover:bg-gray-50 bg-white"
                     >
-                      {/* STT */}
                       <td className="p-2 border-r border-gray-300 text-center font-mono">
-                        {course.stt}
+                        {course.indexNumber}
                       </td>
-                      {/* MÃ HP */}
                       <td
                         className={`p-2 border-r border-gray-300 font-mono font-bold ${
-                          course.highlight ? "text-primary" : "text-gray-800"
+                          course.isHighlighted ? "text-primary" : "text-gray-800"
                         }`}
                       >
-                        {course.maHP}
+                        {course.courseCode}
                       </td>
-                      {/* TÊN HP */}
                       <td className="p-2 border-r border-gray-300">
-                        <div>{course.tenHP}</div>
-                        {course.tienQuyet && (
+                        <div>{course.courseName}</div>
+                        {course.prerequisiteCode && (
                           <div className="text-[11px] text-gray-500 italic mt-0.5">
-                            Tiên quyết: {course.tienQuyet}
+                            Tiên quyết: {course.prerequisiteCode}
                           </div>
                         )}
                       </td>
-                      {/* KỲ MỞ MÔN */}
                       <td className="p-2 border-r border-gray-300 text-center">
-                        <SemesterBadge type={course.kyMoMon} />
+                        <SemesterBadge type={course.semesterTerm} />
                       </td>
-                      {/* BẮT BUỘC */}
                       <td className="p-2 border-r border-gray-300 text-center">
-                        {course.batBuoc && <MandatoryIcon />}
+                        {course.isRequired && <MandatoryIcon />}
                       </td>
-                      {/* TC ĐT */}
                       <td className="p-2 border-r border-gray-300 text-center font-semibold">
-                        {course.tcDT}
+                        {course.trainingCredits}
                       </td>
-                      {/* TC HỌC */}
                       <td className="p-2 border-r border-gray-300 text-center font-semibold">
-                        {course.tcHoc}
+                        {course.tuitionCredits}
                       </td>
-                      {/* ĐIỂM CHỮ */}
                       <td className="p-2 border-r border-gray-300 text-center">
-                        <GradeCell grade={course.diemChu} />
+                        <GradeCell grade={course.letterGrade} />
                       </td>
-                      {/* THÊM */}
                       <td className="p-2 text-center">
                         <AddCell
                           status={course.addStatus}
-                          onAdd={() => onAddCourse(course.maHP)}
+                          onAdd={() => onAddCourse(course.courseCode)}
                         />
                       </td>
                     </tr>

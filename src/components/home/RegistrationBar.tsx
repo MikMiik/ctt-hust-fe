@@ -21,7 +21,7 @@ export default function RegistrationBar({ totalCredits, onSubmit }: Registration
 
   return (
     <div className="bg-gray-100 border-t border-gray-300 px-4 py-2.5 flex items-center justify-between">
-      {/* Tổng tín chỉ */}
+      {/* ── Section: Registration Action Bar ── */}
       <div className="text-xs font-bold text-gray-800 uppercase tracking-wide">
         TỔNG TÍN CHỈ:{" "}
         <span
@@ -40,7 +40,6 @@ export default function RegistrationBar({ totalCredits, onSubmit }: Registration
         )}
       </div>
 
-      {/* Nút gửi đăng ký */}
       <button
         type="button"
         onClick={handleSubmit}

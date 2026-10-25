@@ -1,10 +1,10 @@
 "use client";
 
-import type { SelectedCourse } from "./types";
+import type { SelectedCourse } from "@/app/types";
 
 interface SelectedTableProps {
   courses: SelectedCourse[];
-  onRemove: (maHP: string) => void;
+  onRemove: (courseCode: string) => void;
 }
 
 export default function SelectedTable({ courses, onRemove }: SelectedTableProps) {
@@ -14,6 +14,7 @@ export default function SelectedTable({ courses, onRemove }: SelectedTableProps)
         id="selectedCoursesTable"
         className="w-full text-left text-xs border-collapse"
       >
+        {/* ── Section: Selected Courses Header ── */}
         <thead>
           <tr className="bg-table-header text-gray-700 font-bold uppercase border-b border-gray-300">
             <th className="p-2 border-r border-gray-300 w-28">MÃ HP</th>
@@ -24,6 +25,8 @@ export default function SelectedTable({ courses, onRemove }: SelectedTableProps)
             <th className="p-2 text-center w-24">THAO TÁC</th>
           </tr>
         </thead>
+
+        {/* ── Section: Selected Courses Body ── */}
         <tbody className="divide-y divide-gray-300">
           {courses.length === 0 ? (
             <tr>
@@ -33,40 +36,34 @@ export default function SelectedTable({ courses, onRemove }: SelectedTableProps)
             </tr>
           ) : (
             courses.map((course) => (
-              <tr key={course.maHP} className="hover:bg-gray-50 bg-white">
-                {/* MÃ HP */}
+              <tr key={course.courseCode} className="hover:bg-gray-50 bg-white">
                 <td className="p-2 border-r border-gray-300 font-mono font-bold text-primary">
-                  {course.maHP}
+                  {course.courseCode}
                 </td>
-                {/* TÊN LỚP */}
                 <td className="p-2 border-r border-gray-300 font-medium">
-                  {course.tenLop}
+                  {course.className}
                 </td>
-                {/* NGÀY ĐĂNG KÝ */}
                 <td className="p-2 border-r border-gray-300 text-center font-mono text-gray-700">
-                  {course.ngayDangKy}
+                  {course.registeredDate}
                 </td>
-                {/* TT ĐĂNG KÝ */}
                 <td
                   className={`p-2 border-r border-gray-300 text-center font-semibold ${
-                    course.ttDangKy === "Thành công"
+                    course.registrationStatus === "Thành công"
                       ? "text-status-success"
-                      : course.ttDangKy === "Lỗi"
+                      : course.registrationStatus === "Lỗi"
                       ? "text-status-danger"
                       : "text-status-warning"
                   }`}
                 >
-                  {course.ttDangKy}
+                  {course.registrationStatus}
                 </td>
-                {/* SỐ TC */}
                 <td className="p-2 border-r border-gray-300 text-center font-semibold">
-                  {course.soTC}
+                  {course.credits}
                 </td>
-                {/* THAO TÁC */}
                 <td className="p-2 text-center">
                   <button
                     type="button"
-                    onClick={() => onRemove(course.maHP)}
+                    onClick={() => onRemove(course.courseCode)}
                     className="text-primary hover:underline font-semibold text-xs cursor-pointer"
                   >
                     Xóa
