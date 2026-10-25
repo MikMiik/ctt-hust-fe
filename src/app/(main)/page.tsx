@@ -1,18 +1,16 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import CurriculumSection from "@/components/home/CurriculumSection";
 import GraduationSection from "@/components/home/GraduationSection";
 import RegistrationSection from "@/components/home/RegistrationSection";
-import { mockSelectedCourses, mockCurriculumGroups, mockStudent } from "@/app/data";
+import { mockSelectedCourses, mockCurriculumGroups } from "@/app/data";
 import type { SelectedCourse } from "@/app/types";
 
 const MAX_CREDITS = 24;
 
 export default function HomePage() {
-  const { data: session } = useSession();
   const [cart, setCart] = useState<SelectedCourse[]>(mockSelectedCourses);
 
   const courseLookupMap = useMemo(() => {
@@ -30,7 +28,10 @@ export default function HomePage() {
     return map;
   }, []);
 
-  const selectedCodes = useMemo(() => new Set(cart.map((c) => c.courseCode)), [cart]);
+  const selectedCodes = useMemo(
+    () => new Set(cart.map((c) => c.courseCode)),
+    [cart],
+  );
 
   function handleAddCourse(courseCode: string) {
     if (selectedCodes.has(courseCode)) {
@@ -73,11 +74,9 @@ export default function HomePage() {
     }
 
     const totalCredits = cart.reduce((sum, c) => sum + c.credits, 0);
-    const studentName = session?.user?.fullName || mockStudent.fullName;
-    const studentId = session?.user?.studentId || mockStudent.studentId;
 
     toast.success("Gửi đăng ký học phần thành công!", {
-      description: `Sinh viên: ${studentName} (MSSV: ${studentId}) • Đã lưu ${cart.length} học phần (${totalCredits} TC).`,
+      description: `Đã lưu ${cart.length} học phần (${totalCredits} TC).`,
     });
   }
 
