@@ -1,6 +1,6 @@
-﻿import { NextAuthOptions } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { mockUsers } from "@/app/data";
+import { getUserByUsername } from "@/lib/db";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -13,14 +13,9 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.username || !credentials?.password) return null;
 
-        const user = mockUsers.find(
-          (u) =>
-            u.username === credentials.username &&
-            u.password === credentials.password &&
-            u.status === "active"
-        );
+        const user = await getUserByUsername(credentials.username);
 
-        if (!user) return null;
+        if (!user || user.password !== credentials.password) return null;
 
         return {
           id: user.id,
@@ -67,5 +62,5 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || "default_super_secret_ctt_hust_key_12345",
 };

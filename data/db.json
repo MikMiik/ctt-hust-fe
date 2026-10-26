@@ -1,0 +1,693 @@
+{
+  "users": [
+    {
+      "id": "usr-001",
+      "studentId": "20210842",
+      "username": "20210842",
+      "email": "20210842@sis.hust.edu.vn",
+      "password": "hust2021",
+      "fullName": "PHẠM VĂN MINH",
+      "major": "Công nghệ Thông tin (Việt - Nhật)",
+      "majorCode": "IT-VJ",
+      "cohort": "K66",
+      "enrollmentYear": 2021,
+      "curriculumId": "ctdt-it-k66",
+      "status": "active",
+      "role": "student"
+    },
+    {
+      "id": "usr-002",
+      "studentId": "20200001",
+      "username": "20200001",
+      "email": "20200001@sis.hust.edu.vn",
+      "password": "hust2020",
+      "fullName": "NGUYỄN THỊ HƯƠNG",
+      "major": "Khoa học Máy tính",
+      "majorCode": "CS",
+      "cohort": "K65",
+      "enrollmentYear": 2020,
+      "curriculumId": "ctdt-cs-k65",
+      "status": "active",
+      "role": "student"
+    },
+    {
+      "id": "usr-admin",
+      "studentId": "admin",
+      "username": "admin",
+      "email": "admin@hust.edu.vn",
+      "password": "admin123",
+      "fullName": "ADMIN HỆ THỐNG",
+      "major": "",
+      "majorCode": "",
+      "cohort": "",
+      "enrollmentYear": 2000,
+      "curriculumId": "",
+      "status": "active",
+      "role": "admin"
+    }
+  ],
+  "curriculumGroups": [
+    {
+      "categoryCode": "210",
+      "categoryName": "Lý luận chính trị & Pháp luật đại cương",
+      "courseCount": 6,
+      "totalCredits": 13,
+      "passedCredits": 2,
+      "subGroups": [
+        {
+          "groupLabel": "LÝ LUẬN CHÍNH TRỊ + PHÁP LUẬT ĐẠI CƯƠNG",
+          "courseCount": 6,
+          "totalCredits": 13,
+          "passedCredits": 2,
+          "courses": [
+            {
+              "indexNumber": 1,
+              "courseCode": "SSH1110",
+              "courseName": "Triết học Mác - Lênin",
+              "semesterTerm": "Kỳ 1",
+              "recommendedSemester": 1,
+              "isRequired": true,
+              "trainingCredits": 3,
+              "tuitionCredits": 3,
+              "letterGrade": "B",
+              "addStatus": "added"
+            },
+            {
+              "indexNumber": 2,
+              "courseCode": "SSH1121",
+              "courseName": "Kinh tế chính trị Mác - Lênin",
+              "prerequisiteCode": "SSH1110",
+              "semesterTerm": "Kỳ 2",
+              "recommendedSemester": 2,
+              "isRequired": true,
+              "trainingCredits": 2,
+              "tuitionCredits": 2,
+              "letterGrade": "D+",
+              "addStatus": "locked"
+            },
+            {
+              "indexNumber": 3,
+              "courseCode": "SSH1131",
+              "courseName": "Chủ nghĩa xã hội khoa học",
+              "prerequisiteCode": "SSH1121",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 3,
+              "isRequired": true,
+              "trainingCredits": 2,
+              "tuitionCredits": 2,
+              "letterGrade": "F",
+              "addStatus": "add"
+            },
+            {
+              "indexNumber": 4,
+              "courseCode": "SSH1140",
+              "courseName": "Lịch sử Đảng Cộng sản Việt Nam",
+              "prerequisiteCode": "SSH1131",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 4,
+              "isRequired": true,
+              "trainingCredits": 2,
+              "tuitionCredits": 2,
+              "addStatus": "add"
+            },
+            {
+              "indexNumber": 5,
+              "courseCode": "SSH1151",
+              "courseName": "Tư tưởng Hồ Chí Minh",
+              "prerequisiteCode": "SSH1140",
+              "semesterTerm": "Kỳ 2",
+              "recommendedSemester": 5,
+              "isRequired": true,
+              "trainingCredits": 2,
+              "tuitionCredits": 2,
+              "addStatus": "locked"
+            },
+            {
+              "indexNumber": 6,
+              "courseCode": "EM1010",
+              "courseName": "Pháp luật đại cương",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 1,
+              "isRequired": true,
+              "trainingCredits": 2,
+              "tuitionCredits": 2,
+              "letterGrade": "A",
+              "addStatus": "added"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "categoryCode": "220",
+      "categoryName": "Toán & Khoa học cơ bản",
+      "courseCount": 7,
+      "totalCredits": 24,
+      "passedCredits": 11,
+      "subGroups": [
+        {
+          "groupLabel": "TOÁN VÀ KHOA HỌC CƠ BẢN",
+          "courseCount": 7,
+          "totalCredits": 24,
+          "passedCredits": 11,
+          "courses": [
+            {
+              "indexNumber": 7,
+              "courseCode": "MAT1091",
+              "courseName": "Giải tích I",
+              "semesterTerm": "Kỳ 1",
+              "recommendedSemester": 1,
+              "isRequired": true,
+              "trainingCredits": 4,
+              "tuitionCredits": 4,
+              "letterGrade": "D",
+              "addStatus": "add"
+            },
+            {
+              "indexNumber": 8,
+              "courseCode": "MAT1092",
+              "courseName": "Giải tích II",
+              "prerequisiteCode": "MAT1091",
+              "semesterTerm": "Kỳ 2",
+              "recommendedSemester": 2,
+              "isRequired": true,
+              "trainingCredits": 4,
+              "tuitionCredits": 4,
+              "letterGrade": "F",
+              "addStatus": "added"
+            },
+            {
+              "indexNumber": 9,
+              "courseCode": "MAT1093",
+              "courseName": "Giải tích III",
+              "prerequisiteCode": "MAT1092",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 3,
+              "isRequired": true,
+              "trainingCredits": 3,
+              "tuitionCredits": 3,
+              "addStatus": "add"
+            },
+            {
+              "indexNumber": 10,
+              "courseCode": "MAT1101",
+              "courseName": "Đại số tuyến tính",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 1,
+              "isRequired": true,
+              "trainingCredits": 4,
+              "tuitionCredits": 4,
+              "letterGrade": "B+",
+              "addStatus": "added"
+            },
+            {
+              "indexNumber": 11,
+              "courseCode": "PHY1100",
+              "courseName": "Vật lý đại cương I",
+              "semesterTerm": "Kỳ 1",
+              "recommendedSemester": 2,
+              "isRequired": true,
+              "trainingCredits": 3,
+              "tuitionCredits": 3,
+              "letterGrade": "D",
+              "addStatus": "add"
+            },
+            {
+              "indexNumber": 12,
+              "courseCode": "PHY1101",
+              "courseName": "Vật lý đại cương II",
+              "prerequisiteCode": "PHY1100",
+              "semesterTerm": "Kỳ 2",
+              "recommendedSemester": 3,
+              "isRequired": true,
+              "trainingCredits": 3,
+              "tuitionCredits": 3,
+              "addStatus": "locked"
+            },
+            {
+              "indexNumber": 13,
+              "courseCode": "MI2020",
+              "courseName": "Xác suất thống kê",
+              "prerequisiteCode": "MAT1092",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 4,
+              "isRequired": true,
+              "trainingCredits": 3,
+              "tuitionCredits": 3,
+              "addStatus": "add"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "categoryCode": "310",
+      "categoryName": "Cơ sở cốt lõi ngành CNTT",
+      "courseCount": 8,
+      "totalCredits": 25,
+      "passedCredits": 6,
+      "subGroups": [
+        {
+          "groupLabel": "CƠ SỞ NGÀNH CÔNG NGHỆ THÔNG TIN",
+          "courseCount": 8,
+          "totalCredits": 25,
+          "passedCredits": 6,
+          "courses": [
+            {
+              "indexNumber": 14,
+              "courseCode": "IT1110",
+              "courseName": "Tin học đại cương",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 1,
+              "isRequired": true,
+              "trainingCredits": 3,
+              "tuitionCredits": 4,
+              "letterGrade": "A",
+              "addStatus": "added"
+            },
+            {
+              "indexNumber": 15,
+              "courseCode": "IT2000",
+              "courseName": "Nhập môn Công nghệ Thông tin",
+              "semesterTerm": "Kỳ 1",
+              "recommendedSemester": 1,
+              "isRequired": true,
+              "trainingCredits": 3,
+              "tuitionCredits": 3,
+              "letterGrade": "B+",
+              "addStatus": "added"
+            },
+            {
+              "indexNumber": 16,
+              "courseCode": "INT2204",
+              "courseName": "Lập trình Hướng đối tượng",
+              "prerequisiteCode": "IT1110",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 2,
+              "isRequired": true,
+              "trainingCredits": 3,
+              "tuitionCredits": 4,
+              "addStatus": "added"
+            },
+            {
+              "indexNumber": 17,
+              "courseCode": "IT3011",
+              "courseName": "Cấu trúc dữ liệu và Giải thuật",
+              "prerequisiteCode": "IT1110",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 3,
+              "isRequired": true,
+              "trainingCredits": 3,
+              "tuitionCredits": 4,
+              "letterGrade": "F",
+              "addStatus": "add"
+            },
+            {
+              "indexNumber": 18,
+              "courseCode": "IT3020",
+              "courseName": "Toán rời rạc",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 2,
+              "isRequired": true,
+              "trainingCredits": 3,
+              "tuitionCredits": 3,
+              "addStatus": "add"
+            },
+            {
+              "indexNumber": 19,
+              "courseCode": "IT3030",
+              "courseName": "Kiến trúc máy tính",
+              "semesterTerm": "Kỳ 1",
+              "recommendedSemester": 3,
+              "isRequired": true,
+              "trainingCredits": 3,
+              "tuitionCredits": 3,
+              "addStatus": "add"
+            },
+            {
+              "indexNumber": 20,
+              "courseCode": "IT3070",
+              "courseName": "Nguyên lý Hệ điều hành",
+              "prerequisiteCode": "IT3030",
+              "semesterTerm": "Kỳ 2",
+              "recommendedSemester": 4,
+              "isRequired": true,
+              "trainingCredits": 3,
+              "tuitionCredits": 3,
+              "addStatus": "locked"
+            },
+            {
+              "indexNumber": 21,
+              "courseCode": "IT3080",
+              "courseName": "Mạng máy tính",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 4,
+              "isRequired": true,
+              "trainingCredits": 4,
+              "tuitionCredits": 4,
+              "addStatus": "add"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "categoryCode": "320",
+      "categoryName": "Chuyên ngành & Tự chọn định hướng",
+      "courseCount": 6,
+      "totalCredits": 19,
+      "passedCredits": 0,
+      "subGroups": [
+        {
+          "groupLabel": "CHUYÊN NGÀNH KỸ THUẬT PHẦN MỀM & AI",
+          "courseCount": 6,
+          "totalCredits": 19,
+          "passedCredits": 0,
+          "courses": [
+            {
+              "indexNumber": 22,
+              "courseCode": "IT3090",
+              "courseName": "Cơ sở dữ liệu",
+              "prerequisiteCode": "IT3011",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 5,
+              "isRequired": true,
+              "trainingCredits": 3,
+              "tuitionCredits": 4,
+              "addStatus": "add"
+            },
+            {
+              "indexNumber": 23,
+              "courseCode": "IT3120",
+              "courseName": "Công nghệ phần mềm",
+              "prerequisiteCode": "INT2204",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 1,
+              "isRequired": true,
+              "trainingCredits": 3,
+              "tuitionCredits": 3,
+              "addStatus": "add"
+            },
+            {
+              "indexNumber": 24,
+              "courseCode": "IT4440",
+              "courseName": "Trí tuệ nhân tạo",
+              "prerequisiteCode": "IT3011",
+              "semesterTerm": "Kỳ 1",
+              "recommendedSemester": 5,
+              "isRequired": false,
+              "trainingCredits": 3,
+              "tuitionCredits": 3,
+              "addStatus": "add"
+            },
+            {
+              "indexNumber": 25,
+              "courseCode": "IT4490",
+              "courseName": "Phát triển ứng dụng Web hiện đại",
+              "prerequisiteCode": "IT3090",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 6,
+              "isRequired": false,
+              "trainingCredits": 3,
+              "tuitionCredits": 4,
+              "addStatus": "add"
+            },
+            {
+              "indexNumber": 26,
+              "courseCode": "IT4501",
+              "courseName": "An toàn và Bảo mật thông tin",
+              "prerequisiteCode": "IT3080",
+              "semesterTerm": "Kỳ 2",
+              "recommendedSemester": 7,
+              "isRequired": false,
+              "trainingCredits": 3,
+              "tuitionCredits": 3,
+              "addStatus": "locked"
+            },
+            {
+              "indexNumber": 27,
+              "courseCode": "MI3050",
+              "courseName": "Các phương pháp tối ưu",
+              "prerequisiteCode": "MAT1092",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 5,
+              "isRequired": true,
+              "trainingCredits": 4,
+              "tuitionCredits": 4,
+              "addStatus": "added"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "categoryCode": "110",
+      "categoryName": "Ngoại ngữ & Kỹ năng bổ trợ",
+      "courseCount": 4,
+      "totalCredits": 12,
+      "passedCredits": 6,
+      "subGroups": [
+        {
+          "groupLabel": "NGOẠI NGỮ & KỸ NĂNG BỔ TRỢ",
+          "courseCount": 4,
+          "totalCredits": 12,
+          "passedCredits": 6,
+          "courses": [
+            {
+              "indexNumber": 28,
+              "courseCode": "FL1010",
+              "courseName": "Tiếng Anh đại cương I (B1.1)",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 1,
+              "isRequired": true,
+              "trainingCredits": 3,
+              "tuitionCredits": 4,
+              "letterGrade": "B+",
+              "addStatus": "added"
+            },
+            {
+              "indexNumber": 29,
+              "courseCode": "FL1020",
+              "courseName": "Tiếng Anh đại cương II (B1.2)",
+              "prerequisiteCode": "FL1010",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 2,
+              "isRequired": true,
+              "trainingCredits": 3,
+              "tuitionCredits": 4,
+              "letterGrade": "A",
+              "addStatus": "added"
+            },
+            {
+              "indexNumber": 30,
+              "courseCode": "ENG1002",
+              "courseName": "Tiếng Anh học thuật B2",
+              "prerequisiteCode": "FL1020",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 3,
+              "isRequired": true,
+              "trainingCredits": 3,
+              "tuitionCredits": 4,
+              "addStatus": "added"
+            },
+            {
+              "indexNumber": 31,
+              "courseCode": "ED3220",
+              "courseName": "Kỹ năng giao tiếp và thuyết trình",
+              "semesterTerm": "2 Kỳ",
+              "recommendedSemester": 4,
+              "isRequired": false,
+              "trainingCredits": 3,
+              "tuitionCredits": 3,
+              "addStatus": "add"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "graduationRequirements": [
+    {
+      "id": "llct",
+      "categoryCode": "210",
+      "name": "Lý luận chính trị & Pháp luật",
+      "shortName": "LLCT",
+      "requiredCredits": 13,
+      "completedCredits": 7,
+      "missingCourses": [
+        {
+          "courseCode": "SSH1131",
+          "courseName": "Chủ nghĩa xã hội khoa học",
+          "credits": 2,
+          "isRequired": true
+        },
+        {
+          "courseCode": "SSH1140",
+          "courseName": "Lịch sử Đảng Cộng sản Việt Nam",
+          "credits": 2,
+          "isRequired": true
+        },
+        {
+          "courseCode": "SSH1151",
+          "courseName": "Tư tưởng Hồ Chí Minh",
+          "credits": 2,
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "id": "tkhcb",
+      "categoryCode": "220",
+      "name": "Toán & Khoa học cơ bản",
+      "shortName": "TKHCB",
+      "requiredCredits": 24,
+      "completedCredits": 11,
+      "missingCourses": [
+        {
+          "courseCode": "MAT1092",
+          "courseName": "Giải tích II",
+          "credits": 4,
+          "isRequired": true
+        },
+        {
+          "courseCode": "MAT1093",
+          "courseName": "Giải tích III",
+          "credits": 3,
+          "isRequired": true
+        },
+        {
+          "courseCode": "PHY1101",
+          "courseName": "Vật lý đại cương II",
+          "credits": 3,
+          "isRequired": true
+        },
+        {
+          "courseCode": "MI2020",
+          "courseName": "Xác suất thống kê",
+          "credits": 3,
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "id": "cscln",
+      "categoryCode": "310",
+      "name": "Cơ sở cốt lõi ngành CNTT",
+      "shortName": "CSCLN",
+      "requiredCredits": 25,
+      "completedCredits": 9,
+      "missingCourses": [
+        {
+          "courseCode": "IT3011",
+          "courseName": "Cấu trúc dữ liệu và Giải thuật",
+          "credits": 3,
+          "isRequired": true
+        },
+        {
+          "courseCode": "IT3020",
+          "courseName": "Toán rời rạc",
+          "credits": 3,
+          "isRequired": true
+        },
+        {
+          "courseCode": "IT3030",
+          "courseName": "Kiến trúc máy tính",
+          "credits": 3,
+          "isRequired": true
+        },
+        {
+          "courseCode": "IT3070",
+          "courseName": "Nguyên lý Hệ điều hành",
+          "credits": 3,
+          "isRequired": true
+        },
+        {
+          "courseCode": "IT3080",
+          "courseName": "Mạng máy tính",
+          "credits": 4,
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "id": "ktbt",
+      "categoryCode": "320",
+      "name": "Kiến thức Chuyên ngành & Tự chọn",
+      "shortName": "CNTC",
+      "requiredCredits": 19,
+      "completedCredits": 4,
+      "missingCourses": [
+        {
+          "courseCode": "IT3090",
+          "courseName": "Cơ sở dữ liệu",
+          "credits": 3,
+          "isRequired": true
+        },
+        {
+          "courseCode": "IT3120",
+          "courseName": "Công nghệ phần mềm",
+          "credits": 3,
+          "isRequired": true
+        },
+        {
+          "courseCode": "IT4440",
+          "courseName": "Trí tuệ nhân tạo",
+          "credits": 3,
+          "isRequired": false
+        },
+        {
+          "courseCode": "IT4490",
+          "courseName": "Phát triển ứng dụng Web hiện đại",
+          "credits": 3,
+          "isRequired": false
+        }
+      ]
+    }
+  ],
+  "registrations": {
+    "20210842": [
+      {
+        "courseCode": "MI3050",
+        "className": "Các phương pháp tối ưu",
+        "registeredDate": "10/1/2026",
+        "registrationStatus": "Thành công",
+        "credits": 4
+      },
+      {
+        "courseCode": "MAT1092",
+        "className": "Giải tích II",
+        "registeredDate": "10/1/2026",
+        "registrationStatus": "Thành công",
+        "credits": 4
+      },
+      {
+        "courseCode": "INT2204",
+        "className": "Lập trình Hướng đối tượng",
+        "registeredDate": "10/1/2026",
+        "registrationStatus": "Thành công",
+        "credits": 3
+      },
+      {
+        "courseCode": "ENG1002",
+        "className": "Tiếng Anh học thuật B2",
+        "registeredDate": "10/1/2026",
+        "registrationStatus": "Thành công",
+        "credits": 3
+      },
+      {
+        "courseCode": "ED3220",
+        "className": "Kỹ năng giao tiếp và thuyết trình",
+        "registeredDate": "26/10/2026",
+        "registrationStatus": "Thành công",
+        "credits": 3
+      },
+      {
+        "courseCode": "FL1020",
+        "className": "Tiếng Anh đại cương II (B1.2)",
+        "registeredDate": "26/10/2026",
+        "registrationStatus": "Thành công",
+        "credits": 3
+      }
+    ]
+  }
+}
