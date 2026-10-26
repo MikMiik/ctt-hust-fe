@@ -4,6 +4,15 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import {
+  CircleAlert,
+  Eye,
+  EyeOff,
+  LoaderCircle,
+  LockKeyhole,
+  LogIn,
+  User,
+} from "lucide-react";
 
 function LoginForm() {
   const router = useRouter();
@@ -60,17 +69,13 @@ function LoginForm() {
             Cổng thông tin đào tạo sinh viên
           </p>
         </div>
-        <span className="material-symbols-outlined text-[32px] text-red-200">
-          lock_person
-        </span>
+        <LockKeyhole aria-hidden="true" className="size-8 text-red-200" />
       </div>
 
       <div className="p-6 space-y-4">
         {error && (
           <div className="bg-red-50 border-l-4 border-[#aa261b] p-3 text-xs text-red-700 flex items-start gap-2">
-            <span className="material-symbols-outlined text-[18px] shrink-0 text-[#aa261b]">
-              error
-            </span>
+            <CircleAlert aria-hidden="true" className="size-[18px] shrink-0 text-[#aa261b]" />
             <span>{error}</span>
           </div>
         )}
@@ -94,9 +99,10 @@ function LoginForm() {
                 placeholder="Ví dụ: 20210842"
                 className="w-full h-9 pl-9 pr-3 text-xs border border-gray-300 bg-white text-gray-900 focus:outline-none focus:border-[#aa261b]"
               />
-              <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-[18px] text-gray-400 pointer-events-none">
-                person
-              </span>
+              <User
+                aria-hidden="true"
+                className="absolute left-2.5 top-1/2 -translate-y-1/2 size-[18px] text-gray-400 pointer-events-none"
+              />
             </div>
           </div>
 
@@ -117,17 +123,21 @@ function LoginForm() {
                 placeholder="Nhập mật khẩu..."
                 className="w-full h-9 pl-9 pr-9 text-xs border border-gray-300 bg-white text-gray-900 focus:outline-none focus:border-[#aa261b]"
               />
-              <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-[18px] text-gray-400 pointer-events-none">
-                lock
-              </span>
+              <LockKeyhole
+                aria-hidden="true"
+                className="absolute left-2.5 top-1/2 -translate-y-1/2 size-[18px] text-gray-400 pointer-events-none"
+              />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? "Ẩn mật khẩu" : "Hiển thị mật khẩu"}
                 className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
               >
-                <span className="material-symbols-outlined text-[18px]">
-                  {showPassword ? "visibility_off" : "visibility"}
-                </span>
+                {showPassword ? (
+                  <EyeOff aria-hidden="true" className="size-[18px]" />
+                ) : (
+                  <Eye aria-hidden="true" className="size-[18px]" />
+                )}
               </button>
             </div>
           </div>
@@ -151,16 +161,12 @@ function LoginForm() {
           >
             {loading ? (
               <>
-                <span className="material-symbols-outlined text-[18px] animate-spin">
-                  progress_activity
-                </span>
+                <LoaderCircle aria-hidden="true" className="size-[18px] animate-spin" />
                 <span>Đang xác thực...</span>
               </>
             ) : (
               <>
-                <span className="material-symbols-outlined text-[18px]">
-                  login
-                </span>
+                <LogIn aria-hidden="true" className="size-[18px]" />
                 <span>ĐĂNG NHẬP</span>
               </>
             )}

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Footer from "@/components/layout/Footer";
+import { GraduationCap } from "lucide-react";
 
 export default function AuthLayout({
   children,
@@ -32,9 +33,7 @@ export default function AuthLayout({
             </div>
           </div>
           <div className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-gray-700 bg-white/70 px-3 py-1.5 rounded border border-gray-300">
-            <span className="material-symbols-outlined text-[16px] text-primary">
-              school
-            </span>
+            <GraduationCap aria-hidden="true" className="size-4 text-primary" />
             <span>CỔNG THÔNG TIN ĐÀO TẠO</span>
           </div>
         </div>
