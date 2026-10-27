@@ -2,6 +2,7 @@
 
 import { mockGraduationRequirements } from "@/app/data";
 import type { GraduationRequirementGroup } from "@/app/types";
+import { BadgeCheck, CircleCheck } from "lucide-react";
 
 interface GraduationSectionProps {
   requirements?: GraduationRequirementGroup[];
@@ -17,9 +18,7 @@ export default function GraduationSection({
       {/* ── Section Header ── */}
       <div className="bg-gray-100 border-b border-gray-300 px-3 py-2 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-1.5">
-          <span className="material-symbols-outlined text-primary text-[18px]">
-            verified
-          </span>
+          <BadgeCheck aria-hidden="true" className="size-[18px] text-primary" />
           <h2 className="text-xs font-bold uppercase tracking-wide text-gray-800">
             TIẾN ĐỘ &amp; ĐIỀU KIỆN TỐT NGHIỆP
           </h2>
@@ -123,9 +122,7 @@ export default function GraduationSection({
                     <span className="text-gray-500">Trạng thái:</span>
                     {isProjectedCompleted ? (
                       <span className="text-green-700 font-semibold flex items-center gap-0.5">
-                        <span className="material-symbols-outlined text-[13px]">
-                          check_circle
-                        </span>
+                        <CircleCheck aria-hidden="true" className="size-[13px]" />
                         Đủ điều kiện
                       </span>
                     ) : (

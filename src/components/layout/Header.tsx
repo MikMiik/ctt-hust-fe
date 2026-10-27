@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { mockStudent } from "@/app/data";
+import { LogIn, LogOut, User } from "lucide-react";
 
 export default function Header() {
   const { data: session, status } = useSession();
@@ -50,9 +51,7 @@ export default function Header() {
                 </div>
               </div>
               <div className="w-8 h-8 rounded-full bg-black/20 border border-black/40 flex items-center justify-center text-black shrink-0">
-                <span className="material-symbols-outlined text-[18px]">
-                  person
-                </span>
+                <User aria-hidden="true" className="size-[18px]" />
               </div>
               <button
                 type="button"
@@ -60,9 +59,7 @@ export default function Header() {
                 title="Đăng xuất khỏi hệ thống"
                 className="text-black/80 hover:text-red-700 transition-colors ml-1 p-1 cursor-pointer flex items-center"
               >
-                <span className="material-symbols-outlined text-[20px]">
-                  logout
-                </span>
+                <LogOut aria-hidden="true" className="size-5" />
               </button>
             </>
           ) : (
@@ -70,9 +67,7 @@ export default function Header() {
               href="/login"
               className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#aa261b] hover:bg-[#8f1f15] text-white text-xs font-bold uppercase transition-colors shadow-sm"
             >
-              <span className="material-symbols-outlined text-[16px]">
-                login
-              </span>
+              <LogIn aria-hidden="true" className="size-4" />
               <span>Đăng nhập</span>
             </Link>
           )}

@@ -1,6 +1,7 @@
 "use client";
 
 import type { SelectedCourse } from "@/app/types";
+import { Trash2 } from "lucide-react";
 
 interface SelectedTableProps {
   courses: SelectedCourse[];
@@ -64,8 +65,10 @@ export default function SelectedTable({ courses, onRemove }: SelectedTableProps)
                   <button
                     type="button"
                     onClick={() => onRemove(course.courseCode)}
-                    className="text-primary hover:underline font-semibold text-xs cursor-pointer"
+                    className="text-primary hover:underline font-semibold text-xs cursor-pointer inline-flex items-center gap-1"
+                    aria-label={`Xóa học phần ${course.courseCode}`}
                   >
+                    <Trash2 aria-hidden="true" className="size-3.5" />
                     Xóa
                   </button>
                 </td>

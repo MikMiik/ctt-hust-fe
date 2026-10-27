@@ -2,6 +2,7 @@
 
 import { Fragment } from "react";
 import type { CurriculumGroup, CourseAddStatus } from "@/app/types";
+import { Check, CircleAlert, LockKeyhole, Minus, Plus } from "lucide-react";
 
 function SemesterBadge({ term }: { term: string }) {
   if (!term) return <span className="text-gray-400 font-mono">--</span>;
@@ -22,7 +23,7 @@ function RecommendedSemesterCell({ semester }: { semester?: number }) {
 function MandatoryIcon() {
   return (
     <span className="mandatory-badge" title="Bắt buộc">
-      !
+      <CircleAlert aria-hidden="true" className="size-3.5" />
     </span>
   );
 }
@@ -33,7 +34,9 @@ function GradeCell({ grade }: { grade?: string }) {
   }
   const isWeak = ["D", "D+", "F"].includes(grade);
   return (
-    <span className={`font-bold ${isWeak ? "text-grade-fail" : "text-gray-700"}`}>
+    <span
+      className={`font-bold ${isWeak ? "text-grade-fail" : "text-gray-700"}`}
+    >
       {grade}
     </span>
   );
@@ -47,14 +50,28 @@ function AddCell({
   onAdd?: () => void;
 }) {
   if (status === "added") {
-    return <span className="text-green-700 font-bold text-xs">✓ Đã thêm</span>;
+    return (
+      <span className="text-green-700 font-bold text-xs inline-flex items-center gap-1">
+        <Check aria-hidden="true" className="size-3.5" />
+        Đã thêm
+      </span>
+    );
   }
   if (status === "locked") {
-    return <span className="badge-locked">[Không mở]</span>;
+    return (
+      <span className="badge-locked inline-flex items-center gap-1">
+        <LockKeyhole aria-hidden="true" className="size-3.5" />
+      </span>
+    );
   }
   return (
-    <button type="button" onClick={onAdd} className="btn-add-course">
-      [+]
+    <button
+      type="button"
+      onClick={onAdd}
+      className="btn-add-course"
+      aria-label="Thêm học phần"
+    >
+      <Plus aria-hidden="true" className="size-3.5" />
     </button>
   );
 }
@@ -64,9 +81,15 @@ interface CurriculumTableProps {
   onAddCourse: (courseCode: string) => void;
 }
 
-export default function CurriculumTable({ groups, onAddCourse }: CurriculumTableProps) {
+export default function CurriculumTable({
+  groups,
+  onAddCourse,
+}: CurriculumTableProps) {
   return (
-    <div className="w-full overflow-x-auto" style={{ maxHeight: "400px", overflowY: "auto" }}>
+    <div
+      className="w-full overflow-x-auto"
+      style={{ maxHeight: "400px", overflowY: "auto" }}
+    >
       <table
         id="curriculumTable"
         className="w-full text-left text-xs border-collapse"
@@ -74,15 +97,29 @@ export default function CurriculumTable({ groups, onAddCourse }: CurriculumTable
         {/* ── Section: Curriculum Table Header ── */}
         <thead className="sticky top-0 z-10 bg-table-header shadow-sm">
           <tr className="bg-table-header text-gray-700 font-bold uppercase border-b border-gray-300">
-            <th className="p-2 border-r border-gray-300 text-center w-12">STT</th>
+            <th className="p-2 border-r border-gray-300 text-center w-12">
+              STT
+            </th>
             <th className="p-2 border-r border-gray-300 w-24">MÃ HP</th>
             <th className="p-2 border-r border-gray-300">TÊN HP</th>
-            <th className="p-2 border-r border-gray-300 text-center w-28">KỲ MỞ MÔN</th>
-            <th className="p-2 border-r border-gray-300 text-center w-24">KỲ ĐỀ XUẤT</th>
-            <th className="p-2 border-r border-gray-300 text-center w-24">BẮT BUỘC</th>
-            <th className="p-2 border-r border-gray-300 text-center w-16">TC ĐT</th>
-            <th className="p-2 border-r border-gray-300 text-center w-16">TC HỌC</th>
-            <th className="p-2 border-r border-gray-300 text-center w-20">ĐIỂM CHỮ</th>
+            <th className="p-2 border-r border-gray-300 text-center w-28">
+              KỲ MỞ MÔN
+            </th>
+            <th className="p-2 border-r border-gray-300 text-center w-24">
+              KỲ ĐỀ XUẤT
+            </th>
+            <th className="p-2 border-r border-gray-300 text-center w-24">
+              BẮT BUỘC
+            </th>
+            <th className="p-2 border-r border-gray-300 text-center w-16">
+              TC ĐT
+            </th>
+            <th className="p-2 border-r border-gray-300 text-center w-16">
+              TC HỌC
+            </th>
+            <th className="p-2 border-r border-gray-300 text-center w-20">
+              ĐIỂM CHỮ
+            </th>
             <th className="p-2 text-center w-24">THÊM</th>
           </tr>
         </thead>
@@ -93,7 +130,10 @@ export default function CurriculumTable({ groups, onAddCourse }: CurriculumTable
             <Fragment key={`g-${group.categoryCode}`}>
               <tr className="bg-group-primary border-b border-gray-300 font-bold text-gray-800 text-[11px]">
                 <td className="p-1.5 px-3 uppercase tracking-wide" colSpan={10}>
-                  <span className="font-mono mr-1">[-]</span>
+                  <Minus
+                    aria-hidden="true"
+                    className="inline-block size-3.5 mr-1"
+                  />
                   {` MÃ LOẠI HP: ${group.categoryCode} (COUNT=${group.courseCount}, TỔNG TC: ${group.totalCredits}, TỔNG ĐẠT: ${group.passedCredits})`}
                 </td>
               </tr>
@@ -101,8 +141,14 @@ export default function CurriculumTable({ groups, onAddCourse }: CurriculumTable
               {group.subGroups.map((sub) => (
                 <Fragment key={`sg-${sub.groupLabel}`}>
                   <tr className="bg-group-second border-b border-gray-300 font-semibold text-gray-700 text-[11px]">
-                    <td className="p-1.5 px-6 uppercase tracking-wide" colSpan={10}>
-                      <span className="font-mono mr-1">[-]</span>
+                    <td
+                      className="p-1.5 px-6 uppercase tracking-wide"
+                      colSpan={10}
+                    >
+                      <Minus
+                        aria-hidden="true"
+                        className="inline-block size-3.5 mr-1"
+                      />
                       {` LOẠI HP: ${sub.groupLabel} (COUNT=${sub.courseCount}, TỔNG TC: ${sub.totalCredits}, TỔNG ĐẠT: ${sub.passedCredits})`}
                     </td>
                   </tr>
@@ -115,9 +161,7 @@ export default function CurriculumTable({ groups, onAddCourse }: CurriculumTable
                       <td className="p-2 border-r border-gray-300 text-center font-mono">
                         {course.indexNumber}
                       </td>
-                      <td
-                        className="p-2 border-r border-gray-300 font-mono font-bold text-gray-800"
-                      >
+                      <td className="p-2 border-r border-gray-300 font-mono font-bold text-gray-800">
                         {course.courseCode}
                       </td>
                       <td className="p-2 border-r border-gray-300">
@@ -132,7 +176,9 @@ export default function CurriculumTable({ groups, onAddCourse }: CurriculumTable
                         <SemesterBadge term={course.semesterTerm} />
                       </td>
                       <td className="p-2 border-r border-gray-300 text-center">
-                        <RecommendedSemesterCell semester={course.recommendedSemester} />
+                        <RecommendedSemesterCell
+                          semester={course.recommendedSemester}
+                        />
                       </td>
                       <td className="p-2 border-r border-gray-300 text-center">
                         {course.isRequired && <MandatoryIcon />}
