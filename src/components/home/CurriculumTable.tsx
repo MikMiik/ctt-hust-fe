@@ -37,11 +37,7 @@ function GradeCell({ grade }: { grade?: string }) {
   return (
     <span
       className={`font-bold text-xs ${
-        isFail
-          ? "text-grade-fail"
-          : isWeak
-          ? "text-amber-600"
-          : "text-gray-700"
+        isFail ? "text-grade-fail" : isWeak ? "text-amber-600" : "text-gray-700"
       }`}
     >
       {grade}
@@ -98,16 +94,17 @@ function GroupHeaderText({
 }) {
   return (
     <span>
-      <span className="font-semibold text-gray-800">{label}</span>
+      <span className="font-semibold text-gray-800">Mã HP: {label}</span>
       <span className="ml-2 font-normal text-gray-500 text-[11px]">
         {courseCount} môn &middot; {totalCredits} TC &middot; Đạt:{" "}
-        <span className="text-status-success font-semibold">{passedCredits} TC</span>
+        <span className="text-status-success font-semibold">
+          {passedCredits} TC
+        </span>
       </span>
     </span>
   );
 }
 
-/** Format sub-group header: "Bắt buộc (4 môn · 13 TC · Đạt: 7 TC)" */
 function SubGroupHeaderText({
   label,
   courseCount,
@@ -148,7 +145,11 @@ export default function CurriculumTable({
   return (
     <div
       className="w-full overflow-x-auto"
-      style={{ maxHeight: "calc(100vh - 340px)", minHeight: "280px", overflowY: "auto" }}
+      style={{
+        maxHeight: "calc(100vh - 340px)",
+        minHeight: "280px",
+        overflowY: "auto",
+      }}
     >
       <table
         id="curriculumTable"
@@ -204,10 +205,7 @@ export default function CurriculumTable({
                 <Fragment key={`sg-${sub.groupLabel}`}>
                   {/* Sub-group row */}
                   <tr className="bg-group-second border-b border-gray-200">
-                    <td
-                      className="pl-6 pr-3 py-1.5 text-[11px]"
-                      colSpan={10}
-                    >
+                    <td className="pl-6 pr-3 py-1.5 text-[11px]" colSpan={10}>
                       <SubGroupHeaderText
                         label={sub.groupLabel}
                         courseCount={sub.courseCount}
