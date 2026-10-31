@@ -7,15 +7,24 @@ import {
   removeRegistration,
 } from "@/lib/db";
 
-async function getCurrentStudentId(): Promise<string> {
+async function getCurrentStudentId(): Promise<string | null> {
   const session = await getServerSession(authOptions);
-  return session?.user?.studentId || "20210842";
+  return session?.user?.studentId || null;
+}
+
+function unauthorizedResponse() {
+  return NextResponse.json(
+    { success: false, message: "Vui lòng đăng nhập để thực hiện thao tác này." },
+    { status: 401 },
+  );
 }
 
 // GET: Lấy danh sách học phần đã chọn trong giỏ đăng ký
 export async function GET() {
   try {
     const studentId = await getCurrentStudentId();
+    if (!studentId) return unauthorizedResponse();
+
     const courses = await getRegistrations(studentId);
     const totalCredits = courses.reduce((sum, c) => sum + c.credits, 0);
 
@@ -49,6 +58,8 @@ export async function POST(request: NextRequest) {
     }
 
     const studentId = await getCurrentStudentId();
+    if (!studentId) return unauthorizedResponse();
+
     const result = await addRegistration(studentId, courseCode.trim());
 
     if (!result.success) {
@@ -96,6 +107,8 @@ export async function DELETE(request: NextRequest) {
     }
 
     const studentId = await getCurrentStudentId();
+    if (!studentId) return unauthorizedResponse();
+
     const result = await removeRegistration(studentId, courseCode.trim());
 
     if (!result.success) {

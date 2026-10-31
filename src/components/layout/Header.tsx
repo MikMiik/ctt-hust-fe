@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
+import { useState } from "react";
 import { mockStudent } from "@/app/data";
 import { LogIn, LogOut } from "lucide-react";
 
@@ -15,6 +16,7 @@ function getInitials(name: string): string {
 
 export default function Header() {
   const { data: session, status } = useSession();
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const studentName =
     session?.user?.fullName ||
@@ -74,10 +76,14 @@ export default function Header() {
 
               <button
                 type="button"
-                onClick={() => signOut({ callbackUrl: "/login" })}
+                disabled={loggingOut}
+                onClick={() => {
+                  setLoggingOut(true);
+                  void signOut({ callbackUrl: "/login" });
+                }}
                 title="Đăng xuất khỏi hệ thống"
                 aria-label="Đăng xuất"
-                className="text-black/70 hover:text-primary transition-colors p-1 cursor-pointer flex items-center rounded hover:bg-black/10"
+                className="text-black/70 hover:text-primary transition-colors p-1 cursor-pointer disabled:cursor-wait disabled:opacity-50 flex items-center rounded hover:bg-black/10"
               >
                 <LogOut aria-hidden="true" className="size-5" />
               </button>

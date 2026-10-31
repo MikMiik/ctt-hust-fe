@@ -15,15 +15,22 @@ import {
 } from "lucide-react";
 import { DEMO_CREDENTIALS } from "@/app/data";
 
+function getSafeCallbackUrl(value: string | null): string {
+  if (!value || !value.startsWith("/") || value.startsWith("//")) {
+    return "/";
+  }
+
+  return value;
+}
+
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const callbackUrl = getSafeCallbackUrl(searchParams.get("callbackUrl"));
 
   const [username, setUsername] = useState<string>(DEMO_CREDENTIALS.username);
   const [password, setPassword] = useState<string>(DEMO_CREDENTIALS.password);
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -50,7 +57,7 @@ function LoginForm() {
         setError("Tài khoản hoặc mật khẩu không chính xác.");
         setLoading(false);
       } else {
-        router.push(callbackUrl);
+        router.replace(callbackUrl);
         router.refresh();
       }
     } catch {
@@ -142,18 +149,6 @@ function LoginForm() {
                 )}
               </button>
             </div>
-          </div>
-
-          <div className="flex items-center justify-between text-xs pt-1">
-            <label className="flex items-center gap-1.5 text-gray-600 cursor-pointer select-none">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="rounded border-gray-300 text-primary focus:ring-primary"
-              />
-              <span>Ghi nhớ đăng nhập</span>
-            </label>
           </div>
 
           <button

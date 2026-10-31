@@ -6,7 +6,14 @@ import { submitRegistration } from "@/lib/db";
 export async function POST() {
   try {
     const session = await getServerSession(authOptions);
-    const studentId = session?.user?.studentId || "20210842";
+    const studentId = session?.user?.studentId;
+
+    if (!studentId) {
+      return NextResponse.json(
+        { success: false, message: "Vui lòng đăng nhập để thực hiện thao tác này." },
+        { status: 401 },
+      );
+    }
 
     const result = await submitRegistration(studentId);
 

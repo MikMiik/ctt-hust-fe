@@ -1,10 +1,11 @@
 import { getToken } from "next-auth/jwt";
 import { NextResponse, type NextRequest } from "next/server";
+import { getAuthSecret } from "@/lib/auth-secret";
 
 export async function proxy(request: NextRequest) {
   const token = await getToken({
     req: request,
-    secret: process.env.NEXTAUTH_SECRET || "default_super_secret_ctt_hust_key_12345",
+    secret: getAuthSecret(),
   });
 
   const { pathname } = request.nextUrl;
@@ -14,14 +15,21 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (!token) {
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(loginUrl);
+  if (pathname === "/login") {
+    if (token) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+
+    return NextResponse.next();
   }
 
-  if (pathname === "/login") {
-    return NextResponse.redirect(new URL("/", request.url));
+  if (!token) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set(
+      "callbackUrl",
+      `${pathname}${request.nextUrl.search}`,
+    );
+    return NextResponse.redirect(loginUrl);
   }
 
   return NextResponse.next();
@@ -29,6 +37,6 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|login|_next/static|_next/image|favicon.ico|.*\\..*).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)",
   ],
 };
