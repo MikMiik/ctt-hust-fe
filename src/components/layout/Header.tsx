@@ -4,13 +4,26 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { mockStudent } from "@/app/data";
-import { LogIn, LogOut, User } from "lucide-react";
+import { LogIn, LogOut } from "lucide-react";
+
+/** Lấy chữ viết tắt tên (tối đa 2 ký tự) */
+function getInitials(name: string): string {
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
 
 export default function Header() {
   const { data: session, status } = useSession();
 
-  const studentName = session?.user?.fullName || (status === "loading" ? mockStudent.fullName : null);
-  const studentId = session?.user?.studentId || (status === "loading" ? mockStudent.studentId : null);
+  const studentName =
+    session?.user?.fullName ||
+    (status === "loading" ? mockStudent.fullName : null);
+  const studentId =
+    session?.user?.studentId ||
+    (status === "loading" ? mockStudent.studentId : null);
+
+  const initials = studentName ? getInitials(studentName) : null;
 
   return (
     <header
@@ -18,7 +31,7 @@ export default function Header() {
       style={{ backgroundImage: "url('/header-bg.png')" }}
     >
       <div className="max-w-350 mx-auto px-4 py-2.5 flex items-center justify-between">
-        {/* ── Section: Brand & Portal Logo ── */}
+        {/* ── Brand & Portal Logo ── */}
         <Link href="/" className="flex items-center gap-3">
           <Image
             src="/logo.webp"
@@ -38,26 +51,33 @@ export default function Header() {
           </div>
         </Link>
 
-        {/* ── Section: Student Info & Actions ── */}
+        {/* ── Student Info & Actions ── */}
         <div className="flex items-center gap-3">
           {studentName ? (
             <>
               <div className="text-right">
-                <div className="text-xs text-black font-bold uppercase drop-shadow">
+                <div className="text-xs text-black font-bold uppercase drop-shadow leading-tight">
                   {studentName}
                 </div>
-                <div className="text-[11px] text-black/80 font-mono drop-shadow">
+                <div className="text-[11px] text-black/70 font-mono drop-shadow">
                   MSSV: {studentId}
                 </div>
               </div>
-              <div className="w-8 h-8 rounded-full bg-black/20 border border-black/40 flex items-center justify-center text-black shrink-0">
-                <User aria-hidden="true" className="size-[18px]" />
+
+              {/* Avatar với initials */}
+              <div
+                title={studentName}
+                className="w-8 h-8 rounded-full bg-white/30 border border-black/25 flex items-center justify-center text-black shrink-0 text-[11px] font-bold select-none"
+              >
+                {initials}
               </div>
+
               <button
                 type="button"
                 onClick={() => signOut({ callbackUrl: "/login" })}
                 title="Đăng xuất khỏi hệ thống"
-                className="text-black/80 hover:text-red-700 transition-colors ml-1 p-1 cursor-pointer flex items-center"
+                aria-label="Đăng xuất"
+                className="text-black/70 hover:text-primary transition-colors p-1 cursor-pointer flex items-center rounded hover:bg-black/10"
               >
                 <LogOut aria-hidden="true" className="size-5" />
               </button>
@@ -65,7 +85,7 @@ export default function Header() {
           ) : (
             <Link
               href="/login"
-              className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#aa261b] hover:bg-[#8f1f15] text-white text-xs font-bold uppercase transition-colors shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary hover:bg-primary-hover text-white text-xs font-semibold uppercase tracking-wide transition-colors shadow-sm rounded-sm"
             >
               <LogIn aria-hidden="true" className="size-4" />
               <span>Đăng nhập</span>

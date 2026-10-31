@@ -2,7 +2,7 @@
 
 import { mockGraduationRequirements } from "@/app/data";
 import type { GraduationRequirementGroup } from "@/app/types";
-import { BadgeCheck, CircleCheck } from "lucide-react";
+import { BadgeCheck } from "lucide-react";
 
 interface GraduationSectionProps {
   requirements?: GraduationRequirementGroup[];
@@ -14,120 +14,100 @@ export default function GraduationSection({
   addedCreditsByCategory = {},
 }: GraduationSectionProps) {
   return (
-    <section className="bg-white border border-gray-300">
+    <section className="bg-white border border-gray-200 shadow-sm">
       {/* ── Section Header ── */}
-      <div className="bg-gray-100 border-b border-gray-300 px-3 py-2 flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-1.5">
-          <BadgeCheck aria-hidden="true" className="size-[18px] text-primary" />
-          <h2 className="text-xs font-bold uppercase tracking-wide text-gray-800">
-            TIẾN ĐỘ &amp; ĐIỀU KIỆN TỐT NGHIỆP
-          </h2>
+      <div className="section-header">
+        <div className="section-header-title">
+          <BadgeCheck
+            aria-hidden="true"
+            className="section-header-icon size-4.5"
+          />
+          <h2>Tiến độ &amp; Điều kiện tốt nghiệp</h2>
         </div>
       </div>
 
-      {/* ── Section Grid Cards ── */}
-      <div className="p-3 bg-gray-50/40">
+      {/* ── Cards Grid ── */}
+      <div className="p-4 bg-gray-50/30">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
           {requirements.map((req) => {
             const added = addedCreditsByCategory[req.categoryCode] || 0;
             const completedPercent = Math.min(
               100,
-              Math.round((req.completedCredits / req.requiredCredits) * 100)
+              Math.round((req.completedCredits / req.requiredCredits) * 100),
             );
             const isCompleted = completedPercent >= 100;
 
             const projectedCredits = req.completedCredits + added;
             const projectedPercent = Math.min(
               100,
-              Math.round((projectedCredits / req.requiredCredits) * 100)
+              Math.round((projectedCredits / req.requiredCredits) * 100),
             );
             const isProjectedCompleted = projectedPercent >= 100;
-            const remainingAfterAdded = Math.max(0, req.requiredCredits - projectedCredits);
 
             return (
               <div
                 key={req.id}
-                className="bg-white border border-gray-300 rounded-sm p-3 flex flex-col justify-between transition-colors hover:border-gray-400"
+                className={`bg-white border rounded-sm p-3.5 flex flex-col gap-3 transition-all hover:shadow-sm ${
+                  isProjectedCompleted
+                    ? "border-green-200"
+                    : isCompleted
+                      ? "border-green-200"
+                      : "border-gray-200"
+                }`}
               >
-                <div>
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <h3 className="text-xs font-bold text-gray-800 leading-tight">
-                      {req.name}
-                    </h3>
-                    <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 bg-gray-100 border border-gray-300 text-gray-700 shrink-0">
-                      {req.shortName}
+                {/* ── Card Header ── */}
+                <div className="flex items-start justify-between gap-2">
+                  <h3 className="text-xs font-semibold text-gray-800 leading-snug">
+                    {req.name}
+                  </h3>
+                  <span className="text-[10px] font-mono font-semibold px-1.5 py-0.5 bg-gray-100 border border-gray-200 text-gray-500 shrink-0 rounded-sm">
+                    {req.shortName}
+                  </span>
+                </div>
+
+                {/* ── Credit stat ── */}
+                <div className="flex items-baseline gap-1">
+                  <span className="text-xl font-bold text-gray-900 leading-none">
+                    {projectedCredits}
+                  </span>
+                  <span className="text-xs text-gray-400">
+                    / {req.requiredCredits} TC
+                  </span>
+                  {added > 0 && (
+                    <span className="text-[11px] font-semibold text-blue-600 ml-1">
+                      +{added}
                     </span>
-                  </div>
+                  )}
+                </div>
 
-                  <div className="mb-2">
-                    <div className="flex items-baseline justify-between text-xs mb-1">
-                      <span className="text-gray-600">
-                        Đạt:{" "}
-                        <strong className="text-gray-900 font-bold">
-                          {req.completedCredits}
-                        </strong>
-                        /{req.requiredCredits} TC
-                      </span>
-                      <span
-                        className={`font-mono font-bold ${
-                          isCompleted ? "text-green-700" : "text-amber-700"
-                        }`}
-                      >
-                        {completedPercent}%
-                      </span>
-                    </div>
-                    <div className="w-full h-2 bg-gray-200 border border-gray-300 overflow-hidden">
+                {/* ── Progress bar (combined: completed + projected overlay) ── */}
+                <div>
+                  <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden relative">
+                    {/* Completed (solid) */}
+                    <div
+                      className={`absolute left-0 top-0 h-full transition-all duration-500 rounded-full ${
+                        isCompleted ? "bg-green-500" : "bg-amber-400"
+                      }`}
+                      style={{ width: `${completedPercent}%` }}
+                    />
+                    {/* Projected delta (striped overlay) */}
+                    {added > 0 && !isCompleted && (
                       <div
-                        className={`h-full transition-all duration-300 ${
-                          isCompleted ? "bg-green-600" : "bg-amber-500"
-                        }`}
-                        style={{ width: `${completedPercent}%` }}
+                        className="absolute top-0 h-full bg-blue-400/60 rounded-r-full transition-all duration-500"
+                        style={{
+                          left: `${completedPercent}%`,
+                          width: `${projectedPercent - completedPercent}%`,
+                        }}
                       />
-                    </div>
+                    )}
                   </div>
-
-                  <div className="mb-2.5">
-                    <div className="flex items-baseline justify-between text-xs mb-1">
-                      <span className="text-gray-600">
-                        Sau thêm:{" "}
-                        <strong className="text-blue-900 font-bold">
-                          {projectedCredits}
-                        </strong>
-                        /{req.requiredCredits} TC
-                        {added > 0 && (
-                          <span className="text-blue-700 font-semibold text-[11px] ml-1">
-                            (+{added} TC)
-                          </span>
-                        )}
-                      </span>
-                      <span
-                        className={`font-mono font-bold ${
-                          isProjectedCompleted ? "text-green-700" : "text-blue-700"
-                        }`}
-                      >
-                        {projectedPercent}%
-                      </span>
-                    </div>
-                    <div className="w-full h-2 bg-gray-200 border border-gray-300 overflow-hidden">
-                      <div
-                        className={`h-full transition-all duration-300 ${
-                          isProjectedCompleted ? "bg-green-600" : "bg-blue-600"
-                        }`}
-                        style={{ width: `${projectedPercent}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="text-[11px] pt-1.5 border-t border-gray-200 flex items-center justify-between">
-                    <span className="text-gray-500">Trạng thái:</span>
-                    {isProjectedCompleted ? (
-                      <span className="text-green-700 font-semibold flex items-center gap-0.5">
-                        <CircleCheck aria-hidden="true" className="size-[13px]" />
-                        Đủ điều kiện
-                      </span>
-                    ) : (
-                      <span className="text-amber-800 font-medium">
-                        Cần thêm: <strong>{remainingAfterAdded} TC</strong>
+                  <div className="flex justify-between mt-1">
+                    <span className="text-[10px] text-gray-400">
+                      Đã đạt: {completedPercent}%
+                    </span>
+                    {added > 0 && projectedPercent !== completedPercent && (
+                      <span className="text-[10px] text-blue-500 font-medium">
+                        Dự kiến: {projectedPercent}%
                       </span>
                     )}
                   </div>

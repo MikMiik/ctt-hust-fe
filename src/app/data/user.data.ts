@@ -1,12 +1,17 @@
 ﻿import type { StudentUser } from "@/app/types";
 
+export const DEMO_CREDENTIALS = {
+  username: "20210842",
+  password: "hust2021",
+} as const;
+
 export const mockUsers: StudentUser[] = [
   {
     id: "usr-001",
     studentId: "20210842",
-    username: "20210842",
+    username: DEMO_CREDENTIALS.username,
     email: "20210842@sis.hust.edu.vn",
-    password: "hust2021",
+    password: DEMO_CREDENTIALS.password,
     fullName: "PHẠM VĂN MINH",
     major: "Công nghệ Thông tin (Việt - Nhật)",
     majorCode: "IT-VJ",
@@ -15,35 +20,5 @@ export const mockUsers: StudentUser[] = [
     curriculumId: "ctdt-it-k66",
     status: "active",
     role: "student",
-  },
-  {
-    id: "usr-002",
-    studentId: "20200001",
-    username: "20200001",
-    email: "20200001@sis.hust.edu.vn",
-    password: "hust2020",
-    fullName: "NGUYỄN THỊ HƯƠNG",
-    major: "Khoa học Máy tính",
-    majorCode: "CS",
-    cohort: "K65",
-    enrollmentYear: 2020,
-    curriculumId: "ctdt-cs-k65",
-    status: "active",
-    role: "student",
-  },
-  {
-    id: "usr-admin",
-    studentId: "admin",
-    username: "admin",
-    email: "admin@hust.edu.vn",
-    password: "admin123",
-    fullName: "ADMIN HỆ THỐNG",
-    major: "",
-    majorCode: "",
-    cohort: "",
-    enrollmentYear: 2000,
-    curriculumId: "",
-    status: "active",
-    role: "admin",
   },
 ];

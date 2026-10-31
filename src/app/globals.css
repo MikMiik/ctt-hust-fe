@@ -7,10 +7,20 @@
 ───────────────────────────────────────────── */
 
 @theme {
-  /* ── Brand / Primary ── */
-  --color-primary:       #C8102E;
-  --color-primary-dark:  #9e001f;
-  --color-primary-hover: #a50d25;
+  /* ── Brand / Primary (Đỏ Bách khoa — full shade scale) ── */
+  --color-primary:        #C8102E;
+  --color-primary-dark:   #9e001f;
+  --color-primary-hover:  #b30d28;
+  --color-primary-50:     #fff1f2;
+  --color-primary-100:    #ffe0e3;
+  --color-primary-200:    #ffc5cb;
+  --color-primary-300:    #ff9aa5;
+  --color-primary-400:    #e8344a;
+  --color-primary-500:    #C8102E;
+  --color-primary-600:    #b30d28;
+  --color-primary-700:    #9e001f;
+  --color-primary-800:    #840019;
+  --color-primary-900:    #6b0015;
 
   /* ── Canvas & Surface ── */
   --color-canvas:        #f9fafb;
@@ -21,7 +31,7 @@
   --color-group-primary: #e5e7eb;
   --color-group-second:  #f3f4f6;
   --color-border-grid:   #d1d5db;
-  --color-row-hover:     #f9fafb;
+  --color-row-hover:     #fafafa;
 
   /* ── Status Colors ── */
   --color-status-success: #15803d;
@@ -41,7 +51,7 @@
   --color-mandatory-bg:      #fef3c7;
   --color-mandatory-text:    #92400e;
   --color-mandatory-border:  #fcd34d;
-  --color-grade-fail:        #dc2626;
+  --color-grade-fail:        #b91c1c;
 
   /* ── Action States ── */
   --color-add-btn:       #15803d;
@@ -128,8 +138,8 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   background-color: var(--color-mandatory-bg);
   color: var(--color-mandatory-text);
   border: 1px solid var(--color-mandatory-border);
@@ -141,26 +151,63 @@ body {
 .btn-add-course {
   background-color: var(--color-add-btn);
   color: #ffffff;
-  padding: 2px 8px;
+  padding: 3px 10px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   border: none;
   border-radius: 3px;
   cursor: pointer;
   transition: background-color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
 }
 .btn-add-course:hover {
   background-color: var(--color-add-btn-hover);
 }
 
 .badge-locked {
-  display: inline-block;
-  padding: 2px 8px;
-  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 8px;
+  font-size: 11px;
   font-weight: 500;
   background-color: var(--color-locked-bg);
   color: var(--color-locked-text);
   border: 1px solid var(--color-locked-border);
   border-radius: 3px;
   cursor: not-allowed;
+}
+
+/* ─────────────────────────────────────────────
+   Section Header Pattern (Operate UI)
+───────────────────────────────────────────── */
+
+.section-header {
+  background-color: var(--color-table-header);
+  border-bottom: 1px solid var(--color-border-grid);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-left: 3px solid var(--color-primary);
+}
+
+.section-header-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1f2937;
+  letter-spacing: 0.01em;
+}
+
+.section-header-icon {
+  color: var(--color-primary);
+  opacity: 0.75;
+  flex-shrink: 0;
 }

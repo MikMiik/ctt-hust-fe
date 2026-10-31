@@ -1,4 +1,4 @@
-export type RegistrationStatus = "Thành công" | "Đang xử lý" | "Lỗi";
+export type RegistrationStatus = "Đang chờ" | "Thành công" | "Đang xử lý" | "Lỗi";
 
 export interface SelectedCourse {
   courseCode: string;

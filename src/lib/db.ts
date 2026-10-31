@@ -153,7 +153,7 @@ export async function addRegistration(
     courseCode: course.courseCode,
     className: course.courseName,
     registeredDate: today,
-    registrationStatus: "Thành công",
+    registrationStatus: "Đang chờ",
     credits: course.trainingCredits,
   };
 

@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import CurriculumFilters, { type DisplayMode } from "./CurriculumFilters";
 import CurriculumTable from "./CurriculumTable";
-import { mockCurriculumGroups } from "@/app/data";
+import { mockCurricula, mockUsers } from "@/app/data";
 import type { CourseAddStatus, CurriculumGroup } from "@/app/types";
 
 interface CurriculumSectionProps {
@@ -11,17 +11,35 @@ interface CurriculumSectionProps {
   selectedCodes: Set<string>;
 }
 
+function resolveDefaultCurriculumId(): string {
+  const preferredId = mockUsers[0]?.curriculumId;
+  if (preferredId && mockCurricula.some((p) => p.id === preferredId)) {
+    return preferredId;
+  }
+  return mockCurricula[0]?.id ?? "";
+}
+
 export default function CurriculumSection({
   onAddCourse,
   selectedCodes,
 }: CurriculumSectionProps) {
+  const [selectedCurriculumId, setSelectedCurriculumId] = useState(
+    resolveDefaultCurriculumId
+  );
   const [searchValue, setSearchValue] = useState("");
   const [displayMode, setDisplayMode] = useState<DisplayMode>("default");
+
+  const activeGroups = useMemo(() => {
+    const program =
+      mockCurricula.find((p) => p.id === selectedCurriculumId) ??
+      mockCurricula[0];
+    return program?.groups ?? [];
+  }, [selectedCurriculumId]);
 
   const processedGroups: CurriculumGroup[] = useMemo(() => {
     const query = searchValue.trim().toLowerCase();
 
-    return mockCurriculumGroups
+    return activeGroups
       .map((group) => {
         const filteredSubGroups = group.subGroups
           .map((subGroup) => {
@@ -55,12 +73,17 @@ export default function CurriculumSection({
               });
             } else if (displayMode === "improve") {
               courses = [...courses].sort((a, b) => {
-                const aImp = a.letterGrade && ["D", "D+"].includes(a.letterGrade) ? 1 : 0;
-                const bImp = b.letterGrade && ["D", "D+"].includes(b.letterGrade) ? 1 : 0;
+                const aImp =
+                  a.letterGrade && ["D", "D+"].includes(a.letterGrade) ? 1 : 0;
+                const bImp =
+                  b.letterGrade && ["D", "D+"].includes(b.letterGrade) ? 1 : 0;
                 return bImp - aImp;
               });
             } else if (displayMode === "semester") {
-              courses = [...courses].sort((a, b) => (a.recommendedSemester ?? 99) - (b.recommendedSemester ?? 99));
+              courses = [...courses].sort(
+                (a, b) =>
+                  (a.recommendedSemester ?? 99) - (b.recommendedSemester ?? 99)
+              );
             }
 
             return {
@@ -73,17 +96,23 @@ export default function CurriculumSection({
 
         return {
           ...group,
-          courseCount: filteredSubGroups.reduce((acc, sg) => acc + sg.courseCount, 0),
+          courseCount: filteredSubGroups.reduce(
+            (acc, sg) => acc + sg.courseCount,
+            0
+          ),
           subGroups: filteredSubGroups,
         };
       })
       .filter((g) => g.subGroups.length > 0);
-  }, [searchValue, displayMode, selectedCodes]);
+  }, [activeGroups, searchValue, displayMode, selectedCodes]);
 
   return (
-    <section className="bg-white border border-gray-300">
+    <section className="bg-white border border-gray-200 shadow-sm">
       {/* ── Section: Curriculum Filters & Table Container ── */}
       <CurriculumFilters
+        curricula={mockCurricula}
+        selectedCurriculumId={selectedCurriculumId}
+        onCurriculumChange={setSelectedCurriculumId}
         searchValue={searchValue}
         onSearchChange={setSearchValue}
         displayMode={displayMode}

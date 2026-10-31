@@ -14,36 +14,6 @@
       "curriculumId": "ctdt-it-k66",
       "status": "active",
       "role": "student"
-    },
-    {
-      "id": "usr-002",
-      "studentId": "20200001",
-      "username": "20200001",
-      "email": "20200001@sis.hust.edu.vn",
-      "password": "hust2020",
-      "fullName": "NGUYỄN THỊ HƯƠNG",
-      "major": "Khoa học Máy tính",
-      "majorCode": "CS",
-      "cohort": "K65",
-      "enrollmentYear": 2020,
-      "curriculumId": "ctdt-cs-k65",
-      "status": "active",
-      "role": "student"
-    },
-    {
-      "id": "usr-admin",
-      "studentId": "admin",
-      "username": "admin",
-      "email": "admin@hust.edu.vn",
-      "password": "admin123",
-      "fullName": "ADMIN HỆ THỐNG",
-      "major": "",
-      "majorCode": "",
-      "cohort": "",
-      "enrollmentYear": 2000,
-      "curriculumId": "",
-      "status": "active",
-      "role": "admin"
     }
   ],
   "curriculumGroups": [
@@ -645,49 +615,6 @@
     }
   ],
   "registrations": {
-    "20210842": [
-      {
-        "courseCode": "MI3050",
-        "className": "Các phương pháp tối ưu",
-        "registeredDate": "10/1/2026",
-        "registrationStatus": "Thành công",
-        "credits": 4
-      },
-      {
-        "courseCode": "MAT1092",
-        "className": "Giải tích II",
-        "registeredDate": "10/1/2026",
-        "registrationStatus": "Thành công",
-        "credits": 4
-      },
-      {
-        "courseCode": "INT2204",
-        "className": "Lập trình Hướng đối tượng",
-        "registeredDate": "10/1/2026",
-        "registrationStatus": "Thành công",
-        "credits": 3
-      },
-      {
-        "courseCode": "ENG1002",
-        "className": "Tiếng Anh học thuật B2",
-        "registeredDate": "10/1/2026",
-        "registrationStatus": "Thành công",
-        "credits": 3
-      },
-      {
-        "courseCode": "ED3220",
-        "className": "Kỹ năng giao tiếp và thuyết trình",
-        "registeredDate": "26/10/2026",
-        "registrationStatus": "Thành công",
-        "credits": 3
-      },
-      {
-        "courseCode": "FL1020",
-        "className": "Tiếng Anh đại cương II (B1.2)",
-        "registeredDate": "26/10/2026",
-        "registrationStatus": "Thành công",
-        "credits": 3
-      }
-    ]
+    "20210842": []
   }
 }

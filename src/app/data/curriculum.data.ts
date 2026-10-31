@@ -1,4 +1,4 @@
-﻿import type { CurriculumGroup } from "@/app/types";
+import type { CurriculumGroup } from "@/app/types";
 
 export const mockCurriculumGroups: CurriculumGroup[] = [
   {
@@ -460,3 +460,100 @@ export const mockCurriculumGroups: CurriculumGroup[] = [
     ],
   },
 ];
+
+/** Danh sách nhóm học phần CTĐT Khoa học Máy tính — K65 */
+export const mockCsCurriculumGroups: CurriculumGroup[] = [
+  {
+    categoryCode: "210",
+    categoryName: "Lý luận chính trị & Pháp luật đại cương",
+    courseCount: 2,
+    totalCredits: 5,
+    passedCredits: 3,
+    subGroups: [
+      {
+        groupLabel: "LÝ LUẬN CHÍNH TRỊ + PHÁP LUẬT ĐẠI CƯƠNG",
+        courseCount: 2,
+        totalCredits: 5,
+        passedCredits: 3,
+        courses: [
+          {
+            indexNumber: 1,
+            courseCode: "SSH1110",
+            courseName: "Triết học Mác - Lênin",
+            semesterTerm: "Kỳ 1",
+            recommendedSemester: 1,
+            isRequired: true,
+            trainingCredits: 3,
+            tuitionCredits: 3,
+            letterGrade: "B",
+            addStatus: "added",
+          },
+          {
+            indexNumber: 2,
+            courseCode: "EM1010",
+            courseName: "Pháp luật đại cương",
+            semesterTerm: "2 Kỳ",
+            recommendedSemester: 1,
+            isRequired: true,
+            trainingCredits: 2,
+            tuitionCredits: 2,
+            addStatus: "add",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    categoryCode: "310",
+    categoryName: "Cơ sở cốt lõi ngành KHMT",
+    courseCount: 3,
+    totalCredits: 10,
+    passedCredits: 0,
+    subGroups: [
+      {
+        groupLabel: "CƠ SỞ NGÀNH KHOA HỌC MÁY TÍNH",
+        courseCount: 3,
+        totalCredits: 10,
+        passedCredits: 0,
+        courses: [
+          {
+            indexNumber: 3,
+            courseCode: "IT3011",
+            courseName: "Cấu trúc dữ liệu và Giải thuật",
+            semesterTerm: "2 Kỳ",
+            recommendedSemester: 3,
+            isRequired: true,
+            trainingCredits: 3,
+            tuitionCredits: 4,
+            addStatus: "add",
+          },
+          {
+            indexNumber: 4,
+            courseCode: "IT3020",
+            courseName: "Toán rời rạc",
+            semesterTerm: "2 Kỳ",
+            recommendedSemester: 2,
+            isRequired: true,
+            trainingCredits: 3,
+            tuitionCredits: 3,
+            addStatus: "add",
+          },
+          {
+            indexNumber: 5,
+            courseCode: "IT4210",
+            courseName: "Xử lý ngôn ngữ tự nhiên",
+            prerequisiteCode: "IT3011",
+            semesterTerm: "Kỳ 1",
+            recommendedSemester: 6,
+            isRequired: false,
+            trainingCredits: 4,
+            tuitionCredits: 4,
+            addStatus: "add",
+          },
+        ],
+      },
+    ],
+  },
+];
+
+

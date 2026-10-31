@@ -32,3 +32,9 @@ export interface CurriculumGroup {
   passedCredits: number;
   subGroups: CurriculumSubGroup[];
 }
+
+export interface CurriculumProgram {
+  id: string;
+  name: string;
+  groups: CurriculumGroup[];
+}

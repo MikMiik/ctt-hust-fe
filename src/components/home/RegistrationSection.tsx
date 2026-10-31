@@ -17,22 +17,30 @@ export default function RegistrationSection({
   onSubmit,
 }: RegistrationSectionProps) {
   const totalCredits = courses.reduce((sum, c) => sum + c.credits, 0);
+  const pendingCount = courses.filter((c) => c.registrationStatus === "Đang chờ").length;
 
   return (
-    <section className="space-y-2">
-      <div className="bg-white border border-gray-300">
-        {/* ── Section: Registered Courses ── */}
-        <div className="bg-gray-100 border-b border-gray-300 px-3 py-2 flex items-center justify-between">
-          <div className="flex items-center gap-1.5">
-            <UserCheck aria-hidden="true" className="size-[18px] text-primary" />
-            <h2 className="text-xs font-bold uppercase tracking-wide text-gray-800">
-              ĐĂNG KÝ HỌC PHẦN (HỌC PHẦN ĐÃ CHỌN)
-            </h2>
+    <section>
+      <div className="bg-white border border-gray-200 shadow-sm">
+        {/* ── Section Header ── */}
+        <div className="section-header">
+          <div className="section-header-title">
+            <UserCheck aria-hidden="true" className="section-header-icon size-[18px]" />
+            <h2>Đăng ký học phần</h2>
           </div>
+          {courses.length > 0 && (
+            <span className="text-xs text-gray-500 font-medium">
+              {courses.length} học phần đã chọn ({totalCredits} TC)
+            </span>
+          )}
         </div>
 
         <SelectedTable courses={courses} onRemove={onRemove} />
-        <RegistrationBar totalCredits={totalCredits} onSubmit={onSubmit} />
+        <RegistrationBar
+          totalCredits={totalCredits}
+          pendingCount={pendingCount}
+          onSubmit={onSubmit}
+        />
       </div>
     </section>
   );
