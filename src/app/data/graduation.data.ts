@@ -1,6 +1,127 @@
 ﻿import type { GraduationRequirementGroup } from "@/app/types";
+import { getActiveScenario, type ScenarioPreset } from "@/lib/scenario";
 
-export const mockGraduationRequirements: GraduationRequirementGroup[] = [
+export const mockGraduationNormal: GraduationRequirementGroup[] = [
+  {
+    id: "llct",
+    categoryCode: "210",
+    name: "Lý luận chính trị + Pháp luật đại cương",
+    shortName: "LLCT",
+    requiredCredits: 13,
+    completedCredits: 9,
+    missingCourses: [
+      {
+        courseCode: "SSH1131",
+        courseName: "Chủ nghĩa xã hội khoa học",
+        credits: 2,
+        isRequired: true,
+      },
+      {
+        courseCode: "SSH1151",
+        courseName: "Tư tưởng Hồ Chí Minh",
+        credits: 2,
+        isRequired: true,
+      },
+    ],
+  },
+  {
+    id: "tkhcb",
+    categoryCode: "250",
+    name: "Toán và Khoa học cơ bản",
+    shortName: "TKHCB",
+    requiredCredits: 32,
+    completedCredits: 32, // Hoàn thành 100% Đủ điều kiện
+    missingCourses: [],
+  },
+  {
+    id: "cscln",
+    categoryCode: "300",
+    name: "Cơ sở và cốt lõi ngành",
+    shortName: "CSCLN",
+    requiredCredits: 48,
+    completedCredits: 26,
+    missingCourses: [
+      {
+        courseCode: "IT3150",
+        courseName: "Project I",
+        credits: 2,
+        isRequired: true,
+      },
+      {
+        courseCode: "IT3180",
+        courseName: "Nhập môn công nghệ phần mềm",
+        credits: 3,
+        isRequired: true,
+      },
+      {
+        courseCode: "IT3190",
+        courseName: "Nhập môn Học máy và khai phá dữ liệu",
+        credits: 3,
+        isRequired: true,
+      },
+      {
+        courseCode: "IT4653",
+        courseName: "Học sâu và ứng dụng",
+        credits: 2,
+        isRequired: true,
+      },
+      {
+        courseCode: "IT3120",
+        courseName: "Phân tích và thiết kế hệ thống",
+        credits: 2,
+        isRequired: true,
+      },
+      {
+        courseCode: "IT4015",
+        courseName: "Nhập môn an toàn thông tin",
+        credits: 3,
+        isRequired: true,
+      },
+      {
+        courseCode: "IT3930",
+        courseName: "Project II",
+        credits: 2,
+        isRequired: true,
+      },
+      {
+        courseCode: "IT3940",
+        courseName: "Project III",
+        credits: 3,
+        isRequired: true,
+      },
+      {
+        courseCode: "IT4244",
+        courseName: "Quản trị dự án CNTT",
+        credits: 2,
+        isRequired: true,
+      },
+    ],
+  },
+  {
+    id: "ktbt",
+    categoryCode: "320",
+    name: "Khối kiến thức bổ trợ",
+    shortName: "KTBT",
+    requiredCredits: 9,
+    completedCredits: 7,
+    missingCourses: [
+      {
+        courseCode: "CH2021",
+        courseName: "Đổi mới sáng tạo và khởi nghiệp",
+        credits: 2,
+        isRequired: false,
+      },
+      {
+        courseCode: "ED3280",
+        courseName: "Tâm lý học ứng dụng",
+        credits: 2,
+        isRequired: false,
+      },
+    ],
+  },
+];
+
+export const mockGraduationWarning: GraduationRequirementGroup[] = [
   {
     id: "llct",
     categoryCode: "210",
@@ -11,8 +132,14 @@ export const mockGraduationRequirements: GraduationRequirementGroup[] = [
     missingCourses: [
       {
         courseCode: "SSH1111",
-        courseName: "Triết học Mác - Lênin",
+        courseName: "Triết học Mác - Lênin (Cải thiện D+)",
         credits: 3,
+        isRequired: true,
+      },
+      {
+        courseCode: "SSH1131",
+        courseName: "Chủ nghĩa xã hội khoa học",
+        credits: 2,
         isRequired: true,
       },
       {
@@ -27,25 +154,25 @@ export const mockGraduationRequirements: GraduationRequirementGroup[] = [
         credits: 2,
         isRequired: true,
       },
-      {
-        courseCode: "EM1170",
-        courseName: "Pháp luật đại cương",
-        credits: 2,
-        isRequired: true,
-      },
     ],
   },
   {
     id: "tkhcb",
     categoryCode: "250",
-    name: "Khối kiến thức Toán và Khoa học cơ bản",
+    name: "Toán và Khoa học cơ bản",
     shortName: "TKHCB",
-    requiredCredits: 33,
-    completedCredits: 10,
+    requiredCredits: 32,
+    completedCredits: 9, // Bị tụt xuống 9/32 TC do nợ IT1108 và các môn liên quan
     missingCourses: [
       {
-        courseCode: "IT1110",
-        courseName: "Tin học đại cương",
+        courseCode: "IT1108",
+        courseName: "Nhập môn lập trình (Nợ F - Môn nền tảng chuỗi IT)",
+        credits: 4,
+        isRequired: true,
+      },
+      {
+        courseCode: "MI1111",
+        courseName: "Giải tích I (Cải thiện D)",
         credits: 4,
         isRequired: true,
       },
@@ -62,27 +189,15 @@ export const mockGraduationRequirements: GraduationRequirementGroup[] = [
         isRequired: true,
       },
       {
-        courseCode: "MI1141",
-        courseName: "Đại số",
-        credits: 4,
-        isRequired: true,
-      },
-      {
-        courseCode: "MI3010",
-        courseName: "Toán rời rạc",
+        courseCode: "PH1120",
+        courseName: "Vật lý đại cương II",
         credits: 3,
         isRequired: true,
       },
       {
-        courseCode: "MI3030",
-        courseName: "Xác suất thống kê",
-        credits: 4,
-        isRequired: true,
-      },
-      {
-        courseCode: "MI3041",
-        courseName: "Giải tích số",
-        credits: 2,
+        courseCode: "IT3020",
+        courseName: "Toán rời rạc",
+        credits: 3,
         isRequired: true,
       },
     ],
@@ -92,91 +207,31 @@ export const mockGraduationRequirements: GraduationRequirementGroup[] = [
     categoryCode: "300",
     name: "Cơ sở và cốt lõi ngành",
     shortName: "CSCLN",
-    requiredCredits: 47,
-    completedCredits: 9,
+    requiredCredits: 48,
+    completedCredits: 6,
     missingCourses: [
       {
-        courseCode: "MI2000",
-        courseName: "Nhập môn Toán-Tin",
-        credits: 3,
-        isRequired: true,
-      },
-      {
-        courseCode: "MI2060",
-        courseName: "Cơ sở giải tích hàm",
-        credits: 3,
-        isRequired: true,
-      },
-      {
-        courseCode: "MI2150",
-        courseName: "Đại số đại cương",
+        courseCode: "IT3011",
+        courseName: "Cấu trúc dữ liệu và thuật toán",
         credits: 2,
         isRequired: true,
       },
       {
-        courseCode: "MI3042",
-        courseName: "Phương pháp số",
-        credits: 2,
-        isRequired: true,
-      },
-      {
-        courseCode: "MI3050",
-        courseName: "Các phương pháp tối ưu",
-        credits: 4,
-        isRequired: true,
-      },
-      {
-        courseCode: "MI3070",
-        courseName: "Phương trình đạo hàm riêng",
-        credits: 3,
-        isRequired: true,
-      },
-      {
-        courseCode: "MI3090",
-        courseName: "Cơ sở dữ liệu",
-        credits: 3,
-        isRequired: true,
-      },
-      {
-        courseCode: "MI3120",
-        courseName: "Phân tích và thiết kế hệ thống",
-        credits: 3,
-        isRequired: true,
-      },
-      {
-        courseCode: "MI3310",
+        courseCode: "IT3040",
         courseName: "Kỹ thuật lập trình",
         credits: 2,
         isRequired: true,
       },
       {
-        courseCode: "MI3370",
-        courseName: "Hệ điều hành",
-        credits: 2,
-        isRequired: true,
-      },
-      {
-        courseCode: "MI3380",
-        courseName: "Đồ án I",
+        courseCode: "IT3080",
+        courseName: "Mạng máy tính",
         credits: 3,
         isRequired: true,
       },
       {
-        courseCode: "MI4060",
-        courseName: "Hệ thống và mạng máy tính",
+        courseCode: "IT3090",
+        courseName: "Cơ sở dữ liệu",
         credits: 3,
-        isRequired: true,
-      },
-      {
-        courseCode: "MI4090",
-        courseName: "Lập trình hướng đối tượng",
-        credits: 3,
-        isRequired: true,
-      },
-      {
-        courseCode: "MI4344",
-        courseName: "Kiến trúc máy tính",
-        credits: 2,
         isRequired: true,
       },
     ],
@@ -190,22 +245,10 @@ export const mockGraduationRequirements: GraduationRequirementGroup[] = [
     completedCredits: 2,
     missingCourses: [
       {
-        courseCode: "MI2030",
+        courseCode: "IT2030",
         courseName: "Technical Writing and Presentation",
         credits: 3,
         isRequired: true,
-      },
-      {
-        courseCode: "ED3220",
-        courseName: "Kỹ năng mềm",
-        credits: 2,
-        isRequired: false,
-      },
-      {
-        courseCode: "ED3280",
-        courseName: "Tâm lý học ứng dụng",
-        credits: 2,
-        isRequired: false,
       },
       {
         courseCode: "EM1010",
@@ -213,84 +256,31 @@ export const mockGraduationRequirements: GraduationRequirementGroup[] = [
         credits: 2,
         isRequired: false,
       },
-      {
-        courseCode: "EM1180",
-        courseName: "Văn hóa kinh doanh và tinh thần khởi nghiệp",
-        credits: 2,
-        isRequired: false,
-      },
-      {
-        courseCode: "ET3262",
-        courseName: "Tư duy công nghệ và thiết kế kỹ thuật",
-        credits: 2,
-        isRequired: false,
-      },
-      {
-        courseCode: "ME3123",
-        courseName: "Thiết kế mỹ thuật công nghiệp",
-        credits: 2,
-        isRequired: false,
-      },
-      {
-        courseCode: "ME3124",
-        courseName: "Thiết kế quảng bá sản phẩm",
-        credits: 2,
-        isRequired: false,
-      },
-      {
-        courseCode: "TEX3123",
-        courseName: "Thiết kế mỹ thuật công nghiệp",
-        credits: 2,
-        isRequired: false,
-      },
-    ],
-  },
-  {
-    id: "mod4",
-    categoryCode: "403",
-    name: "Mô đun 4",
-    shortName: "MOD4",
-    requiredCredits: 16,
-    completedCredits: 14,
-    missingCourses: [
-      {
-        courseCode: "MI4114",
-        courseName: "Mô phỏng ngẫu nhiên và ứng dụng",
-        credits: 2,
-        isRequired: false,
-      },
-    ],
-  },
-  {
-    id: "tt",
-    categoryCode: "360",
-    name: "Thực tập",
-    shortName: "TT",
-    requiredCredits: 2,
-    completedCredits: 0,
-    missingCourses: [
-      {
-        courseCode: "MI4800",
-        courseName: "Thực tập kỹ thuật",
-        credits: 2,
-        isRequired: false,
-      },
-    ],
-  },
-  {
-    id: "dakltn",
-    categoryCode: "7",
-    name: "Đồ án/Khóa luận Tốt nghiệp",
-    shortName: "ĐAKLTN",
-    requiredCredits: 6,
-    completedCredits: 0,
-    missingCourses: [
-      {
-        courseCode: "MI4900",
-        courseName: "Đồ án tốt nghiệp cử nhân",
-        credits: 6,
-        isRequired: false,
-      },
     ],
   },
 ];
+
+export function getGraduationForScenario(preset?: ScenarioPreset): GraduationRequirementGroup[] {
+  const active = preset ?? getActiveScenario();
+  return active === "warning" ? mockGraduationWarning : mockGraduationNormal;
+}
+
+export const mockGraduationRequirements: GraduationRequirementGroup[] = new Proxy(
+  [] as GraduationRequirementGroup[],
+  {
+    get(_t, prop) {
+      const list = getGraduationForScenario();
+      const val = (list as any)[prop];
+      return typeof val === "function" ? val.bind(list) : val;
+    },
+    has(_t, prop) {
+      return prop in getGraduationForScenario();
+    },
+    getOwnPropertyDescriptor(_t, prop) {
+      return Object.getOwnPropertyDescriptor(getGraduationForScenario(), prop);
+    },
+    ownKeys(_t) {
+      return Reflect.ownKeys(getGraduationForScenario());
+    },
+  }
+);
