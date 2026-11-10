@@ -119,6 +119,34 @@ export const mockGraduationNormal: GraduationRequirementGroup[] = [
       },
     ],
   },
+  {
+    id: "modchuyensau",
+    categoryCode: "MODULE",
+    name: "Mô đun chuyên sâu định hướng",
+    shortName: "MÔ ĐUN",
+    requiredCredits: 16,
+    completedCredits: 0,
+    missingCourses: [
+      {
+        courseCode: "IT4490",
+        courseName: "Thiết kế và xây dựng phần mềm",
+        credits: 3,
+        isRequired: false,
+      },
+      {
+        courseCode: "IT4441",
+        courseName: "Giao diện và trải nghiệm người dùng",
+        credits: 3,
+        isRequired: false,
+      },
+      {
+        courseCode: "IT4409",
+        courseName: "Công nghệ Web và dịch vụ trực tuyến",
+        credits: 3,
+        isRequired: false,
+      },
+    ],
+  },
 ];
 
 export const mockGraduationWarning: GraduationRequirementGroup[] = [
@@ -254,6 +282,22 @@ export const mockGraduationWarning: GraduationRequirementGroup[] = [
         courseCode: "EM1010",
         courseName: "Quản trị học đại cương",
         credits: 2,
+        isRequired: false,
+      },
+    ],
+  },
+  {
+    id: "modchuyensau",
+    categoryCode: "MODULE",
+    name: "Mô đun chuyên sâu định hướng",
+    shortName: "MÔ ĐUN",
+    requiredCredits: 16,
+    completedCredits: 0,
+    missingCourses: [
+      {
+        courseCode: "IT4490",
+        courseName: "Thiết kế và xây dựng phần mềm",
+        credits: 3,
         isRequired: false,
       },
     ],

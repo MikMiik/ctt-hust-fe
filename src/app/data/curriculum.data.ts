@@ -55,7 +55,7 @@ function createCourseItem(
 export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGroup[] {
   const isWarning = preset === "warning";
 
-  // 1. NHÓM 210: Lý luận chính trị + Pháp luật đại cương (Tổng 13 TC, Đạt 9 TC)
+  // 1. NHÓM 210: Lý luận chính trị + Pháp luật đại cương (13 TC - Đạt 9 TC)
   const nhom210Raw: RawCourseSpec[] = [
     {
       id: "SSH1111",
@@ -125,7 +125,7 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
     },
   ];
 
-  // 2. NHÓM 250: Toán và Khoa học cơ bản (Tổng 32 TC, Đạt 32 TC)
+  // 2. NHÓM 250: Khối kiến thức Toán và Khoa học cơ bản (32 TC - Đạt 32 TC)
   const nhom250Raw: RawCourseSpec[] = [
     {
       id: "MI1111",
@@ -239,7 +239,7 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
     },
   ];
 
-  // 3. NHÓM 300: Cơ sở và cốt lõi ngành (Tổng 48 TC, Đạt 26 TC)
+  // 3. NHÓM 300: Cơ sở và cốt lõi ngành (48 TC - Đạt 26 TC)
   const nhom300Raw: RawCourseSpec[] = [
     {
       id: "IT2022",
@@ -297,6 +297,17 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
       prerequisites: ["IT3030"],
     },
     {
+      id: "IT4653",
+      name: "Học sâu và ứng dụng",
+      openTerms: "Chỉ mở kỳ 2",
+      semester: 6,
+      isRequired: true,
+      credits: 2,
+      studyCredits: null,
+      grade: null,
+      prerequisites: ["IT3190"],
+    },
+    {
       id: "IT3080",
       name: "Mạng máy tính",
       openTerms: "Mở cả 2 kỳ",
@@ -330,17 +341,6 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
       prerequisites: ["IT1108"],
     },
     {
-      id: "IT3160",
-      name: "Nhập môn Trí tuệ nhân tạo",
-      openTerms: "Mở cả 2 kỳ",
-      semester: 4,
-      isRequired: true,
-      credits: 3,
-      studyCredits: 3,
-      grade: "B+",
-      prerequisites: [],
-    },
-    {
       id: "IT3170",
       name: "Thuật toán ứng dụng",
       openTerms: "Mở cả 2 kỳ",
@@ -349,17 +349,6 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
       credits: 2,
       studyCredits: 2,
       grade: isWarning ? null : "B+",
-      prerequisites: ["IT3011"],
-    },
-    {
-      id: "IT3150",
-      name: "Project I",
-      openTerms: "Chỉ mở kỳ 1",
-      semester: 5,
-      isRequired: true,
-      credits: 2,
-      studyCredits: null,
-      grade: null,
       prerequisites: ["IT3011"],
     },
     {
@@ -374,26 +363,26 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
       prerequisites: ["IT3100"],
     },
     {
-      id: "IT3190",
-      name: "Nhập môn Học máy và khai phá dữ liệu",
-      openTerms: "Mở cả 2 kỳ",
+      id: "IT3150",
+      name: "Project I",
+      openTerms: "Chỉ mở kỳ 1",
       semester: 5,
-      isRequired: true,
-      credits: 3,
-      studyCredits: null,
-      grade: null,
-      prerequisites: ["MI2020"],
-    },
-    {
-      id: "IT4653",
-      name: "Học sâu và ứng dụng",
-      openTerms: "Chỉ mở kỳ 2",
-      semester: 6,
       isRequired: true,
       credits: 2,
       studyCredits: null,
       grade: null,
-      prerequisites: ["IT3190"],
+      prerequisites: ["IT3011"],
+    },
+    {
+      id: "IT3160",
+      name: "Nhập môn Trí tuệ nhân tạo",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 4,
+      isRequired: true,
+      credits: 3,
+      studyCredits: 3,
+      grade: "B+",
+      prerequisites: [],
     },
     {
       id: "IT3120",
@@ -416,6 +405,17 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
       studyCredits: null,
       grade: null,
       prerequisites: ["IT3080"],
+    },
+    {
+      id: "IT3190",
+      name: "Nhập môn Học máy và khai phá dữ liệu",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 5,
+      isRequired: true,
+      credits: 3,
+      studyCredits: null,
+      grade: null,
+      prerequisites: ["MI2020"],
     },
     {
       id: "IT3930",
@@ -452,7 +452,7 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
     },
   ];
 
-  // 4. NHÓM 320: Khối kiến thức bổ trợ (Tổng 21 TC, Đạt 7 TC)
+  // 4. NHÓM 320: Khối kiến thức bổ trợ (Yêu cầu tích lũy: 9 TC, Đã đạt: 7 TC)
   const nhom320Raw: RawCourseSpec[] = [
     {
       id: "IT2030",
@@ -463,6 +463,39 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
       credits: 3,
       studyCredits: 3,
       grade: "B+",
+      prerequisites: [],
+    },
+    {
+      id: "CH2021",
+      name: "Đổi mới sáng tạo và khởi nghiệp",
+      openTerms: "Mở cả 2 kỳ",
+      semester: null,
+      isRequired: false,
+      credits: 2,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+    {
+      id: "ME3123",
+      name: "Thiết kế mỹ thuật công nghiệp",
+      openTerms: "Mở cả 2 kỳ",
+      semester: null,
+      isRequired: false,
+      credits: 2,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+    {
+      id: "ME3124",
+      name: "Thiết kế quảng bá sản phẩm",
+      openTerms: "Mở cả 2 kỳ",
+      semester: null,
+      isRequired: false,
+      credits: 2,
+      studyCredits: null,
+      grade: null,
       prerequisites: [],
     },
     {
@@ -488,17 +521,6 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
       prerequisites: [],
     },
     {
-      id: "CH2021",
-      name: "Đổi mới sáng tạo và khởi nghiệp",
-      openTerms: "Mở cả 2 kỳ",
-      semester: null,
-      isRequired: false,
-      credits: 2,
-      studyCredits: null,
-      grade: null,
-      prerequisites: [],
-    },
-    {
       id: "ED3280",
       name: "Tâm lý học ứng dụng",
       openTerms: "Mở cả 2 kỳ",
@@ -520,9 +542,31 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
       grade: null,
       prerequisites: [],
     },
+    {
+      id: "ET3262",
+      name: "Tư duy công nghệ và thiết kế kỹ thuật",
+      openTerms: "Mở cả 2 kỳ",
+      semester: null,
+      isRequired: false,
+      credits: 2,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+    {
+      id: "TEX3123",
+      name: "Thiết kế mỹ thuật công nghiệp",
+      openTerms: "Mở cả 2 kỳ",
+      semester: null,
+      isRequired: false,
+      credits: 2,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
   ];
 
-  // 5. NHÓM 360: Thực tập
+  // 5. NHÓM 360: Thực tập (2 TC - Đạt: 0 TC)
   const nhom360Raw: RawCourseSpec[] = [
     {
       id: "IT4991",
@@ -537,7 +581,7 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
     },
   ];
 
-  // 6. NHÓM 7: Đồ án / Khóa luận tốt nghiệp
+  // 6. NHÓM 7: Đồ án / Khóa luận tốt nghiệp (6 TC - Đạt: 0 TC)
   const nhom7Raw: RawCourseSpec[] = [
     {
       id: "IT4995",
@@ -552,18 +596,19 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
     },
   ];
 
-  // 7. NHÓM 400: Mô đun tự chọn chuyên sâu
+  // 7. DANH SÁCH 5 KHỐI MÔ ĐUN CHUYÊN SÂU (TỰ CHỌN ĐỊNH HƯỚNG)
+  // Mã 400: Mô đun 1 - Công nghệ phần mềm (Tổng 10 TC)
   const nhom400Raw: RawCourseSpec[] = [
     {
-      id: "IT4409",
-      name: "Công nghệ Web và dịch vụ trực tuyến",
+      id: "IT4490",
+      name: "Thiết kế và xây dựng phần mềm",
       openTerms: "Mở cả 2 kỳ",
-      semester: 6,
+      semester: 7,
       isRequired: false,
       credits: 3,
       studyCredits: null,
       grade: null,
-      prerequisites: ["IT3090"],
+      prerequisites: [],
     },
     {
       id: "IT4441",
@@ -577,8 +622,167 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
       prerequisites: [],
     },
     {
+      id: "IT4501",
+      name: "Đảm bảo chất lượng Phần mềm",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 7,
+      isRequired: false,
+      credits: 2,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+    {
+      id: "IT4785",
+      name: "Phát triển ứng dụng cho thiết bị di động",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 7,
+      isRequired: false,
+      credits: 2,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+  ];
+
+  // Mã 401: Mô đun 2 - Hệ thống thông tin (Tổng 10 TC)
+  const nhom401Raw: RawCourseSpec[] = [
+    {
+      id: "IT4350",
+      name: "Kiến trúc các hệ thống thông tin và ứng dụng",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 7,
+      isRequired: false,
+      credits: 3,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+    {
+      id: "IT4611",
+      name: "Các hệ thống phân tán và ứng dụng",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 7,
+      isRequired: false,
+      credits: 2,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+    {
+      id: "IT4341",
+      name: "Hệ trợ giúp quyết định",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 7,
+      isRequired: false,
+      credits: 2,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+    {
+      id: "IT4863",
+      name: "Tìm kiếm thông tin",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 7,
+      isRequired: false,
+      credits: 3,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+  ];
+
+  // Mã 402: Mô đun 3 - Phân tích dữ liệu thông minh (Tổng 10 TC)
+  const nhom402Raw: RawCourseSpec[] = [
+    {
+      id: "IT4930",
+      name: "Nhập môn Khoa học dữ liệu",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 7,
+      isRequired: false,
+      credits: 2,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+    {
+      id: "IT4931",
+      name: "Lưu trữ và xử lý dữ liệu lớn",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 7,
+      isRequired: false,
+      credits: 3,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+    {
+      id: "IT5425",
+      name: "Quản trị dữ liệu và trực quan hóa",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 7,
+      isRequired: false,
+      credits: 2,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+    {
+      id: "IT4906",
+      name: "Tính toán tiến hóa",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 7,
+      isRequired: false,
+      credits: 3,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+  ];
+
+  // Mã 403: Mô đun 4 - Phát triển ứng dụng nghiệp vụ (Tổng 6 TC)
+  const nhom403Raw: RawCourseSpec[] = [
+    {
+      id: "IT4409",
+      name: "Công nghệ Web và dịch vụ trực tuyến",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 6,
+      isRequired: false,
+      credits: 3,
+      studyCredits: null,
+      grade: null,
+      prerequisites: ["IT3090"],
+    },
+    {
       id: "IT4788",
       name: "Phát triển ứng dụng đa nền tảng",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 7,
+      isRequired: false,
+      credits: 3,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+  ];
+
+  // Mã 404: Mô đun 5 - Phát triển ứng dụng thông minh (Tổng 6 TC)
+  const nhom404Raw: RawCourseSpec[] = [
+    {
+      id: "IT4663",
+      name: "Tối ưu lập kế hoạch",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 6,
+      isRequired: false,
+      credits: 3,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+    {
+      id: "IT4613",
+      name: "Hệ gợi ý",
       openTerms: "Mở cả 2 kỳ",
       semester: 7,
       isRequired: false,
@@ -598,6 +802,10 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
     ...nhom360Raw,
     ...nhom7Raw,
     ...nhom400Raw,
+    ...nhom401Raw,
+    ...nhom402Raw,
+    ...nhom403Raw,
+    ...nhom404Raw,
   ];
   const passedCodes = new Set<string>(
     allRaw.filter((r) => r.grade !== null && r.grade !== "F").map((r) => r.id)
@@ -642,7 +850,11 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
     mapGroup("320", "Khối kiến thức bổ trợ", "KHỐI KIẾN THỨC BỔ TRỢ", nhom320Raw),
     mapGroup("360", "Thực tập", "THỰC TẬP DOANH NGHIỆP", nhom360Raw),
     mapGroup("7", "Đồ án / Khóa luận tốt nghiệp", "ĐỒ ÁN / KHÓA LUẬN TỐT NGHIỆP CỬ NHÂN", nhom7Raw),
-    mapGroup("400", "Mô đun tự chọn chuyên sâu", "MÔ ĐUN TỰ CHỌN CHUYÊN SÂU", nhom400Raw),
+    mapGroup("400", "Mô đun 1 - Công nghệ phần mềm", "MÔ ĐUN 1 - CÔNG NGHỆ PHẦN MỀM", nhom400Raw),
+    mapGroup("401", "Mô đun 2 - Hệ thống thông tin", "MÔ ĐUN 2 - HỆ THỐNG THÔNG TIN", nhom401Raw),
+    mapGroup("402", "Mô đun 3 - Phân tích dữ liệu thông minh", "MÔ ĐUN 3 - PHÂN TÍCH DỮ LIỆU THÔNG MINH", nhom402Raw),
+    mapGroup("403", "Mô đun 4 - Phát triển ứng dụng nghiệp vụ", "MÔ ĐUN 4 - PHÁT TRIỂN ỨNG DỤNG NGHIỆP VỤ", nhom403Raw),
+    mapGroup("404", "Mô đun 5 - Phát triển ứng dụng thông minh", "MÔ ĐUN 5 - PHÁT TRIỂN ỨNG DỤNG THÔNG MINH", nhom404Raw),
   ];
 }
 
