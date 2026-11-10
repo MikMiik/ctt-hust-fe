@@ -23,16 +23,9 @@ function createCourseItem(
   spec: RawCourseSpec,
   passedCodes: Set<string>
 ): CurriculumCourse {
-  const isPassed = spec.grade !== null && spec.grade !== "F";
-  let addStatus: CourseAddStatus;
-
-  if (isPassed) {
-    addStatus = "added";
-  } else {
-    // Chưa học hoặc nợ F: kiểm tra xem đã qua hết các môn tiên quyết chưa
-    const meetsPrereqs = spec.prerequisites.every((reqCode) => passedCodes.has(reqCode));
-    addStatus = meetsPrereqs ? "add" : "locked";
-  }
+  // Kiểm tra điều kiện tiên quyết: nếu thiếu thì khóa
+  const meetsPrereqs = spec.prerequisites.every((reqCode) => passedCodes.has(reqCode));
+  const addStatus: CourseAddStatus = meetsPrereqs ? "add" : "locked";
 
   return {
     indexNumber,
@@ -53,7 +46,7 @@ function createCourseItem(
     semesterTerm: spec.openTerms,
     recommendedSemester: spec.semester ?? undefined,
     trainingCredits: spec.credits,
-    tuitionCredits: spec.studyCredits ?? spec.credits,
+    tuitionCredits: spec.studyCredits ?? 0,
     letterGrade: spec.grade ?? undefined,
     addStatus,
   };

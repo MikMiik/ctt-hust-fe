@@ -6,7 +6,7 @@ import CurriculumSection from "@/components/home/CurriculumSection";
 import GraduationSection from "@/components/home/GraduationSection";
 import RegistrationSection from "@/components/home/RegistrationSection";
 import { mockCurricula } from "@/app/data";
-import type { SelectedCourse } from "@/app/types";
+import type { SelectedCourse, RegistrationType } from "@/app/types";
 
 const MAX_CREDITS = 24;
 
@@ -14,7 +14,10 @@ export default function HomePage() {
   const [cart, setCart] = useState<SelectedCourse[]>([]);
 
   const courseLookupMap = useMemo(() => {
-    const map = new Map<string, { className: string; credits: number }>();
+    const map = new Map<
+      string,
+      { className: string; credits: number; letterGrade?: string }
+    >();
     mockCurricula.forEach((program) => {
       program.groups.forEach((group) => {
         group.subGroups.forEach((subGroup) => {
@@ -22,6 +25,7 @@ export default function HomePage() {
             map.set(course.courseCode, {
               className: course.courseName,
               credits: course.trainingCredits,
+              letterGrade: course.letterGrade || (course as any).grade,
             });
           });
         });
@@ -36,8 +40,9 @@ export default function HomePage() {
   );
 
   function handleAddCourse(courseCode: string) {
+    // Nếu môn đã có trong giỏ, cho phép click để xóa khỏi giỏ
     if (selectedCodes.has(courseCode)) {
-      toast.warning(`Học phần ${courseCode} đã có trong danh sách đăng ký!`);
+      handleRemoveCourse(courseCode);
       return;
     }
 
@@ -50,6 +55,13 @@ export default function HomePage() {
       return;
     }
 
+    let regType: RegistrationType = "Học mới";
+    if (info.letterGrade === "F") {
+      regType = "Học lại";
+    } else if (info.letterGrade && info.letterGrade !== "—") {
+      regType = "Học cải thiện";
+    }
+
     const today = new Date().toLocaleDateString("vi-VN");
     setCart((prev) => [
       ...prev,
@@ -59,14 +71,25 @@ export default function HomePage() {
         registeredDate: today,
         registrationStatus: "Đang chờ",
         credits: info.credits,
+        registrationType: regType,
       },
     ]);
-    toast.success(`Đã thêm học phần ${courseCode} (${info.credits} TC) vào danh sách chờ`);
+
+    const typeDesc =
+      regType === "Học lại"
+        ? " [Học lại]"
+        : regType === "Học cải thiện"
+        ? " [Học cải thiện]"
+        : "";
+
+    toast.success(
+      `Đã thêm học phần ${courseCode}${typeDesc} (${info.credits} TC) vào danh sách chọn`
+    );
   }
 
   function handleRemoveCourse(courseCode: string) {
     setCart((prev) => prev.filter((c) => c.courseCode !== courseCode));
-    toast.info(`Đã hủy học phần ${courseCode}`);
+    toast.info(`Đã gỡ học phần ${courseCode} khỏi danh sách chọn`);
   }
 
   function handleSubmit() {

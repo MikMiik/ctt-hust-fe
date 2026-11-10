@@ -99,7 +99,19 @@ export default function SelectedTable({ courses, onRemove }: SelectedTableProps)
                   {course.courseCode}
                 </td>
                 <td className="px-3 py-2 border-r border-gray-100 text-gray-800 font-medium">
-                  {course.className}
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {course.registrationType === "Học lại" && (
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-700 border border-red-200">
+                        [Học lại]
+                      </span>
+                    )}
+                    {course.registrationType === "Học cải thiện" && (
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300">
+                        [Học cải thiện]
+                      </span>
+                    )}
+                    <span>{course.className}</span>
+                  </div>
                 </td>
                 <td className="px-3 py-2 border-r border-gray-100 text-center font-mono text-gray-600">
                   {course.registeredDate}
