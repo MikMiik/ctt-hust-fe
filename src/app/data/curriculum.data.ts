@@ -125,6 +125,98 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
     },
   ];
 
+  // 2. NHÓM 220: Giáo dục thể chất (0 TC tích lũy CPA, 5 HP điều kiện)
+  const nhom220Raw: RawCourseSpec[] = [
+    {
+      id: "PE1014",
+      name: "Lý luận TDTT",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 1,
+      isRequired: true,
+      credits: 0,
+      studyCredits: 0,
+      grade: "B+",
+      prerequisites: [],
+    },
+    {
+      id: "PE2101",
+      name: "Bóng chuyền 1",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 3,
+      isRequired: false,
+      credits: 0,
+      studyCredits: 0,
+      grade: "D",
+      prerequisites: [],
+    },
+    {
+      id: "PE2201",
+      name: "Bóng đá 1",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 3,
+      isRequired: false,
+      credits: 0,
+      studyCredits: 0,
+      grade: "D+",
+      prerequisites: [],
+    },
+    {
+      id: "PE2301",
+      name: "Bóng rổ 1",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 3,
+      isRequired: false,
+      credits: 0,
+      studyCredits: 0,
+      grade: "B+",
+      prerequisites: [],
+    },
+    {
+      id: "PE1025",
+      name: "Pickleball",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 3,
+      isRequired: false,
+      credits: 0,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+    {
+      id: "PE2011",
+      name: "Bơi lội 1",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 3,
+      isRequired: false,
+      credits: 0,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+    {
+      id: "PE2211",
+      name: "Cầu lông 1",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 3,
+      isRequired: false,
+      credits: 0,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+    {
+      id: "PE2401",
+      name: "Bóng bàn 1",
+      openTerms: "Mở cả 2 kỳ",
+      semester: 3,
+      isRequired: false,
+      credits: 0,
+      studyCredits: null,
+      grade: null,
+      prerequisites: [],
+    },
+  ];
+
   // 2. NHÓM 250: Khối kiến thức Toán và Khoa học cơ bản (32 TC - Đạt 32 TC)
   const nhom250Raw: RawCourseSpec[] = [
     {
@@ -796,6 +888,7 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
   // Tập hợp các môn đã hoàn thành (đạt) để kiểm tra điều kiện tiên quyết
   const allRaw = [
     ...nhom210Raw,
+    ...nhom220Raw,
     ...nhom250Raw,
     ...nhom300Raw,
     ...nhom320Raw,
@@ -845,6 +938,7 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
 
   return [
     mapGroup("210", "Lý luận chính trị + Pháp luật đại cương", "LÝ LUẬN CHÍNH TRỊ + PHÁP LUẬT ĐẠI CƯƠNG", nhom210Raw),
+    mapGroup("220", "Giáo dục thể chất", "GIÁO DỤC THỂ CHẤT", nhom220Raw),
     mapGroup("250", "Toán và Khoa học cơ bản", "TOÁN VÀ KHOA HỌC CƠ BẢN", nhom250Raw),
     mapGroup("300", "Cơ sở và cốt lõi ngành", "CƠ SỞ VÀ CỐT LÕI NGÀNH", nhom300Raw),
     mapGroup("320", "Khối kiến thức bổ trợ", "KHỐI KIẾN THỨC BỔ TRỢ", nhom320Raw),

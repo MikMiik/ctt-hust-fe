@@ -138,7 +138,9 @@ export default function HomePage() {
     cart.forEach((item) => {
       const categoryCode = courseCategoryMap.get(item.courseCode);
       if (categoryCode) {
-        counts[categoryCode] = (counts[categoryCode] || 0) + item.credits;
+        // Với học phần điều kiện 0 TC (như Giáo dục thể chất nhóm 220), tính theo 1 HP
+        const creditValue = item.credits > 0 ? item.credits : 1;
+        counts[categoryCode] = (counts[categoryCode] || 0) + creditValue;
       }
     });
     return counts;

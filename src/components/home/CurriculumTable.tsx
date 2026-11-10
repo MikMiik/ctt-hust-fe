@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, useMemo } from "react";
 import type { CurriculumGroup, CourseAddStatus } from "@/app/types";
 import {
   Check,
@@ -70,11 +70,13 @@ function AddCell({
   grade,
   prerequisiteCode,
   onAdd,
+  isPeLocked,
 }: {
   status: CourseAddStatus;
   grade?: string | null;
   prerequisiteCode?: string;
   onAdd?: () => void;
+  isPeLocked?: boolean;
 }) {
   // 1. Khi môn đã được thêm vào giỏ: Đổi text nút thành "✓ Đã chọn" (cho click để xóa khỏi giỏ)
   if (status === "added") {
@@ -83,7 +85,7 @@ function AddCell({
         type="button"
         onClick={onAdd}
         title="Đã có trong giỏ học phần (Click để gỡ)"
-        className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100 hover:border-emerald-400 transition-all cursor-pointer shadow-2xs"
+        className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100 hover:border-emerald-400 transition-all cursor-pointer shadow-2xs whitespace-nowrap"
       >
         <Check aria-hidden="true" className="size-3 text-emerald-600" />
         <span>Đã chọn</span>
@@ -93,7 +95,22 @@ function AddCell({
 
   const hasGrade = Boolean(grade && grade !== "—");
 
-  // 2. Nếu môn chưa học (grade == null hoặc '—'):
+  // 2. Nếu là môn thực hành thể chất chưa học và sinh viên đã đủ 4 HP thực hành:
+  if (!hasGrade && isPeLocked) {
+    return (
+      <button
+        type="button"
+        disabled
+        className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed select-none whitespace-nowrap"
+        title="Bạn đã chọn đủ 4 học phần thực hành thể chất theo quy chế tốt nghiệp"
+      >
+        <LockKeyhole aria-hidden="true" className="size-3 text-gray-400" />
+        <span>Đã đủ điều kiện</span>
+      </button>
+    );
+  }
+
+  // 3. Nếu môn chưa học (grade == null hoặc '—'):
   if (!hasGrade) {
     // Thiếu tiên quyết -> Render nút "🔒 Khóa" (disable, hover có tooltip)
     if (status === "locked") {
@@ -126,7 +143,7 @@ function AddCell({
     );
   }
 
-  // 3. Nếu môn đã có điểm:
+  // 4. Nếu môn đã có điểm:
   // Điểm F -> Render nút "Học lại" (màu đỏ)
   if (grade === "F") {
     return (
@@ -215,6 +232,23 @@ export default function CurriculumTable({
   groups,
   onAddCourse,
 }: CurriculumTableProps) {
+  // Tính tổng số môn thực hành thể chất (loại trừ môn lý luận PE1014)
+  const practicalPeCourses = useMemo(() => {
+    return groups
+      .flatMap((g) => g.subGroups.flatMap((sg) => sg.courses))
+      .filter((c) => c.courseCode.startsWith("PE") && c.courseCode !== "PE1014");
+  }, [groups]);
+
+  const completedPracticalCount = practicalPeCourses.filter(
+    (c) => c.letterGrade && c.letterGrade !== "—" && c.letterGrade !== "F"
+  ).length;
+
+  const inCartPracticalCount = practicalPeCourses.filter(
+    (c) => c.addStatus === "added"
+  ).length;
+
+  const practicalPeCount = completedPracticalCount + inCartPracticalCount;
+
   if (groups.length === 0) {
     return (
       <div className="p-8 text-center text-gray-400 text-xs">
@@ -297,63 +331,71 @@ export default function CurriculumTable({
                   </tr>
 
                   {/* Course rows */}
-                  {sub.courses.map((course) => (
-                    <tr
-                      key={course.courseCode}
-                      className="hover:bg-row-hover bg-white border-b border-gray-100 transition-colors"
-                    >
-                      <td className="px-3 py-2 border-r border-gray-100 text-center font-mono text-gray-500">
-                        {course.indexNumber}
-                      </td>
-                      <td className="px-3 py-2 border-r border-gray-100 font-mono font-semibold text-gray-800">
-                        {course.courseCode}
-                      </td>
-                      <td className="px-3 py-2 border-r border-gray-100">
-                        <div className="text-gray-800">{course.courseName}</div>
-                        {course.prerequisiteCode && (
-                          <div className="text-[11px] text-gray-400 mt-0.5">
-                            Tiên quyết: {course.prerequisiteCode}
-                          </div>
-                        )}
-                      </td>
-                      <td className="px-3 py-2 border-r border-gray-100 text-center">
-                        <SemesterBadge term={course.semesterTerm} />
-                      </td>
-                      <td className="px-3 py-2 border-r border-gray-100 text-center">
-                        <RecommendedSemesterCell
-                          semester={course.recommendedSemester}
-                        />
-                      </td>
-                      <td className="px-3 py-2 border-r border-gray-100 text-center">
-                        <RequiredCell isRequired={Boolean(course.isRequired)} />
-                      </td>
-                      {/* TC ĐT */}
-                      <td className="px-3 py-2 border-r border-gray-100 text-center font-semibold text-gray-700">
-                        {course.trainingCredits}
-                      </td>
-                      {/* TC HỌC: Môn chưa học -> để trống hoặc '—', chỉ hiện số khi đã học xong */}
-                      <td className="px-3 py-2 border-r border-gray-100 text-center font-semibold text-gray-700">
-                        {course.letterGrade && course.letterGrade !== "—" ? (
-                          course.tuitionCredits
-                        ) : (
-                          <span className="text-gray-400 font-mono text-xs">—</span>
-                        )}
-                      </td>
-                      {/* ĐIỂM */}
-                      <td className="px-3 py-2 border-r border-gray-100 text-center">
-                        <GradeCell grade={course.letterGrade} />
-                      </td>
-                      {/* THAO TÁC / THÊM */}
-                      <td className="px-3 py-2 text-center">
-                        <AddCell
-                          status={course.addStatus}
-                          grade={course.letterGrade}
-                          prerequisiteCode={course.prerequisiteCode}
-                          onAdd={() => onAddCourse(course.courseCode)}
-                        />
-                      </td>
-                    </tr>
-                  ))}
+                  {sub.courses.map((course) => {
+                    const isPracticalPe =
+                      course.courseCode.startsWith("PE") &&
+                      course.courseCode !== "PE1014";
+                    const isPeLocked = isPracticalPe && practicalPeCount >= 4;
+
+                    return (
+                      <tr
+                        key={course.courseCode}
+                        className="hover:bg-row-hover bg-white border-b border-gray-100 transition-colors"
+                      >
+                        <td className="px-3 py-2 border-r border-gray-100 text-center font-mono text-gray-500">
+                          {course.indexNumber}
+                        </td>
+                        <td className="px-3 py-2 border-r border-gray-100 font-mono font-semibold text-gray-800">
+                          {course.courseCode}
+                        </td>
+                        <td className="px-3 py-2 border-r border-gray-100">
+                          <div className="text-gray-800">{course.courseName}</div>
+                          {course.prerequisiteCode && (
+                            <div className="text-[11px] text-gray-400 mt-0.5">
+                              Tiên quyết: {course.prerequisiteCode}
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-3 py-2 border-r border-gray-100 text-center">
+                          <SemesterBadge term={course.semesterTerm} />
+                        </td>
+                        <td className="px-3 py-2 border-r border-gray-100 text-center">
+                          <RecommendedSemesterCell
+                            semester={course.recommendedSemester}
+                          />
+                        </td>
+                        <td className="px-3 py-2 border-r border-gray-100 text-center">
+                          <RequiredCell isRequired={Boolean(course.isRequired)} />
+                        </td>
+                        {/* TC ĐT */}
+                        <td className="px-3 py-2 border-r border-gray-100 text-center font-semibold text-gray-700">
+                          {course.trainingCredits}
+                        </td>
+                        {/* TC HỌC: Môn chưa học -> để trống hoặc '—', chỉ hiện số khi đã học xong */}
+                        <td className="px-3 py-2 border-r border-gray-100 text-center font-semibold text-gray-700">
+                          {course.letterGrade && course.letterGrade !== "—" ? (
+                            course.tuitionCredits
+                          ) : (
+                            <span className="text-gray-400 font-mono text-xs">—</span>
+                          )}
+                        </td>
+                        {/* ĐIỂM */}
+                        <td className="px-3 py-2 border-r border-gray-100 text-center">
+                          <GradeCell grade={course.letterGrade} />
+                        </td>
+                        {/* THAO TÁC / THÊM */}
+                        <td className="px-3 py-2 text-center">
+                          <AddCell
+                            status={course.addStatus}
+                            grade={course.letterGrade}
+                            prerequisiteCode={course.prerequisiteCode}
+                            onAdd={() => onAddCourse(course.courseCode)}
+                            isPeLocked={isPeLocked}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </Fragment>
               ))}
             </Fragment>

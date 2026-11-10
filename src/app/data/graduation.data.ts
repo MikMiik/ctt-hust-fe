@@ -147,6 +147,22 @@ export const mockGraduationNormal: GraduationRequirementGroup[] = [
       },
     ],
   },
+  {
+    id: "gdtc",
+    categoryCode: "220",
+    name: "Giáo dục thể chất",
+    shortName: "GDTC",
+    requiredCredits: 5,
+    completedCredits: 4,
+    missingCourses: [
+      {
+        courseCode: "PE2211",
+        courseName: "Cầu lông 1 (Thực hành)",
+        credits: 0,
+        isRequired: false,
+      },
+    ],
+  },
 ];
 
 export const mockGraduationWarning: GraduationRequirementGroup[] = [
@@ -298,6 +314,22 @@ export const mockGraduationWarning: GraduationRequirementGroup[] = [
         courseCode: "IT4490",
         courseName: "Thiết kế và xây dựng phần mềm",
         credits: 3,
+        isRequired: false,
+      },
+    ],
+  },
+  {
+    id: "gdtc",
+    categoryCode: "220",
+    name: "Giáo dục thể chất",
+    shortName: "GDTC",
+    requiredCredits: 5,
+    completedCredits: 4,
+    missingCourses: [
+      {
+        courseCode: "PE2211",
+        courseName: "Cầu lông 1 (Thực hành)",
+        credits: 0,
         isRequired: false,
       },
     ],

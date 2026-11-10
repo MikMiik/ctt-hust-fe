@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { mockGraduationRequirements } from "@/app/data";
 import type { GraduationRequirementGroup } from "@/app/types";
-import { BadgeCheck } from "lucide-react";
+import { BadgeCheck, Check, CircleAlert } from "lucide-react";
 
 interface GraduationSectionProps {
   requirements?: GraduationRequirementGroup[];
@@ -24,21 +24,20 @@ export default function GraduationSection({
     );
   }, [addedCreditsByCategory]);
 
-  // Đảm bảo luôn có Card Mô đun chuyên sâu định hướng (Target 16 TC)
+  // Đảm bảo luôn có đủ cả Card Mô đun chuyên sâu định hướng và Giáo dục thể chất
   const displayRequirements = useMemo(() => {
+    let list = [...requirements];
+
+    // Card Mô đun chuyên sâu (Target 16 TC)
     if (
-      requirements.some(
+      !list.some(
         (r) =>
           r.id === "modchuyensau" ||
           r.categoryCode === "MODULE" ||
           r.name.includes("Mô đun")
       )
     ) {
-      return requirements;
-    }
-    return [
-      ...requirements,
-      {
+      list.push({
         id: "modchuyensau",
         categoryCode: "MODULE",
         name: "Mô đun chuyên sâu định hướng",
@@ -46,8 +45,30 @@ export default function GraduationSection({
         requiredCredits: 16,
         completedCredits: 0,
         missingCourses: [],
-      },
-    ];
+      });
+    }
+
+    // Card Giáo dục thể chất (5 HP: 1 Lý luận + 4 Thực hành)
+    if (
+      !list.some(
+        (r) =>
+          r.id === "gdtc" ||
+          r.categoryCode === "220" ||
+          r.name.includes("thể chất")
+      )
+    ) {
+      list.push({
+        id: "gdtc",
+        categoryCode: "220",
+        name: "Giáo dục thể chất",
+        shortName: "GDTC",
+        requiredCredits: 5,
+        completedCredits: 4,
+        missingCourses: [],
+      });
+    }
+
+    return list;
   }, [requirements]);
 
   return (
@@ -63,9 +84,9 @@ export default function GraduationSection({
         </div>
       </div>
 
-      {/* ── Cards Grid (5 Cards trên màn hình lớn) ── */}
+      {/* ── Cards Grid (6 Cards linh hoạt từ mobile đến desktop) ── */}
       <div className="p-4 bg-gray-50/30">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
           {displayRequirements.map((req) => {
             const isModuleGroup =
               req.id === "modchuyensau" ||
@@ -73,9 +94,19 @@ export default function GraduationSection({
               MODULE_CATEGORY_CODES.includes(req.categoryCode) ||
               req.name.includes("Mô đun");
 
+            const isPeGroup =
+              req.id === "gdtc" ||
+              req.categoryCode === "220" ||
+              req.shortName === "GDTC" ||
+              req.name.includes("thể chất");
+
             const added = isModuleGroup
               ? moduleAddedCredits
+              : isPeGroup
+              ? addedCreditsByCategory["220"] || 0
               : addedCreditsByCategory[req.categoryCode] || 0;
+
+            const unitLabel = isPeGroup ? "HP" : "TC";
 
             const completedPercent = Math.min(
               100,
@@ -116,20 +147,44 @@ export default function GraduationSection({
                       Tối thiểu 16 TC từ 2 mô đun
                     </span>
                   )}
+                  {isPeGroup && (
+                    <span className="text-[10px] text-gray-400 block mt-1">
+                      1 Lý luận + 4 Thực hành
+                    </span>
+                  )}
                 </div>
 
-                {/* ── Credit stat ── */}
-                <div className="flex items-baseline gap-1">
-                  <span className="text-xl font-bold text-gray-900 leading-none">
-                    {projectedCredits}
-                  </span>
-                  <span className="text-xs text-gray-400">
-                    / {req.requiredCredits} TC
-                  </span>
-                  {added > 0 && (
-                    <span className="text-[11px] font-semibold text-blue-600 ml-1">
-                      +{added}
+                {/* ── Credit/HP stat ── */}
+                <div>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-xl font-bold text-gray-900 leading-none">
+                      {projectedCredits}
                     </span>
+                    <span className="text-xs text-gray-400">
+                      / {req.requiredCredits} {unitLabel}
+                    </span>
+                    {added > 0 && (
+                      <span className="text-[11px] font-semibold text-blue-600 ml-1">
+                        +{added}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Badge phản hồi trạng thái thực hành thể chất */}
+                  {isPeGroup && (
+                    <div className="mt-1.5">
+                      {projectedCredits >= 5 ? (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 leading-tight">
+                          <Check aria-hidden="true" className="size-3 text-emerald-600 shrink-0" />
+                          <span>Đã đủ 1 Lý luận + 4 Thực hành</span>
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 leading-tight">
+                          <CircleAlert aria-hidden="true" className="size-3 text-amber-500 shrink-0" />
+                          <span>Còn thiếu 1 HP thực hành</span>
+                        </span>
+                      )}
+                    </div>
                   )}
                 </div>
 
