@@ -8,6 +8,7 @@ import {
   LockKeyhole,
   Plus,
   RotateCcw,
+  ShieldCheck,
   TrendingUp,
 } from "lucide-react";
 
@@ -27,10 +28,22 @@ function RecommendedSemesterCell({ semester }: { semester?: number }) {
   );
 }
 
-function MandatoryIcon() {
+function RequiredCell({ isRequired }: { isRequired: boolean }) {
+  if (isRequired) {
+    return (
+      <span
+        className="inline-flex items-center justify-center gap-1 font-medium text-xs text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 select-none whitespace-nowrap"
+        title="Học phần bắt buộc"
+      >
+        <ShieldCheck aria-hidden="true" className="size-3.5 text-amber-500 shrink-0" />
+        <span>Bắt buộc</span>
+      </span>
+    );
+  }
+
   return (
-    <span className="mandatory-badge" title="Bắt buộc">
-      <CircleAlert aria-hidden="true" className="size-3" />
+    <span className="text-xs text-slate-400 select-none whitespace-nowrap">
+      Tự chọn
     </span>
   );
 }
@@ -237,7 +250,7 @@ export default function CurriculumTable({
             <th className="px-3 py-2 border-r border-gray-200 text-center w-24">
               Kỳ đề xuất
             </th>
-            <th className="px-3 py-2 border-r border-gray-200 text-center w-20">
+            <th className="px-3 py-2 border-r border-gray-200 text-center w-28">
               Bắt buộc
             </th>
             <th className="px-3 py-2 border-r border-gray-200 text-center w-16">
@@ -312,7 +325,7 @@ export default function CurriculumTable({
                         />
                       </td>
                       <td className="px-3 py-2 border-r border-gray-100 text-center">
-                        {course.isRequired && <MandatoryIcon />}
+                        <RequiredCell isRequired={Boolean(course.isRequired)} />
                       </td>
                       {/* TC ĐT */}
                       <td className="px-3 py-2 border-r border-gray-100 text-center font-semibold text-gray-700">
