@@ -1,31 +1,29 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { submitRegistration } from "@/lib/db";
+import { submitRegistrationStore } from "@/lib/registrations-store";
 
 export async function POST() {
   try {
     const session = await getServerSession(authOptions);
-    const studentId = session?.user?.studentId;
+    const studentId = session?.user?.studentId || "202400000";
 
-    if (!studentId) {
-      return NextResponse.json(
-        { success: false, message: "Vui lòng đăng nhập để thực hiện thao tác này." },
-        { status: 401 },
-      );
-    }
-
-    const result = await submitRegistration(studentId);
+    const result = submitRegistrationStore();
 
     if (!result.success) {
       return NextResponse.json(
-        { success: false, message: result.message },
+        {
+          success: false,
+          studentId,
+          message: result.message,
+        },
         { status: 400 }
       );
     }
 
     return NextResponse.json({
       success: true,
+      studentId,
       message: result.message,
       count: result.count,
       totalCredits: result.totalCredits,

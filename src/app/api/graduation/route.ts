@@ -1,11 +1,19 @@
-import { NextResponse } from "next/server";
-import { getGraduationRequirements } from "@/lib/db";
+import { NextRequest, NextResponse } from "next/server";
+import { getGraduationForScenario } from "@/app/data/graduation.data";
+import { getActiveScenario, type ScenarioPreset } from "@/lib/scenario";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const requirements = await getGraduationRequirements();
+    const { searchParams } = new URL(request.url);
+    const presetParam = searchParams.get("preset");
+    const cookieScenario = request.cookies.get("ctt_scenario")?.value;
+    const activeScenario: ScenarioPreset = getActiveScenario(presetParam || cookieScenario);
+
+    const requirements = getGraduationForScenario(activeScenario);
+
     return NextResponse.json({
       success: true,
+      preset: activeScenario,
       data: requirements,
     });
   } catch (error) {
