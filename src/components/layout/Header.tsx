@@ -3,9 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { mockStudent } from "@/app/data";
-import { LogIn, LogOut } from "lucide-react";
+import { LogIn, LogOut, RefreshCw } from "lucide-react";
 
 /** Lấy chữ viết tắt tên (tối đa 2 ký tự) */
 function getInitials(name: string): string {
@@ -17,13 +17,44 @@ function getInitials(name: string): string {
 export default function Header() {
   const { data: session, status } = useSession();
   const [loggingOut, setLoggingOut] = useState(false);
+  const [scenario, setScenario] = useState<"normal" | "warning">("normal");
+  const [switching, setSwitching] = useState(false);
 
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      const match = document.cookie.match(/ctt_scenario=([^;]+)/);
+      if (match && (match[1] === "normal" || match[1] === "warning")) {
+        setScenario(match[1] as "normal" | "warning");
+      }
+    }
+  }, []);
+
+  async function handleToggleScenario() {
+    if (switching) return;
+    setSwitching(true);
+    const nextScenario = scenario === "normal" ? "warning" : "normal";
+    try {
+      await fetch("/api/scenario", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ scenario: nextScenario }),
+      });
+      document.cookie = `ctt_scenario=${nextScenario}; path=/; max-age=604800`;
+      setScenario(nextScenario);
+      window.location.reload();
+    } catch (e) {
+      console.error("Lỗi khi chuyển kịch bản:", e);
+      setSwitching(false);
+    }
+  }
+
+  // Tự động gán thông tin sinh viên mặc định để bypass đăng nhập cho demo
   const studentName =
     session?.user?.fullName ||
-    (status === "loading" ? mockStudent.fullName : null);
+    mockStudent.fullName;
   const studentId =
     session?.user?.studentId ||
-    (status === "loading" ? mockStudent.studentId : null);
+    mockStudent.studentId;
 
   const initials = studentName ? getInitials(studentName) : null;
 
@@ -55,6 +86,33 @@ export default function Header() {
 
         {/* ── Student Info & Actions ── */}
         <div className="flex items-center gap-3">
+          {/* Nút Toggle chuyển đổi kịch bản Demo */}
+          <button
+            type="button"
+            disabled={switching}
+            onClick={handleToggleScenario}
+            title="Nhấp để chuyển đổi kịch bản demo giữa CPA Giỏi và Cảnh báo nợ F IT1110"
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded border transition-colors shadow-xs cursor-pointer ${
+              scenario === "normal"
+                ? "bg-green-50 text-green-800 border-green-300 hover:bg-green-100"
+                : "bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100"
+            }`}
+          >
+            <span
+              className={`size-2 rounded-full shrink-0 ${
+                scenario === "normal" ? "bg-green-500 animate-pulse" : "bg-red-500 animate-pulse"
+              }`}
+            />
+            <span>
+              {switching
+                ? "Đang tải..."
+                : scenario === "normal"
+                ? "Preset: CPA Giỏi"
+                : "Preset: Cảnh báo nợ F"}
+            </span>
+            <RefreshCw className={`size-3 text-gray-500 ${switching ? "animate-spin" : ""}`} />
+          </button>
+
           {studentName ? (
             <>
               <div className="text-right">
