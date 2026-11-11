@@ -55,14 +55,14 @@ export default function HomePage() {
       return;
     }
 
-    let regType: RegistrationType = "NEW";
+    let regType: RegistrationType = "Học mới";
     const grade = info.letterGrade;
     if (grade === "F") {
-      regType = "RETAKE";
+      regType = "Học lại";
     } else if (grade && grade !== "—") {
-      regType = "IMPROVE";
+      regType = "Học cải thiện";
     } else {
-      regType = "NEW";
+      regType = "Học mới";
     }
 
     const today = new Date().toLocaleDateString("vi-VN");
@@ -79,9 +79,9 @@ export default function HomePage() {
     ]);
 
     const typeDesc =
-      regType === "RETAKE"
+      regType === "Học lại"
         ? " [Học lại]"
-        : regType === "IMPROVE"
+        : regType === "Học cải thiện"
         ? " [Học cải thiện]"
         : "";
 
@@ -140,9 +140,9 @@ export default function HomePage() {
     const counts: Record<string, number> = {};
     cart.forEach((item) => {
       // Quy chế Đào tạo Bách Khoa:
-      // - Học cải thiện (IMPROVE): Đã tích lũy trước đó, chỉ để nâng điểm CPA -> +0 TC vào tiến độ tốt nghiệp.
-      // - Học lại (RETAKE) & Học mới (NEW): Mới được cộng thêm tín chỉ vào tiến độ tích lũy dự kiến.
-      if (item.registrationType === "IMPROVE" || item.registrationType === "Học cải thiện") {
+      // - Học cải thiện: Đã tích lũy trước đó, chỉ để nâng điểm CPA -> +0 TC vào tiến độ tốt nghiệp.
+      // - Học lại & Học mới: Mới được cộng thêm tín chỉ vào tiến độ tích lũy dự kiến.
+      if (item.registrationType === "Học cải thiện") {
         return;
       }
       const categoryCode = courseCategoryMap.get(item.courseCode);
