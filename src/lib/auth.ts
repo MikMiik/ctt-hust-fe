@@ -1,6 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { getUserByUsername } from "@/lib/db";
+import { defaultStudentUser } from "@/app/data/user.data";
 import { getAuthSecret } from "@/lib/auth-secret";
 
 export const authOptions: NextAuthOptions = {
@@ -11,12 +11,9 @@ export const authOptions: NextAuthOptions = {
         username: { label: "Tên đăng nhập", type: "text" },
         password: { label: "Mật khẩu", type: "password" },
       },
-      async authorize(credentials) {
-        if (!credentials?.username || !credentials?.password) return null;
-
-        const user = await getUserByUsername(credentials.username);
-
-        if (!user || user.password !== credentials.password) return null;
+      async authorize(_credentials) {
+        // Tự động gán tài khoản sinh viên mặc định: Nguyễn Văn A (202400000 - K69)
+        const user = defaultStudentUser;
 
         return {
           id: user.id,

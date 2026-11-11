@@ -2,30 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import {
-  getRegistrations,
-  addRegistration,
-  removeRegistration,
-} from "@/lib/db";
+  getRegistrationsStore,
+  addRegistrationStore,
+  removeRegistrationStore,
+} from "@/lib/registrations-store";
 
-async function getCurrentStudentId(): Promise<string | null> {
+async function getCurrentStudentId(): Promise<string> {
   const session = await getServerSession(authOptions);
-  return session?.user?.studentId || null;
+  return session?.user?.studentId || "202400000";
 }
 
-function unauthorizedResponse() {
-  return NextResponse.json(
-    { success: false, message: "Vui lòng đăng nhập để thực hiện thao tác này." },
-    { status: 401 },
-  );
-}
-
-// GET: Lấy danh sách học phần đã chọn trong giỏ đăng ký
+// GET: Lấy danh sách học phần đã chọn trong giỏ đăng ký (In-Memory 0ms)
 export async function GET() {
   try {
     const studentId = await getCurrentStudentId();
-    if (!studentId) return unauthorizedResponse();
-
-    const courses = await getRegistrations(studentId);
+    const courses = getRegistrationsStore();
     const totalCredits = courses.reduce((sum, c) => sum + c.credits, 0);
 
     return NextResponse.json({
@@ -58,9 +49,7 @@ export async function POST(request: NextRequest) {
     }
 
     const studentId = await getCurrentStudentId();
-    if (!studentId) return unauthorizedResponse();
-
-    const result = await addRegistration(studentId, courseCode.trim());
+    const result = addRegistrationStore(courseCode.trim());
 
     if (!result.success) {
       return NextResponse.json(
@@ -71,6 +60,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
+      studentId,
       message: result.message,
       data: result.course,
       totalCredits: result.totalCredits,
@@ -95,33 +85,37 @@ export async function DELETE(request: NextRequest) {
         const body = await request.json();
         courseCode = body.courseCode;
       } catch {
-        // body not provided, that's fine
+        // body not provided
       }
     }
 
-    if (!courseCode) {
+    if (!courseCode || typeof courseCode !== "string") {
       return NextResponse.json(
-        { success: false, message: "Thiếu mã học phần cần hủy!" },
+        { success: false, message: "Vui lòng cung cấp mã học phần cần hủy!" },
         { status: 400 }
       );
     }
 
     const studentId = await getCurrentStudentId();
-    if (!studentId) return unauthorizedResponse();
-
-    const result = await removeRegistration(studentId, courseCode.trim());
+    const result = removeRegistrationStore(courseCode.trim());
 
     if (!result.success) {
       return NextResponse.json(
         { success: false, message: result.message },
-        { status: 400 }
+        { status: 404 }
       );
     }
 
+    const currentList = getRegistrationsStore();
+    const totalCredits = currentList.reduce((sum, c) => sum + c.credits, 0);
+
     return NextResponse.json({
       success: true,
+      studentId,
       message: result.message,
       removedCourseCode: result.removedCourseCode,
+      totalCredits,
+      remainingCount: currentList.length,
     });
   } catch (error) {
     console.error("API DELETE /api/registrations error:", error);
