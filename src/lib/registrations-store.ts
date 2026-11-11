@@ -58,12 +58,21 @@ export function addRegistrationStore(courseCode: string): {
   }
 
   const today = new Date().toLocaleDateString("vi-VN");
+  const grade = course.letterGrade || course.grade;
+  let regType: SelectedCourse["registrationType"] = "NEW";
+  if (grade === "F") {
+    regType = "RETAKE";
+  } else if (grade && grade !== "—") {
+    regType = "IMPROVE";
+  }
+
   const newCourse: SelectedCourse = {
     courseCode: course.courseCode,
     className: course.courseName,
     registeredDate: today,
     registrationStatus: "Đang chờ",
     credits: course.trainingCredits,
+    registrationType: regType,
   };
 
   inMemoryRegistrations.push(newCourse);
