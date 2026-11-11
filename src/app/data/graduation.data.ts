@@ -336,9 +336,76 @@ export const mockGraduationWarning: GraduationRequirementGroup[] = [
   },
 ];
 
+/**
+ * Chuẩn đầu ra và tiến độ cho Tân sinh viên (0 TC / 0 HP đạt):
+ */
+export const mockGraduationFreshman: GraduationRequirementGroup[] = [
+  {
+    id: "llct",
+    categoryCode: "210",
+    name: "Lý luận chính trị + Pháp luật đại cương",
+    shortName: "LLCT",
+    requiredCredits: 13,
+    completedCredits: 0,
+    missingCourses: [],
+  },
+  {
+    id: "tkhcb",
+    categoryCode: "250",
+    name: "Toán và Khoa học cơ bản",
+    shortName: "TKHCB",
+    requiredCredits: 32,
+    completedCredits: 0,
+    missingCourses: [],
+  },
+  {
+    id: "cscln",
+    categoryCode: "300",
+    name: "Cơ sở và cốt lõi ngành",
+    shortName: "CSCLN",
+    requiredCredits: 48,
+    completedCredits: 0,
+    missingCourses: [],
+  },
+  {
+    id: "ktbt",
+    categoryCode: "320",
+    name: "Khối kiến thức bổ trợ",
+    shortName: "KTBT",
+    requiredCredits: 9,
+    completedCredits: 0,
+    missingCourses: [],
+  },
+  {
+    id: "modchuyensau",
+    categoryCode: "MODULE",
+    name: "Mô đun chuyên sâu định hướng",
+    shortName: "MÔ ĐUN",
+    requiredCredits: 16,
+    completedCredits: 0,
+    missingCourses: [],
+  },
+  {
+    id: "gdtc",
+    categoryCode: "220",
+    name: "Giáo dục thể chất",
+    shortName: "GDTC",
+    requiredCredits: 5,
+    completedCredits: 0,
+    missingCourses: [],
+  },
+];
+
 export function getGraduationForScenario(preset?: ScenarioPreset): GraduationRequirementGroup[] {
   const active = preset ?? getActiveScenario();
   return active === "warning" ? mockGraduationWarning : mockGraduationNormal;
+}
+
+export function getGraduationForCurriculum(curriculumId: string, preset?: ScenarioPreset): GraduationRequirementGroup[] {
+  if (curriculumId === "ctdt-cntt-freshman") {
+    return mockGraduationFreshman;
+  }
+  return getGraduationForScenario(preset);
 }
 
 export const mockGraduationRequirements: GraduationRequirementGroup[] = new Proxy(
