@@ -110,6 +110,11 @@ export default function SelectedTable({ courses, onRemove }: SelectedTableProps)
                         [Học cải thiện]
                       </span>
                     )}
+                    {course.registrationType === "Học mới" && (
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                        [Học mới]
+                      </span>
+                    )}
                     <span>{course.className}</span>
                   </div>
                 </td>

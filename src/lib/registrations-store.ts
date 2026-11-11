@@ -58,12 +58,21 @@ export function addRegistrationStore(courseCode: string): {
   }
 
   const today = new Date().toLocaleDateString("vi-VN");
+  const grade = course.letterGrade || course.grade;
+  let regType: SelectedCourse["registrationType"] = "Học mới";
+  if (grade === "F") {
+    regType = "Học lại";
+  } else if (grade && grade !== "—") {
+    regType = "Học cải thiện";
+  }
+
   const newCourse: SelectedCourse = {
     courseCode: course.courseCode,
     className: course.courseName,
     registeredDate: today,
     registrationStatus: "Đang chờ",
     credits: course.trainingCredits,
+    registrationType: regType,
   };
 
   inMemoryRegistrations.push(newCourse);

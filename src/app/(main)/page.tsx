@@ -56,10 +56,13 @@ export default function HomePage() {
     }
 
     let regType: RegistrationType = "Học mới";
-    if (info.letterGrade === "F") {
+    const grade = info.letterGrade;
+    if (grade === "F") {
       regType = "Học lại";
-    } else if (info.letterGrade && info.letterGrade !== "—") {
+    } else if (grade && grade !== "—") {
       regType = "Học cải thiện";
+    } else {
+      regType = "Học mới";
     }
 
     const today = new Date().toLocaleDateString("vi-VN");
@@ -136,6 +139,12 @@ export default function HomePage() {
   const addedCreditsByCategory = useMemo(() => {
     const counts: Record<string, number> = {};
     cart.forEach((item) => {
+      // Quy chế Đào tạo Bách Khoa:
+      // - Học cải thiện: Đã tích lũy trước đó, chỉ để nâng điểm CPA -> +0 TC vào tiến độ tốt nghiệp.
+      // - Học lại & Học mới: Mới được cộng thêm tín chỉ vào tiến độ tích lũy dự kiến.
+      if (item.registrationType === "Học cải thiện") {
+        return;
+      }
       const categoryCode = courseCategoryMap.get(item.courseCode);
       if (categoryCode) {
         // Với học phần điều kiện 0 TC (như Giáo dục thể chất nhóm 220), tính theo 1 HP
