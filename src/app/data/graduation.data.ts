@@ -1,4 +1,4 @@
-﻿import type { GraduationRequirementGroup } from "@/app/types";
+import type { GraduationRequirementGroup } from "@/app/types";
 import { getActiveScenario, type ScenarioPreset } from "@/lib/scenario";
 
 export const mockGraduationNormal: GraduationRequirementGroup[] = [
@@ -346,7 +346,7 @@ export const mockGraduationRequirements: GraduationRequirementGroup[] = new Prox
   {
     get(_t, prop) {
       const list = getGraduationForScenario();
-      const val = (list as any)[prop];
+      const val = Reflect.get(list, prop);
       return typeof val === "function" ? val.bind(list) : val;
     },
     has(_t, prop) {
@@ -355,7 +355,7 @@ export const mockGraduationRequirements: GraduationRequirementGroup[] = new Prox
     getOwnPropertyDescriptor(_t, prop) {
       return Object.getOwnPropertyDescriptor(getGraduationForScenario(), prop);
     },
-    ownKeys(_t) {
+    ownKeys() {
       return Reflect.ownKeys(getGraduationForScenario());
     },
   }

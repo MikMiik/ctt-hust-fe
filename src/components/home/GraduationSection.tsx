@@ -26,7 +26,7 @@ export default function GraduationSection({
 
   // Đảm bảo luôn có đủ cả Card Mô đun chuyên sâu định hướng và Giáo dục thể chất
   const displayRequirements = useMemo(() => {
-    let list = [...requirements];
+    const list = [...requirements];
 
     // Card Mô đun chuyên sâu (Target 16 TC)
     if (

@@ -967,7 +967,7 @@ export function getCurrentCurriculumGroups(): CurriculumGroup[] {
 export const mockCurriculumGroups: CurriculumGroup[] = new Proxy([] as CurriculumGroup[], {
   get(_t, prop) {
     const list = getCurrentCurriculumGroups();
-    const val = (list as any)[prop];
+    const val = Reflect.get(list, prop);
     return typeof val === "function" ? val.bind(list) : val;
   },
   has(_t, prop) {
@@ -976,7 +976,7 @@ export const mockCurriculumGroups: CurriculumGroup[] = new Proxy([] as Curriculu
   getOwnPropertyDescriptor(_t, prop) {
     return Object.getOwnPropertyDescriptor(getCurrentCurriculumGroups(), prop);
   },
-  ownKeys(_t) {
+  ownKeys() {
     return Reflect.ownKeys(getCurrentCurriculumGroups());
   },
 });

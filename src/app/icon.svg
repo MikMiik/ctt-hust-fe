@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <clipPath id="badge">
+      <rect x="1" y="1" width="30" height="30" rx="6" />
+    </clipPath>
+  </defs>
+
+  <!-- Base rounded badge -->
+  <g clip-path="url(#badge)">
+    <!-- Right half: White -->
+    <rect x="1" y="1" width="30" height="30" fill="#FFFFFF" />
+    <!-- Left half: HUST Crimson Red (#C8102E) -->
+    <rect x="1" y="1" width="13.5" height="24.5" fill="#C8102E" />
+    <!-- Bottom open-book base: HUST Gold (#F5B800) -->
+    <path d="M1 25.5 H12.5 Q14.5 25.5 14.5 27 Q14.5 25.5 16.5 25.5 H31 V31 H1 Z" fill="#F5B800" />
+    <!-- Book spine -->
+    <path d="M12.8 25.5 L14.5 27.1 L16.2 25.5 H15.2 V31 H13.8 V25.5 Z" fill="#C8102E" />
+  </g>
+
+  <!-- Crisp border -->
+  <rect x="1" y="1" width="30" height="30" rx="6" stroke="#C8102E" stroke-width="1.1" />
+
+  <!-- Top-left 5-point gold star -->
+  <polygon
+    points="7.5,4.2 8.4,6.8 11.1,6.8 8.95,8.4 9.75,11.0 7.5,9.4 5.25,11.0 6.05,8.4 3.9,6.8 6.6,6.8"
+    fill="#F5B800"
+  />
+
+  <!-- Simplified 6-tooth technical gear (lifted cleanly above book base) -->
+  <g transform="translate(14.5, 16.4)">
+    <circle r="4.9" stroke="#F5B800" stroke-width="2.1" />
+    <rect x="-1.15" y="-6.8" width="2.3" height="2.2" rx="0.4" fill="#F5B800" />
+    <rect x="-1.15" y="4.6" width="2.3" height="2.2" rx="0.4" fill="#F5B800" />
+    <rect x="-1.15" y="-6.8" width="2.3" height="2.2" rx="0.4" fill="#F5B800" transform="rotate(60)" />
+    <rect x="-1.15" y="4.6" width="2.3" height="2.2" rx="0.4" fill="#F5B800" transform="rotate(60)" />
+    <rect x="-1.15" y="-6.8" width="2.3" height="2.2" rx="0.4" fill="#F5B800" transform="rotate(120)" />
+    <rect x="-1.15" y="4.6" width="2.3" height="2.2" rx="0.4" fill="#F5B800" transform="rotate(120)" />
+  </g>
+
+  <!-- Bold HUST Compass overlaid -->
+  <path
+    d="M23.5 7.4 L9.2 13.8 L21.0 9.6 L13.8 20.6 L23.5 7.4 Z"
+    fill="#F5B800"
+    stroke="#C8102E"
+    stroke-width="0.9"
+    stroke-linejoin="round"
+  />
+  <circle cx="23.2" cy="7.6" r="2.0" fill="#F5B800" stroke="#C8102E" stroke-width="0.9" />
+</svg>

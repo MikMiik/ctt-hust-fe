@@ -3,9 +3,22 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { mockStudent } from "@/app/data";
 import { LogIn, LogOut, RefreshCw } from "lucide-react";
+
+type ScenarioMode = "normal" | "warning";
+
+const subscribeNoop = () => () => {};
+
+function getScenarioSnapshot(): ScenarioMode {
+  const match = document.cookie.match(/ctt_scenario=([^;]+)/);
+  return match?.[1] === "warning" ? "warning" : "normal";
+}
+
+function getServerScenarioSnapshot(): ScenarioMode {
+  return "normal";
+}
 
 /** Lấy chữ viết tắt tên (tối đa 2 ký tự) */
 function getInitials(name: string): string {
@@ -15,24 +28,24 @@ function getInitials(name: string): string {
 }
 
 export default function Header() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [loggingOut, setLoggingOut] = useState(false);
-  const [scenario, setScenario] = useState<"normal" | "warning">("normal");
+  const cookieScenario = useSyncExternalStore(
+    subscribeNoop,
+    getScenarioSnapshot,
+    getServerScenarioSnapshot,
+  );
+  const [optimisticScenario, setOptimisticScenario] =
+    useState<ScenarioMode | null>(null);
   const [switching, setSwitching] = useState(false);
 
-  useEffect(() => {
-    if (typeof document !== "undefined") {
-      const match = document.cookie.match(/ctt_scenario=([^;]+)/);
-      if (match && (match[1] === "normal" || match[1] === "warning")) {
-        setScenario(match[1] as "normal" | "warning");
-      }
-    }
-  }, []);
+  const scenario = optimisticScenario ?? cookieScenario;
 
   async function handleToggleScenario() {
     if (switching) return;
     setSwitching(true);
-    const nextScenario = scenario === "normal" ? "warning" : "normal";
+    const nextScenario: ScenarioMode =
+      scenario === "normal" ? "warning" : "normal";
     try {
       await fetch("/api/scenario", {
         method: "POST",
@@ -40,7 +53,7 @@ export default function Header() {
         body: JSON.stringify({ scenario: nextScenario }),
       });
       document.cookie = `ctt_scenario=${nextScenario}; path=/; max-age=604800`;
-      setScenario(nextScenario);
+      setOptimisticScenario(nextScenario);
       window.location.reload();
     } catch (e) {
       console.error("Lỗi khi chuyển kịch bản:", e);
@@ -135,9 +148,14 @@ export default function Header() {
               <button
                 type="button"
                 disabled={loggingOut}
-                onClick={() => {
+                onClick={async () => {
                   setLoggingOut(true);
-                  void signOut({ callbackUrl: "/login" });
+                  try {
+                    await signOut({ redirect: false });
+                    window.location.replace("/login");
+                  } catch {
+                    setLoggingOut(false);
+                  }
                 }}
                 title="Đăng xuất khỏi hệ thống"
                 aria-label="Đăng xuất"

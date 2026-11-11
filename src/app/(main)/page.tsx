@@ -25,7 +25,7 @@ export default function HomePage() {
             map.set(course.courseCode, {
               className: course.courseName,
               credits: course.trainingCredits,
-              letterGrade: course.letterGrade || (course as any).grade,
+              letterGrade: course.letterGrade || course.grade || undefined,
             });
           });
         });
