@@ -10,6 +10,7 @@ import {
   ChevronDown,
   GraduationCap,
   Layers,
+  RotateCcw,
   Search,
   TrendingUp,
 } from "lucide-react";
@@ -62,7 +63,6 @@ const SORT_OPTIONS: SortOptionConfig[] = [
 ];
 
 function getProgramSummary(program: CurriculumProgram): string {
-  const groupCount = program.groups.length;
   const courseCount = program.groups.reduce(
     (sum, g) => sum + g.courseCount,
     0,
@@ -71,7 +71,14 @@ function getProgramSummary(program: CurriculumProgram): string {
     (sum, g) => sum + g.totalCredits,
     0,
   );
-  return `${groupCount} khối kiến thức · ${courseCount} học phần · ${totalCredits} TC`;
+  const passedCredits = program.groups.reduce(
+    (sum, g) => sum + g.passedCredits,
+    0,
+  );
+  if (program.id === "ctdt-cntt-freshman" || passedCredits === 0) {
+    return `Tân sinh viên · 0 TC tích lũy · Khung chuẩn ${totalCredits} TC`;
+  }
+  return `Đã tích lũy ${passedCredits}/${totalCredits} TC · ${courseCount} học phần`;
 }
 
 function PopoverOptionRow({
@@ -138,6 +145,7 @@ interface CurriculumFiltersProps {
   onSearchChange: (v: string) => void;
   displayMode: DisplayMode;
   onDisplayModeChange: (m: DisplayMode) => void;
+  onReset?: () => void;
 }
 
 export default function CurriculumFilters({
@@ -148,6 +156,7 @@ export default function CurriculumFilters({
   onSearchChange,
   displayMode,
   onDisplayModeChange,
+  onReset,
 }: CurriculumFiltersProps) {
   const [openMenu, setOpenMenu] = useState<"program" | "sort" | null>(null);
   const programDropdownRef = useRef<HTMLDivElement>(null);

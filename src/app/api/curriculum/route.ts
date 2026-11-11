@@ -1,18 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
-import { generateCurriculumGroups } from "@/app/data/curriculum.data";
+import {
+  generateCurriculumGroups,
+  generateFreshmanCurriculumGroups,
+} from "@/app/data/curriculum.data";
 import { getActiveScenario, type ScenarioPreset } from "@/lib/scenario";
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const presetParam = searchParams.get("preset");
+    const curriculumId = searchParams.get("curriculumId");
     const cookieScenario = request.cookies.get("ctt_scenario")?.value;
     const activeScenario: ScenarioPreset = getActiveScenario(presetParam || cookieScenario);
 
     const semester = searchParams.get("semester");
     const search = searchParams.get("search")?.toLowerCase().trim();
 
-    let groups = generateCurriculumGroups(activeScenario);
+    let groups =
+      presetParam === "freshman" || curriculumId === "ctdt-cntt-freshman"
+        ? generateFreshmanCurriculumGroups()
+        : generateCurriculumGroups(activeScenario);
 
     if (semester || search) {
       groups = groups

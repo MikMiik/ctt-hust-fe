@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import CurriculumFilters, { type DisplayMode } from "./CurriculumFilters";
 import CurriculumTable from "./CurriculumTable";
 import { mockCurricula, mockUsers } from "@/app/data";
@@ -9,6 +9,9 @@ import type { CourseAddStatus, CurriculumGroup } from "@/app/types";
 interface CurriculumSectionProps {
   onAddCourse: (courseCode: string) => void;
   selectedCodes: Set<string>;
+  selectedCurriculumId?: string;
+  onCurriculumChange?: (id: string) => void;
+  onReset?: () => void;
 }
 
 function resolveDefaultCurriculumId(): string {
@@ -22,12 +25,33 @@ function resolveDefaultCurriculumId(): string {
 export default function CurriculumSection({
   onAddCourse,
   selectedCodes,
+  selectedCurriculumId: controlledCurriculumId,
+  onCurriculumChange: controlledCurriculumChange,
+  onReset: controlledReset,
 }: CurriculumSectionProps) {
-  const [selectedCurriculumId, setSelectedCurriculumId] = useState(
+  const [internalCurriculumId, setInternalCurriculumId] = useState(
     resolveDefaultCurriculumId
   );
+  const selectedCurriculumId = controlledCurriculumId ?? internalCurriculumId;
+  const onCurriculumChange = controlledCurriculumChange ?? setInternalCurriculumId;
+
   const [searchValue, setSearchValue] = useState("");
   const [displayMode, setDisplayMode] = useState<DisplayMode>("default");
+
+  function handleReset() {
+    setSearchValue("");
+    setDisplayMode("default");
+    controlledReset?.();
+  }
+
+  useEffect(() => {
+    function onResetEvent() {
+      setSearchValue("");
+      setDisplayMode("default");
+    }
+    window.addEventListener("ctt-reset-defaults", onResetEvent);
+    return () => window.removeEventListener("ctt-reset-defaults", onResetEvent);
+  }, []);
 
   const activeGroups = useMemo(() => {
     const program =
@@ -112,11 +136,12 @@ export default function CurriculumSection({
       <CurriculumFilters
         curricula={mockCurricula}
         selectedCurriculumId={selectedCurriculumId}
-        onCurriculumChange={setSelectedCurriculumId}
+        onCurriculumChange={onCurriculumChange}
         searchValue={searchValue}
         onSearchChange={setSearchValue}
         displayMode={displayMode}
         onDisplayModeChange={setDisplayMode}
+        onReset={handleReset}
       />
       <CurriculumTable groups={processedGroups} onAddCourse={onAddCourse} />
     </section>

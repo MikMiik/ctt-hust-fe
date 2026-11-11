@@ -1,13 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getGraduationForScenario } from "@/app/data/graduation.data";
+import {
+  getGraduationForScenario,
+  mockGraduationFreshman,
+} from "@/app/data/graduation.data";
 import { getActiveScenario, type ScenarioPreset } from "@/lib/scenario";
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const presetParam = searchParams.get("preset");
+    const curriculumId = searchParams.get("curriculumId");
     const cookieScenario = request.cookies.get("ctt_scenario")?.value;
     const activeScenario: ScenarioPreset = getActiveScenario(presetParam || cookieScenario);
+
+    if (presetParam === "freshman" || curriculumId === "ctdt-cntt-freshman") {
+      return NextResponse.json({
+        success: true,
+        preset: "freshman",
+        data: mockGraduationFreshman,
+      });
+    }
 
     const requirements = getGraduationForScenario(activeScenario);
 

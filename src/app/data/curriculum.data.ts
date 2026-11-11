@@ -955,6 +955,52 @@ export function generateCurriculumGroups(preset: ScenarioPreset): CurriculumGrou
 export const mockCurriculumGroupsNormal = generateCurriculumGroups("normal");
 export const mockCurriculumGroupsWarning = generateCurriculumGroups("warning");
 
+/**
+ * Tạo khung chương trình chuẩn cho Tân sinh viên (0 TC tích lũy):
+ * - Dùng đúng toàn bộ danh mục môn của khóa K69.
+ * - Xóa trắng điểm và tín chỉ tích lũy (passedCredits = 0, grade = null).
+ * - Các môn không có điều kiện tiên quyết (kỳ 1) mở nút thêm vào giỏ.
+ * - Các môn có môn tiên quyết tự động khóa lại ("locked").
+ */
+export function generateFreshmanCurriculumGroups(): CurriculumGroup[] {
+  const baseGroups = generateCurriculumGroups("normal");
+
+  return baseGroups.map((group) => {
+    const updatedSubGroups = group.subGroups.map((subGroup) => {
+      const courses = subGroup.courses.map((course) => {
+        const hasPrereqs =
+          Boolean(course.prerequisites && course.prerequisites.length > 0) ||
+          Boolean(course.prerequisiteCode && course.prerequisiteCode.trim().length > 0);
+        const addStatus: CourseAddStatus = hasPrereqs ? "locked" : "add";
+
+        return {
+          ...course,
+          studyCredits: null,
+          tuitionCredits: 0,
+          grade: null,
+          letterGrade: undefined,
+          addStatus,
+        };
+      });
+
+      return {
+        ...subGroup,
+        passedCredits: 0,
+        courses,
+      };
+    });
+
+    return {
+      ...group,
+      passedCredits: 0,
+      subGroups: updatedSubGroups,
+    };
+  });
+}
+
+export const mockCurriculumGroupsFreshman = generateFreshmanCurriculumGroups();
+export const mockCurriculumGroupsFallback = mockCurriculumGroupsNormal;
+
 export function getCurrentCurriculumGroups(): CurriculumGroup[] {
   const active = getActiveScenario();
   return active === "warning" ? mockCurriculumGroupsWarning : mockCurriculumGroupsNormal;
@@ -980,3 +1026,5 @@ export const mockCurriculumGroups: CurriculumGroup[] = new Proxy([] as Curriculu
     return Reflect.ownKeys(getCurrentCurriculumGroups());
   },
 });
+
+export const mockCurriculumGroupsActual = mockCurriculumGroups;

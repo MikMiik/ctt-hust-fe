@@ -1,38 +1,48 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import CurriculumSection from "@/components/home/CurriculumSection";
 import GraduationSection from "@/components/home/GraduationSection";
 import RegistrationSection from "@/components/home/RegistrationSection";
-import { mockCurricula } from "@/app/data";
+import {
+  mockCurricula,
+  fallbackCurriculumProgram,
+  getGraduationForCurriculum,
+} from "@/app/data";
 import type { SelectedCourse, RegistrationType } from "@/app/types";
 
 const MAX_CREDITS = 24;
 
 export default function HomePage() {
+  const [selectedCurriculumId, setSelectedCurriculumId] = useState<string>("ctdt-cntt-k69");
   const [cart, setCart] = useState<SelectedCourse[]>([]);
+
+  const currentProgram = useMemo(() => {
+    return (
+      mockCurricula.find((p) => p.id === selectedCurriculumId) ||
+      fallbackCurriculumProgram
+    );
+  }, [selectedCurriculumId]);
 
   const courseLookupMap = useMemo(() => {
     const map = new Map<
       string,
       { className: string; credits: number; letterGrade?: string }
     >();
-    mockCurricula.forEach((program) => {
-      program.groups.forEach((group) => {
-        group.subGroups.forEach((subGroup) => {
-          subGroup.courses.forEach((course) => {
-            map.set(course.courseCode, {
-              className: course.courseName,
-              credits: course.trainingCredits,
-              letterGrade: course.letterGrade || course.grade || undefined,
-            });
+    currentProgram.groups.forEach((group) => {
+      group.subGroups.forEach((subGroup) => {
+        subGroup.courses.forEach((course) => {
+          map.set(course.courseCode, {
+            className: course.courseName,
+            credits: course.trainingCredits,
+            letterGrade: course.letterGrade || course.grade || undefined,
           });
         });
       });
     });
     return map;
-  }, []);
+  }, [currentProgram]);
 
   const selectedCodes = useMemo(
     () => new Set(cart.map((c) => c.courseCode)),
@@ -122,19 +132,44 @@ export default function HomePage() {
     });
   }
 
+  function handleCurriculumChange(newId: string) {
+    if (newId === selectedCurriculumId) return;
+    setSelectedCurriculumId(newId);
+    setCart([]);
+    const targetProgram = mockCurricula.find((p) => p.id === newId);
+    if (targetProgram) {
+      toast.info(`Đã chuyển sang chế độ: ${targetProgram.name}`);
+    }
+  }
+
+  function handleReset() {
+    setCart([]);
+    toast.success("Đã khôi phục dữ liệu ban đầu và dọn trống giỏ học phần!");
+  }
+
+  useEffect(() => {
+    function onResetEvent() {
+      handleReset();
+    }
+    window.addEventListener("ctt-reset-defaults", onResetEvent);
+    return () => window.removeEventListener("ctt-reset-defaults", onResetEvent);
+  }, []);
+
   const courseCategoryMap = useMemo(() => {
     const map = new Map<string, string>();
-    mockCurricula.forEach((program) => {
-      program.groups.forEach((group) => {
-        group.subGroups.forEach((subGroup) => {
-          subGroup.courses.forEach((course) => {
-            map.set(course.courseCode, group.categoryCode);
-          });
+    currentProgram.groups.forEach((group) => {
+      group.subGroups.forEach((subGroup) => {
+        subGroup.courses.forEach((course) => {
+          map.set(course.courseCode, group.categoryCode);
         });
       });
     });
     return map;
-  }, []);
+  }, [currentProgram]);
+
+  const graduationRequirements = useMemo(() => {
+    return getGraduationForCurriculum(selectedCurriculumId);
+  }, [selectedCurriculumId]);
 
   const addedCreditsByCategory = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -159,12 +194,18 @@ export default function HomePage() {
     <div className="max-w-350 mx-auto px-4 py-4 space-y-6">
       {/* ── Section: Curriculum (Part 1) ── */}
       <CurriculumSection
+        selectedCurriculumId={selectedCurriculumId}
+        onCurriculumChange={handleCurriculumChange}
         onAddCourse={handleAddCourse}
         selectedCodes={selectedCodes}
+        onReset={handleReset}
       />
 
       {/* ── Section: Graduation Progress (Middle Section) ── */}
-      <GraduationSection addedCreditsByCategory={addedCreditsByCategory} />
+      <GraduationSection
+        requirements={graduationRequirements}
+        addedCreditsByCategory={addedCreditsByCategory}
+      />
 
       {/* ── Section: Registration Cart (Part 2) ── */}
       <RegistrationSection

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useState, useSyncExternalStore } from "react";
 import { mockStudent } from "@/app/data";
-import { LogIn, LogOut, RefreshCw } from "lucide-react";
+import { LogIn, LogOut, RefreshCw, RotateCcw } from "lucide-react";
 
 type ScenarioMode = "normal" | "warning";
 
@@ -99,32 +99,48 @@ export default function Header() {
 
         {/* ── Student Info & Actions ── */}
         <div className="flex items-center gap-3">
-          {/* Nút Toggle chuyển đổi kịch bản Demo */}
-          <button
-            type="button"
-            disabled={switching}
-            onClick={handleToggleScenario}
-            title="Nhấp để chuyển đổi kịch bản demo giữa CPA Giỏi và Cảnh báo nợ F IT1110"
-            className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded border transition-colors shadow-xs cursor-pointer ${
-              scenario === "normal"
-                ? "bg-green-50 text-green-800 border-green-300 hover:bg-green-100"
-                : "bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100"
-            }`}
-          >
-            <span
-              className={`size-2 rounded-full shrink-0 ${
-                scenario === "normal" ? "bg-green-500 animate-pulse" : "bg-red-500 animate-pulse"
+          {/* Cụm Kịch bản Demo + Nút Reset ngay dưới */}
+          <div className="flex flex-col items-stretch gap-1">
+            {/* Nút Toggle chuyển đổi kịch bản Demo */}
+            <button
+              type="button"
+              disabled={switching}
+              onClick={handleToggleScenario}
+              title="Nhấp để chuyển đổi kịch bản demo giữa CPA Giỏi và Cảnh báo nợ F IT1110"
+              className={`inline-flex items-center justify-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded border transition-colors shadow-xs cursor-pointer ${
+                scenario === "normal"
+                  ? "bg-green-50 text-green-800 border-green-300 hover:bg-green-100"
+                  : "bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100"
               }`}
-            />
-            <span>
-              {switching
-                ? "Đang tải..."
-                : scenario === "normal"
-                ? "Preset: CPA Giỏi"
-                : "Preset: Cảnh báo nợ F"}
-            </span>
-            <RefreshCw className={`size-3 text-gray-500 ${switching ? "animate-spin" : ""}`} />
-          </button>
+            >
+              <span
+                className={`size-2 rounded-full shrink-0 ${
+                  scenario === "normal" ? "bg-green-500 animate-pulse" : "bg-red-500 animate-pulse"
+                }`}
+              />
+              <span>
+                {switching
+                  ? "Đang tải..."
+                  : scenario === "normal"
+                  ? "Kịch bản: CPA Giỏi"
+                  : "Kịch bản: Cảnh báo nợ F"}
+              </span>
+              <RefreshCw className={`size-3 text-gray-500 ${switching ? "animate-spin" : ""}`} />
+            </button>
+
+            {/* Nút Đặt lại mặc định ngay dưới chỗ switch kịch bản */}
+            <button
+              type="button"
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent("ctt-reset-defaults"));
+              }}
+              title="Khôi phục trạng thái ban đầu của bảng môn học và dọn trống giỏ học phần"
+              className="inline-flex items-center justify-center gap-1 px-2 py-0.5 text-[11px] font-semibold text-gray-700 bg-white/90 hover:bg-white hover:text-primary border border-gray-300 rounded shadow-2xs transition-colors cursor-pointer select-none"
+            >
+              <RotateCcw className="size-2.5 text-gray-500" />
+              <span>Đặt lại mặc định</span>
+            </button>
+          </div>
 
           {studentName ? (
             <>
