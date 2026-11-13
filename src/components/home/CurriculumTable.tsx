@@ -93,6 +93,22 @@ function AddCell({
     );
   }
 
+  if (status === "locked") {
+    return (
+      <button
+        type="button"
+        disabled
+        className="inline-flex max-w-28 items-center justify-center gap-1 px-2 py-1 rounded text-xs font-medium leading-tight text-center bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed select-none"
+        title={`Chưa thỏa mãn điều kiện tiên quyết${
+          prerequisiteCode ? `: ${prerequisiteCode}` : ""
+        }`}
+      >
+        <LockKeyhole aria-hidden="true" className="size-3.5 shrink-0 text-gray-400" />
+        <span className="min-w-0">Thiếu tiên quyết</span>
+      </button>
+    );
+  }
+
   const hasGrade = Boolean(grade && grade !== "—");
 
   // 2. Nếu là môn thực hành thể chất chưa học và sinh viên đã đủ 4 HP thực hành:
@@ -112,23 +128,6 @@ function AddCell({
 
   // 3. Nếu môn chưa học (grade == null hoặc '—'):
   if (!hasGrade) {
-    // Thiếu tiên quyết -> Render nút "🔒 Khóa" (disable, hover có tooltip)
-    if (status === "locked") {
-      return (
-        <button
-          type="button"
-          disabled
-          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed select-none"
-          title={`Chưa thỏa mãn điều kiện tiên quyết${
-            prerequisiteCode ? `: ${prerequisiteCode}` : ""
-          }`}
-        >
-          <LockKeyhole aria-hidden="true" className="size-3 text-gray-400" />
-          <span>Khóa</span>
-        </button>
-      );
-    }
-
     // Đủ tiên quyết -> Render nút "+ Thêm" (màu xanh lá)
     return (
       <button
@@ -268,35 +267,47 @@ export default function CurriculumTable({
     >
       <table
         id="curriculumTable"
-        className="w-full text-left text-xs border-collapse"
+        className="w-full table-fixed text-left text-xs border-collapse"
       >
+        <colgroup>
+          <col style={{ width: "4%" }} />
+          <col style={{ width: "8%" }} />
+          <col style={{ width: "28%" }} />
+          <col style={{ width: "10%" }} />
+          <col style={{ width: "8%" }} />
+          <col style={{ width: "10%" }} />
+          <col style={{ width: "6%" }} />
+          <col style={{ width: "6%" }} />
+          <col style={{ width: "8%" }} />
+          <col style={{ width: "12%" }} />
+        </colgroup>
         {/* ── Table Header ── */}
         <thead className="sticky top-0 z-10 bg-table-header">
           <tr className="text-gray-600 font-semibold uppercase text-[11px] tracking-wide border-b border-gray-300">
-            <th className="px-3 py-2 border-r border-gray-200 text-center w-12">
+            <th className="px-3 py-2 border-r border-gray-200 text-center">
               STT
             </th>
-            <th className="px-3 py-2 border-r border-gray-200 w-24">Mã HP</th>
+            <th className="px-3 py-2 border-r border-gray-200">Mã HP</th>
             <th className="px-3 py-2 border-r border-gray-200">Tên học phần</th>
-            <th className="px-3 py-2 border-r border-gray-200 text-center w-28">
+            <th className="px-3 py-2 border-r border-gray-200 text-center">
               Kỳ mở môn
             </th>
-            <th className="px-3 py-2 border-r border-gray-200 text-center w-24">
+            <th className="px-3 py-2 border-r border-gray-200 text-center">
               Kỳ đề xuất
             </th>
-            <th className="px-3 py-2 border-r border-gray-200 text-center w-28">
+            <th className="px-3 py-2 border-r border-gray-200 text-center">
               Bắt buộc
             </th>
-            <th className="px-3 py-2 border-r border-gray-200 text-center w-16">
+            <th className="px-3 py-2 border-r border-gray-200 text-center">
               TC ĐT
             </th>
-            <th className="px-3 py-2 border-r border-gray-200 text-center w-16">
+            <th className="px-3 py-2 border-r border-gray-200 text-center">
               TC Học
             </th>
-            <th className="px-3 py-2 border-r border-gray-200 text-center w-20">
+            <th className="px-3 py-2 border-r border-gray-200 text-center">
               Điểm
             </th>
-            <th className="px-3 py-2 text-center w-24">Thao tác</th>
+            <th className="px-3 py-2 text-center">Thao tác</th>
           </tr>
         </thead>
 

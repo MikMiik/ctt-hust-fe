@@ -1,19 +1,18 @@
 import type { SelectedCourse } from "@/app/types";
-import { mockCurricula } from "@/app/data";
+import { generateCurriculumGroups } from "@/app/data/curriculum.data";
+import type { ScenarioPreset } from "@/lib/scenario";
 
 const MAX_CREDITS = 24;
 
 // In-memory state cho giỏ học phần của sinh viên mặc định (202400000 - K69)
 let inMemoryRegistrations: SelectedCourse[] = [];
 
-function findCourseInCurricula(courseCode: string) {
-  for (const program of mockCurricula) {
-    for (const group of program.groups) {
-      for (const subGroup of group.subGroups) {
-        const found = subGroup.courses.find((c) => c.courseCode === courseCode);
-        if (found) {
-          return { course: found, categoryCode: group.categoryCode };
-        }
+function findCourseInCurricula(courseCode: string, preset: ScenarioPreset) {
+  for (const group of generateCurriculumGroups(preset)) {
+    for (const subGroup of group.subGroups) {
+      const found = subGroup.courses.find((course) => course.courseCode === courseCode);
+      if (found) {
+        return found;
       }
     }
   }
@@ -24,7 +23,7 @@ export function getRegistrationsStore(): SelectedCourse[] {
   return [...inMemoryRegistrations];
 }
 
-export function addRegistrationStore(courseCode: string): {
+export function addRegistrationStore(courseCode: string, preset: ScenarioPreset = "normal"): {
   success: boolean;
   message: string;
   course?: SelectedCourse;
@@ -39,15 +38,21 @@ export function addRegistrationStore(courseCode: string): {
     };
   }
 
-  const found = findCourseInCurricula(code);
-  if (!found) {
+  const course = findCourseInCurricula(code, preset);
+  if (!course) {
     return {
       success: false,
       message: `Không tìm thấy mã học phần ${code} trong CTĐT!`,
     };
   }
 
-  const { course } = found;
+  if (course.addStatus === "locked") {
+    return {
+      success: false,
+      message: `Chưa đủ điều kiện tiên quyết${course.prerequisiteCode ? `: ${course.prerequisiteCode}` : ""}.`,
+    };
+  }
+
   const currentCredits = inMemoryRegistrations.reduce((sum, c) => sum + c.credits, 0);
 
   if (currentCredits + course.trainingCredits > MAX_CREDITS) {

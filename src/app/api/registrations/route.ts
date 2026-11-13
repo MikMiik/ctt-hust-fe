@@ -6,6 +6,7 @@ import {
   addRegistrationStore,
   removeRegistrationStore,
 } from "@/lib/registrations-store";
+import { getActiveScenario } from "@/lib/scenario";
 
 async function getCurrentStudentId(): Promise<string> {
   const session = await getServerSession(authOptions);
@@ -49,7 +50,8 @@ export async function POST(request: NextRequest) {
     }
 
     const studentId = await getCurrentStudentId();
-    const result = addRegistrationStore(courseCode.trim());
+    const scenario = getActiveScenario(request.cookies.get("ctt_scenario")?.value);
+    const result = addRegistrationStore(courseCode.trim(), scenario);
 
     if (!result.success) {
       return NextResponse.json(

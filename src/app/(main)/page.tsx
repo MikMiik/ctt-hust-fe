@@ -10,7 +10,7 @@ import {
   fallbackCurriculumProgram,
   getGraduationForCurriculum,
 } from "@/app/data";
-import type { SelectedCourse, RegistrationType } from "@/app/types";
+import type { CourseAddStatus, SelectedCourse, RegistrationType } from "@/app/types";
 
 const MAX_CREDITS = 24;
 
@@ -28,7 +28,13 @@ export default function HomePage() {
   const courseLookupMap = useMemo(() => {
     const map = new Map<
       string,
-      { className: string; credits: number; letterGrade?: string }
+      {
+        className: string;
+        credits: number;
+        letterGrade?: string;
+        addStatus: CourseAddStatus;
+        prerequisiteCode?: string;
+      }
     >();
     currentProgram.groups.forEach((group) => {
       group.subGroups.forEach((subGroup) => {
@@ -37,6 +43,8 @@ export default function HomePage() {
             className: course.courseName,
             credits: course.trainingCredits,
             letterGrade: course.letterGrade || course.grade || undefined,
+            addStatus: course.addStatus,
+            prerequisiteCode: course.prerequisiteCode,
           });
         });
       });
@@ -58,6 +66,13 @@ export default function HomePage() {
 
     const info = courseLookupMap.get(courseCode);
     if (!info) return;
+
+    if (info.addStatus === "locked") {
+      toast.error(
+        `Chưa đủ điều kiện tiên quyết${info.prerequisiteCode ? `: ${info.prerequisiteCode}` : ""}.`
+      );
+      return;
+    }
 
     const totalCredits = cart.reduce((sum, c) => sum + c.credits, 0);
     if (totalCredits + info.credits > MAX_CREDITS) {
